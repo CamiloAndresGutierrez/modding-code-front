@@ -1,0 +1,42 @@
+{
+  "presets": [
+    [
+      "next/babel",
+      {
+        "jest": {},
+        "preset-env": {},
+        "preset-react": {},
+        "transform-runtime": { "useESModules": false },
+        "styled-jsx": {
+          "plugins": ["styled-jsx-plugin-postcss"],
+          "extensions": ["css$", "scss$"]
+        },
+        "class-properties": {},
+        "object-rest-spread": {}
+      }
+    ]
+  ],
+  "plugins": [
+    "babel-plugin-macros",
+    "inline-react-svg",
+    [
+      "styled-components",
+      { "ssr": true, "displayName": true, "preprocess": false }
+    ],
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "lib": "./lib",
+          "components": "./components/",
+          "^components/(.+)": "./components/\\1",
+          "containers": "./containers/",
+          "styles": "./styles",
+          "public": "./public"
+        }
+      }
+    ]
+  ],
+  "ignore": []
+}
