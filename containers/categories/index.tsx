@@ -3,31 +3,9 @@ import CategoryCard from '../../components/categoryCard';
 import { Container, CardsContainer, Jumbotron } from './categories.styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 
-const mockCategories = [
-    {
-        "name": "Greedy",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis.",
-        "path": "/greedy"
-    },
-    {
-        "name": "Dynamic Programming",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis.",
-        "path": "dynamic-programming"
-    },
-    {
-        "name": "Graphs and Trees",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis.",
-        "path": "graphs-and-trees"
-    },
-];
-
 const Categories = () => {
     const [categories, setCategories] = useState([]);
     const [search, setSearch] = useState("");
-
-    useEffect(() => {
-        setCategories(mockCategories);
-    }, []);
 
     const handleInputChange = (e) => {
         setSearch(e.target.value);
