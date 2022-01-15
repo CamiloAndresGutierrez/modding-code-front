@@ -1,14 +1,16 @@
 
 import { Server, Request } from 'miragejs';
-import { CATEGORIES } from '../public/mock';
+import RESPONSES from '../public/mock';
 
 const url = (path: string) => `${process.env.APIURL}${path}`;
 
-const response = (schema: any, request: Request) => {
+const responseData = (schema: any, request: Request) => {
     const data = new Map<string, any>();
 
     // Define routes results here!
-    data.set(url('/categories/get'), CATEGORIES);
+    RESPONSES.forEach(response => {
+        data.set(url(response.path), response.data);
+    });
 
     return data.get(request.url);
 }
@@ -18,8 +20,23 @@ const runMockServer = () => {
         console.log("Be aware: Running mock mirage server!")
         const server = new Server({
             routes() {
-                this.get(url('/categories/get'), response);
-
+                RESPONSES.forEach(response => {
+                    switch (response.method) {
+                        case 'GET':
+                            this.get(url(response.path), responseData);
+                            break;
+                        case 'POST':
+                            this.post(url(response.path), responseData);
+                            break;
+                        case 'PUT':
+                            this.put(url(response.path), responseData);
+                            break;
+                        case 'DELETE':
+                            this.delete(url(response.path), responseData);
+                            break;
+                    }
+                })
+                
                 this.passthrough();
             }
         })

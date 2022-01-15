@@ -1,0 +1,38 @@
+[
+    {
+        "id": 10,
+        "name": "Organize list in O(n2) time",
+        "categories": [
+            {
+                "id": 20,
+                "name": "Sorting"
+            },
+            {
+                "id": 15,
+                "name": "Complexity"
+            }
+        ],
+        "creator": {
+            "id": 90,
+            "name": "Camiro"
+        }
+    },
+    {
+        "id": 12,
+        "name": "Thieves houses",
+        "categories": [
+            {
+                "id": 37,
+                "name": "Dynamic Programming"
+            },
+            {
+                "id": 20,
+                "name": "Sorting"
+            }
+        ],
+        "creator": {
+            "id": 47,
+            "name": "Gustavo"
+        }
+    }
+]
