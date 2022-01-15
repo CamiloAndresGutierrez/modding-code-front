@@ -5,17 +5,6 @@ import Categories from "../../containers/categories";
 
 const CategoryPage = () => {
 
-    useEffect(() => {
-        fetch(`${process.env.APIURL}/minicourse/get`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.json()).then(data => {
-            console.log(data);
-        })
-    }, []);
-
     return (
         <Base
             pageTitle={"Algorithm categories"}
