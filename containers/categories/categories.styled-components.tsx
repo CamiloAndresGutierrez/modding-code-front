@@ -51,6 +51,7 @@ export const Jumbotron = styled.div`
             flex-direction: column;
         }
     }
+
     .text {
         width: 50%;
         padding: 40px 0;
@@ -69,6 +70,10 @@ export const Jumbotron = styled.div`
             padding-bottom: 0;
 
         }
+    }
+
+    .filters  {
+        width: 50%;
     }
 
     .search-bar  {
