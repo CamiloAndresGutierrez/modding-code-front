@@ -5,6 +5,7 @@ import {
     CardBody,
     CardButton,
 } from './card.styled-components';
+import { useRouter } from 'next/router';
 
 type CategoryCard = {
     head: string;
@@ -14,12 +15,13 @@ type CategoryCard = {
 }
 
 const CategoryCard = (props: CategoryCard) => {
+    const router = useRouter();
     const { head, body, ctaText, ctaLink } = props;
 
     const redirect = () => {
-        window.location.href = ctaLink
+        router.push(ctaLink);
     }
-    
+
     return (
         <Container>
             <CardHead>{head}</CardHead>

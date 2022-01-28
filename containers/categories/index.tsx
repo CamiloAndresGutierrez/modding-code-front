@@ -23,6 +23,12 @@ const Categories = () => {
         }
     }
 
+    useEffect(() => {
+        fetch('http://localhost:5000/categories/get')
+            .then(response => response.json())
+            .then(r => setCategories(r));
+    }, []);
+
     return (
         <Container>
             <Jumbotron >

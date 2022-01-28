@@ -3,10 +3,15 @@ import { colors } from '../../lib/constants';
 import Button, { StyledButton } from '../button';
 
 export const Container = styled.div`
-    
     height: 300px;
     box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
+    transition: all 200ms ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 10px 25px 10px rgba(0, 0, 0, 0.25);
+    }
     
 `;
 
