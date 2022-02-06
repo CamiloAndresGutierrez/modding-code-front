@@ -36,7 +36,7 @@ const Navbar = (props: NavbarProps) => {
         <Container height={height}>
             <nav>
                 <div className="logo">
-                    <Link href='/'>
+                    <Link href='/' passHref>
                         <div>
                             <Name fontSize='1.5rem' />
                         </div>

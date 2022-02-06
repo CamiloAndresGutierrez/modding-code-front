@@ -23,7 +23,7 @@ const Minicourse = ({ minicourse }) => {
     return (
         <Container >
             <Head >
-                <img src={minicourse.thumbnail}></img>
+                <img alt={`thumbnail-${minicourse.name}`} src={minicourse.thumbnail}></img>
             </Head>
             <Body>
                 <h3>

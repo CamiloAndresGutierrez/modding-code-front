@@ -4,11 +4,11 @@ import { Jumbotron } from '../categories/categories.styled-components';
 import { MinicoursesGrid } from "./minicourses.styled-components";
 
 const MinicoursesContainer = (props) => {
-    const { name } = props;
+    const { category } = props;
     const [minicourses, setMinicourses] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/minicourse/get')
+        fetch('http://localhost:5000/minicourses/get')
             .then(response => response.json())
             .then(r => setMinicourses(r));
     }, []);
@@ -20,7 +20,7 @@ const MinicoursesContainer = (props) => {
                     <div className={"text"}>
                         <h1>Minicourses</h1>
                         <p>
-                            You’ll find minicourses to learn about {name}.
+                            You’ll find minicourses to learn about.
                             Each minicourse should encapsule a problem specific to this category
                         </p>
                     </div>
