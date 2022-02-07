@@ -1,15 +1,18 @@
 [
     {
-        "name": "Greedy",
+        "id": 20,
+        "name": "Sorting",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis.",
-        "path": "greedy"
+        "path": "sorting"
     },
     {
-        "name": "Dynamic Programming",
+        "id": 15,
+        "name": "Complexity",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis.",
-        "path": "dynamic-programming"
+        "path": "complexity"
     },
     {
+        "id": 37,
         "name": "Graphs and Trees",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis.",
         "path": "graphs-and-trees"

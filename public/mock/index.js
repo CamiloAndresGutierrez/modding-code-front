@@ -21,7 +21,7 @@ const RESPONSES = [
         data: register
     },
     {
-        path: '/minicourse/get',
+        path: '/minicourses/get',
         method: 'GET',
         data: getMinicourse
     }

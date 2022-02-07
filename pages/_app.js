@@ -1,10 +1,20 @@
-
 import '../styles/globals.css';
 import runMockServer from '../lib/mock';
+import { Provider } from 'react-redux';
+import { initStore } from '../lib/store/store';
+import { fetchCategories } from '../lib/actions/categories';
 
-function MyApp({ Component, pageProps }) {
+function MyApp({Component, pageProps}) {
   runMockServer();
-  return <Component {...pageProps} />
+
+  const store = initStore();
+  store.dispatch(fetchCategories());
+
+  return (
+    <Provider store={store}>
+      <Component {...pageProps} />
+    </Provider>
+    );
 }
 
-export default MyApp
+export default MyApp;

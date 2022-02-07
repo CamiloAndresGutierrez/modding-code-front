@@ -3,8 +3,9 @@ import CategoryCard from '../../components/categoryCard';
 import { Container, CardsContainer, Jumbotron } from './categories.styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 
-const Categories = () => {
-    const [categories, setCategories] = useState([]);
+const Categories = (props) => {
+    const { categories } = props;
+    const [fetchedCategories, setFetchedCategories] = useState([]);
     const [search, setSearch] = useState("");
 
     const handleInputChange = (e) => {
@@ -24,10 +25,8 @@ const Categories = () => {
     }
 
     useEffect(() => {
-        fetch('http://localhost:5000/categories/get')
-            .then(response => response.json())
-            .then(r => setCategories(r));
-    }, []);
+        setFetchedCategories(categories);
+    }, [categories]);
 
     return (
         <Container>
@@ -53,7 +52,7 @@ const Categories = () => {
                 </div>
             </Jumbotron>
             <CardsContainer>
-                {categories.map((element, index) => (
+                {Array.isArray(fetchedCategories) && fetchedCategories.map((element, index) => (
                     <CategoryCard
                         key={index}
                         head={element.name}
