@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import CategoryCard from '../../components/categoryCard';
-import { Container, CardsContainer, Jumbotron } from './categories.styled-components';
+import CategoryCard from 'components/categoryCard';
+import Jumbotron from 'components/jumbotron';
+import { Container, CardsContainer, JumbotronSearch } from './categories.styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 
 const Categories = (props) => {
@@ -28,28 +29,26 @@ const Categories = (props) => {
         setFetchedCategories(categories);
     }, [categories]);
 
+    const title = {
+      headline: "Algorithm categories",
+      text: "Here you will find a great variety of algorithm categories. Click on the one you're interested in and take the minicourses"
+    }
+
     return (
         <Container>
-            <Jumbotron >
-                <div className={"content"}>
-                    <div className={"text"}>
-                        <h1>Algorithm categories</h1>
-                        <p>
-                            Here you will find a great variety of algorithm categories.
-                            Click on the one you're interested in and take the minicourses
-                        </p>
-                    </div>
-                    <div className={"search-bar"}>
-                        <div>
-                            <div className={"search-input"}>
-                                <input onChange={handleInputChange} onKeyPress={handleEnterKey} type={"text"} placeholder={`Search...`}></input>
-                            </div>
-                            <div className={"mag-glass"} onClick={handleSearch}>
-                                <SearchIcon />
-                            </div>
+            <Jumbotron headline={title.headline} text={title.text}>
+              <JumbotronSearch >
+                <div className={"search-bar"}>
+                    <div>
+                        <div className={"search-input"}>
+                            <input onChange={handleInputChange} onKeyPress={handleEnterKey} type={"text"} placeholder={`Search...`}></input>
+                        </div>
+                        <div className={"mag-glass"} onClick={handleSearch}>
+                            <SearchIcon />
                         </div>
                     </div>
                 </div>
+              </JumbotronSearch>
             </Jumbotron>
             <CardsContainer>
                 {Array.isArray(fetchedCategories) && fetchedCategories.map((element, index) => (

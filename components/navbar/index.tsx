@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Name from '../Name';
 import { Container } from './navbar.styled-components';
 import { studentLinks, expertLinks, landingLinks } from './navbar.content';
-import { UserType } from '../../lib/types';
+import { UserType } from 'lib/types';
 import Link from 'next/link';
 
 type NavbarProps = {

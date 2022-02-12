@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import '../styles/globals.css';
 import runMockServer from '../lib/mock';
 import { Provider } from 'react-redux';

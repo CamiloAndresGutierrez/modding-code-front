@@ -1,7 +1,7 @@
 import React from 'react';
-import Base from '../../components/Base';
-import Navbar from '../../components/navbar';
-import LoginContainer from '../../containers/login';
+import Base from 'components/Base';
+import Navbar from 'components/navbar';
+import LoginContainer from 'containers/login';
 
 const Login = () => {
     return (

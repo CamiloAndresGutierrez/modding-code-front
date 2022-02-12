@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { mediaQueries } from '../../lib/constants';
+import { mediaQueries } from 'lib/constants';
 
 export const MinicoursesGrid = styled.div`
     padding: 0 100px;

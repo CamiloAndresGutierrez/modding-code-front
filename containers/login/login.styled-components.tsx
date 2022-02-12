@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors, mediaQueries } from '../../lib/constants';
+import { colors, mediaQueries } from 'lib/constants';
 
 export const Container = styled.div`
     position: relative;

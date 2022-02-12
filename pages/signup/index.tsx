@@ -1,7 +1,7 @@
 import React from 'react';
-import SingUpContainer from '../../containers/signup';
-import Base from '../../components/Base';
-import Navbar from '../../components/navbar';
+import SingUpContainer from 'containers/signup';
+import Base from 'components/Base';
+import Navbar from 'components/navbar';
 
 const Signup = () => {
     return (

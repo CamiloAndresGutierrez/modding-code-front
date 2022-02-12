@@ -25,5 +25,11 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "paths": {
+    "lib": ["./lib"],
+    "containers": ["./containers/"],
+    "components": ["./components/"],
+    "^components/(.+)": ["./components/\\1"],
+  }
 }

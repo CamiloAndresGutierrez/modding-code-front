@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors, mediaQueries } from '../../lib/constants';
+import { colors, mediaQueries } from 'lib/constants';
 import { ArrowForward } from "@mui/icons-material";
 
 export const Container = styled.div`
@@ -17,7 +17,7 @@ export const Container = styled.div`
 
 export const Head = styled.div`
     height: 200px;
-    
+
     img {
         width: 100%;
         height: 200px;

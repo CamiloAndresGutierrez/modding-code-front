@@ -29,55 +29,8 @@ export const CardsContainer = styled.div`
     }
 `;
 
-export const Jumbotron = styled.div`
-    margin: 50px 0;
-    min-height: 150px;
-    box-shadow: 0px 10px 50px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    
-    .content {
-        max-width: 1500px;
-        margin-left: auto;
-        margin-right: auto;
-        display: flex;
-        justify-content: space-between;
-        flex-basis: 100%;
-        
-        @media (${mediaQueries.tabletAndAbove}) {
-            padding: 0 100px;
-        }
-
-        @media (${mediaQueries.tablet}) {
-            flex-direction: column;
-        }
-    }
-
-    .text {
-        width: 50%;
-        padding: 40px 0;
-
-        & > h1 {
-            font-size: 2rem;
-            line-height: 47px;
-        }
-        & > p {
-            font-size: 1rem;
-            line-height: 21px;
-        }
-
-        @media (${mediaQueries.tablet}) {
-            width: 100%;
-            padding-bottom: 0;
-
-        }
-    }
-
-    .filters  {
-        width: 50%;
-    }
-
+export const JumbotronSearch = styled.div`
     .search-bar  {
-        width: 50%;
         padding: 40px 0;
         display: flex;
         align-items: center;
@@ -108,7 +61,7 @@ export const Jumbotron = styled.div`
                     width: 95%;
                     height: 90%;
                     border: 0;
-                    
+
                 }
                 & > input:focus {
                     outline: none;
@@ -123,10 +76,6 @@ export const Jumbotron = styled.div`
             width: 100%;
             justify-content: center;
         }
-    }
-
-    @media (${mediaQueries.tablet}) {
-        padding: 0 40px;
     }
 
 `;

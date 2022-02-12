@@ -1,4 +1,11 @@
 import React, { useState } from "react";
+import Tooltip from '@mui/material/Tooltip';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useRouter } from 'next/router';
+import { bindActionCreators } from 'redux';
+
+import { setCurrentMinicourse } from 'lib/actions/minicourse';
 import {
     Container,
     Head,
@@ -9,16 +16,19 @@ import {
     BlueLink,
     ArrowForwardBlue
 } from "./minicourse.styled-components";
-import Tooltip from '@mui/material/Tooltip';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const Minicourse = ({ minicourse }) => {
+const Minicourse = (props) => {
+    const { minicourse } = props;
+    const { push, asPath } = useRouter();
     const [showDescription, setShowDescription] = useState(false);
 
     const handleClick = () => {
         setShowDescription(showDescription ? false : true);
-    }
+    };
+
+    const handleTakeMinicourse = (minicourse) => {
+        push(`${asPath}/${minicourse.id}`, null, { shallow: true });
+    };
 
     return (
         <Container >
@@ -39,7 +49,9 @@ const Minicourse = ({ minicourse }) => {
                             {minicourse.description}
                         </Description>
                         <Tooltip title="Take minicourse">
-                            <ArrowForwardBlue />
+                            <div onClick={() => handleTakeMinicourse(minicourse)}>
+                                <ArrowForwardBlue />
+                            </div>
                         </Tooltip>
                     </DescriptionContainer>
                 }

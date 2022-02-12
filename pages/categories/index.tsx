@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Base from '../../components/Base';
-import Navbar from "../../components/navbar";
-import Categories from "../../containers/categories";
 import { connect } from 'react-redux';
+
+import Base from "components/Base";
+import Navbar from "components/navbar";
+import Categories from "containers/categories";
 
 const CategoryPage = (props) => {
   const { categories } = props;
   const [fetchedData, setFetchedData] = useState([]);
-  
+
   useEffect(() => {
     setFetchedData(categories);
   }, [categories]);
