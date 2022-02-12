@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Problem 1",
+    "difficulty": 4,
+    "veredict": "Tried"
+  },
+  {
+    "id": 2,
+    "name": "Problem 2",
+    "difficulty": 4,
+    "veredict": "Solved"
+  },
+  {
+    "id": 3,
+    "name": "Problem 3",
+    "difficulty": 3,
+    "veredict": "Tried"
+  }
+]

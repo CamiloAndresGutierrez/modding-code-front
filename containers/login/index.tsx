@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Container, FormContainer } from './login.styled-components';
-import Waves from "../../components/Waves";
+import Waves from "components/Waves";
 import { content } from './login.content';
 
-import { Form } from "../../components/form";
+import { Form } from "components/form";
 import { inputErrors } from "../signup/signup.content";
 
 
@@ -14,7 +14,7 @@ const LoginContainer = () => {
     });
     const [hasErrors, setHasErrors] = useState(true);
     const [formatIssues, setFormatIssues] = useState([]);
-    
+
     const checkFieldsFormat = () => {
         const { email, fields } = inputErrors();
 

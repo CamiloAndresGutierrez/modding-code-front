@@ -1,4 +1,4 @@
-import { fetchAllCategories } from '../categories';
+import { fetchAllCategories } from '../client/categories';
 
 export const fetchCategoriesRequest = () => {
   return {
