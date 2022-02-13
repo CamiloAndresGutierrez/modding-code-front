@@ -6,8 +6,41 @@ import {
 import { useRouter } from 'next/router';
 import SectionsVideos from 'components/sectionsVideos';
 import Modal from 'components/modal';
-import ProblemList from 'components/problemsList'
-import { fetchMinicourseProblems } from 'lib/client/minicourses'
+import { fetchMinicourseProblems } from 'lib/client/problems';
+
+const ProblemsList = ({problems}) => {
+  const { push } = useRouter();
+
+  const handleProblemSelection = (problemId) => {
+    push(`/problems/${problemId}`);
+  }
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Difficulty</th>
+          <th>Veredict</th>
+        </tr>
+      </thead>
+      <tbody>
+      {
+        problems.map(element =>
+            <tr key={element.id} onClick={() => handleProblemSelection(element.id)}>
+              <td>{element.id}</td>
+              <td>{element.name}</td>
+              <td>{element.difficulty}</td>
+              <td>{element.veredict}</td>
+            </tr>
+        )
+      }
+      </tbody>
+    </table>
+  )
+};
+
 
 const MinicourseContainer = (props) => {
   const [ sections, setSections ] = useState([]);
@@ -22,7 +55,7 @@ const MinicourseContainer = (props) => {
   const [shouldShowModal, setShouldShowModal] = useState(false);
   const [problems, setProblems] = useState(false);
 
-  const handleCloseButton = () => {
+  const handleModalBehaviour = () => {
     setShouldShowModal(!shouldShowModal);
   }
 
@@ -42,19 +75,18 @@ const MinicourseContainer = (props) => {
   }, [video]);
 
   useEffect(() => {
-    fetchMinicourseProblems(minicourse.id)
+    setSections(minicourse && minicourse.sections);
+    if (minicourse) {
+      fetchMinicourseProblems(minicourse.id)
       .then(response => response.json())
       .then(r => setProblems(r));
-  }, [])
-
-  useEffect(() => {
-    setSections(minicourse && minicourse.sections);
+    }
   }, [minicourse]);
 
   return (
     <Container>
       {`${sectionName} - ${name}`}
-      <button onClick={() => handleCloseButton()}>Problems</button>
+      <button onClick={() => handleModalBehaviour()}>Problems</button>
       { video && (
         <VideoContainer>
           <video width={"%100"} height={"auto"} ref={videoRef} controls>
@@ -70,9 +102,9 @@ const MinicourseContainer = (props) => {
       }
       <Modal
         shouldShow={shouldShowModal}
-        setShouldShow={setShouldShowModal}
+        setShouldShow={handleModalBehaviour}
       >
-        <ProblemList problems={problems}/>
+        <ProblemsList problems={problems}/>
       </Modal>
     </Container>
   )

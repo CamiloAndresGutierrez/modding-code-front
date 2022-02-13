@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "minicourseId": 10,
+  "name": "Problem 2",
+  "difficulty": 4,
+  "veredict": "solved",
+  "description": "Etiam nibh sapien, ullamcorper at maximus sed, malesuada nec neque. Etiam quis finibus metus, id tristique mi. Suspendisse convallis tellus ante, sit amet molestie elit auctor quis. Maecenas rhoncus urna sed cursus accumsan. Suspendisse non ante a sem mattis convallis. Aliquam mauris elit, molestie id mi non, imperdiet eleifend arcu. Cras ligula lorem, venenatis lacinia dui id, tempus vestibulum velit. Etiam hendrerit turpis mi, ut ornare odio dapibus a. Curabitur non placerat libero, non bibendum dolor. Donec ut nulla ac urna porttitor fermentum porta malesuada dolor. Praesent justo lectus, feugiat et pharetra et, luctus vitae ante. Suspendisse blandit, lorem vitae blandit pharetra, risus justo molestie nibh, id rhoncus dui ante sodales urna.",
+  "testCases": 5
+}
