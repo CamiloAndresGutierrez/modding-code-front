@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Minicourse from "components/minicourse";
 import { MinicoursesGrid } from "./minicourses.styled-components";
-import { useRouter } from 'next/router';
 import BackButton from 'components/back-button';
 import SearchIcon from '@mui/icons-material/Search';
 import Jumbotron from 'components/jumbotron';
-import { fetchAllMinicourses } from 'lib/client/minicourses'
 import content from './minicourses.content.ts';
+import { useRouter } from 'next/router';
 
-const MinicoursesContainer = () => {
-    const router = useRouter();
-    const [minicourses, setMinicourses] = useState([]);
-
+const MinicoursesContainer = (props) => {
+    const { minicourses } = props;
     const [search, setSearch] = useState("");
 
     const handleInputChange = (e) => {
@@ -29,12 +26,6 @@ const MinicoursesContainer = () => {
             console.log(search);
         }
     }
-
-    useEffect(() => {
-        fetchAllMinicourses()
-          .then(response => response.json())
-          .then(r => setMinicourses(r));
-    }, []);
 
     const { title: {headline, text} } = content();
 
@@ -57,7 +48,7 @@ const MinicoursesContainer = () => {
                 </div>
               </div>
             </Jumbotron>
-            <BackButton ctaLink={"/categories"}/>
+            <BackButton />
             {
                 <MinicoursesGrid >
                     {minicourses.map(minicourse => (

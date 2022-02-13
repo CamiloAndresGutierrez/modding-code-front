@@ -11,11 +11,15 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@codemirror/lang-cpp": "^0.19.1",
+    "@codemirror/lang-javascript": "^0.19.7",
+    "@codemirror/lang-python": "^0.19.4",
     "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
     "@mui/icons-material": "5.2.1",
     "@mui/material": "5.0.3",
     "@svgr/webpack": "5.5.0",
+    "@uiw/react-codemirror": "^4.3.3",
     "babel-plugin-inline-react-svg": "2.0.1",
     "babel-plugin-module-resolver": "4.1.0",
     "dotenv": "11.0.0",
