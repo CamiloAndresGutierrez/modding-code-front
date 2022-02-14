@@ -21,10 +21,12 @@
             "sectionName": "Context",
             "videos": [
                 {
+                    "id": 10,
                     "video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
                     "name": "Explanation video 1"
                 },
                 {
+                    "id": 11,
                     "video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
                     "name": "Explanation video 2"
                 }
@@ -34,14 +36,17 @@
             "sectionName": "Code",
             "videos" : [
                 {
+                    "id": 12,
                     "video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4",
                     "name": "Code video 1"
                 },
                 {
+                    "id": 14,
                     "video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
                     "name": "Code video 2"
                 },
                 {
+                    "id": 15,
                     "video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
                     "name": "Code video 3"
                 }

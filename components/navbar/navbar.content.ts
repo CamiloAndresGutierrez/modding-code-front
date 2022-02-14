@@ -1,18 +1,14 @@
 const studentLinks = () => ([
     {
-        label: 'Minicourses',
-        path: '/minicourses',
-    },
-    {
-        label: 'My Minicourses',
-        path: '/my-courses',
+        label: 'Categories',
+        path: '/categories',
     },
 ]);
 
 const expertLinks = () => ([
     {
         label: 'My Minicourses',
-        path: '/minicourses',
+        path: '/my-minicourses',
     },
 ]);
 
