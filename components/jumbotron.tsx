@@ -58,7 +58,6 @@ const StyledJumbotron = styled.div`
 
 `;
 
-
 const Jumbotron = (props) => {
   const {headline, text, children} = props;
 

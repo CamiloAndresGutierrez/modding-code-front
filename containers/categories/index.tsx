@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
+
 import CategoryCard from 'components/categoryCard';
 import Jumbotron from 'components/jumbotron';
 import { Container, CardsContainer, JumbotronSearch } from './categories.styled-components';
-import SearchIcon from '@mui/icons-material/Search';
+import content from './categories.content.ts';
 
 const Categories = (props) => {
     const { categories } = props;
+    const { title: { headline, text } } = content();
     const [fetchedCategories, setFetchedCategories] = useState([]);
     const [search, setSearch] = useState("");
 
@@ -29,14 +32,9 @@ const Categories = (props) => {
         setFetchedCategories(categories);
     }, [categories]);
 
-    const title = {
-      headline: "Algorithm categories",
-      text: "Here you will find a great variety of algorithm categories. Click on the one you're interested in and take the minicourses"
-    }
-
     return (
         <Container>
-            <Jumbotron headline={title.headline} text={title.text}>
+            <Jumbotron headline={headline} text={text}>
               <JumbotronSearch >
                 <div className={"search-bar"}>
                     <div>

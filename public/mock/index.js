@@ -9,6 +9,8 @@ import problems10 from './responses/problems10.json';
 import problem1 from './responses/problem1.json';
 import problem2 from './responses/problem2.json';
 import problem3 from './responses/problem3.json';
+import expertMinicourses90 from './responses/expertMinicourses90.json';
+import getSections from './responses/getSections.json';
 
 const RESPONSES = [
       {
@@ -65,6 +67,16 @@ const RESPONSES = [
         path: '/problem/get/3',
         method: 'GET',
         data: problem3
+      },
+      {
+        path: '/expert-minicourses/get/90',
+        method: 'GET',
+        data: expertMinicourses90
+      },
+      {
+        path: '/sections/get',
+        method: 'GET',
+        data: getSections
       },
 
 ];
