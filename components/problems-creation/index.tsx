@@ -1,8 +1,21 @@
 import React from 'react';
+import ProblemContent from 'components/problem-content';
+import CreateProblem from 'components/problem-content/create-problem';
 
-const ProblemsCreation = () => {
+
+const ProblemsCreation = ({ problems }) => {
   return (
-    <div>This is the problems creation tab</div>
+    <div>
+      <CreateProblem />
+      {
+        problems.map(problem => (
+          <ProblemContent
+            key={problem.id}
+            problem={problem}
+          />
+        ))
+      }
+    </div>
   )
 }
 

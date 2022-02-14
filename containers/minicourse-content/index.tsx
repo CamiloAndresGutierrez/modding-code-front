@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import ProblemsCreation from 'components/problems-creation';
 import VideosCreation from 'components/videos-creation';
 
-const MinicourseContentContainer = ({ minicourse, sections }) => {
+const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
   const [ currentMinicourse, setCurrentMinicourse ] = useState({});
   const [ tab, setTab ] = useState("videos");
 
@@ -32,7 +32,7 @@ const MinicourseContentContainer = ({ minicourse, sections }) => {
       }
       {
         tab === "problems" && (
-          <ProblemsCreation />
+          <ProblemsCreation problems={problems}/>
         )
       }
 
