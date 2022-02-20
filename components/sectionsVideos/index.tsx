@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Container } from './sectionVideos.styled-components';
+import { Container, Section, SectionName, StyledPlayArrowIcon, Thumbnail, Video, VideoName } from './sectionVideos.styled-components';
 
 const SectionsVideos = (props) => {
-  const { sections } = props;
+  const { sections, layout } = props;
 
-  const [ currentVideo, setCurrentVideo ] = useState(sections.length ? ({
+  const [currentVideo, setCurrentVideo] = useState(sections.length ? ({
     video: sections[0].videos[0].video,
     name: sections[0].videos[0].name,
     sectionName: sections[0].sectionName,
   }) : null);
 
   useEffect(() => {
-    if (currentVideo){
+    if (currentVideo) {
       props.currentVideo(currentVideo);
     }
   }, [currentVideo]);
@@ -25,20 +25,29 @@ const SectionsVideos = (props) => {
   }
 
   return (
-    <Container>
+    <Container layout={layout}>
       {
         sections.map(section => {
           return (
-            <div key={section.sectionName}>
-              <b>{section.sectionName}</b>
+            <Section key={section.sectionName}>
+              <SectionName>{section.sectionName}</SectionName>
               {section.videos.map(video =>
-                <div
-                  onClick={() => handleClick(section.sectionName, video)}
+                <Video
                   key={video.name}
+                  layout={layout}
+                  onClick={() => handleClick(section.sectionName, video)}
                 >
-                  {video.name}
-                </div>)}
-            </div>
+                  <Thumbnail layout={layout}>
+                    <StyledPlayArrowIcon />
+                  </Thumbnail>
+                  <VideoName
+                    layout={layout}
+                  >
+                    {video.name}
+                  </VideoName>
+                </Video>
+              )}
+            </Section>
           )
         })
       }

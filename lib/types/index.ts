@@ -5,3 +5,10 @@ export type InputFields = {
 }
 
 export type UserType = "student" | "expert";
+
+export type Category = {
+    id: number,
+    name: string,
+    description: string,
+    path: string
+}

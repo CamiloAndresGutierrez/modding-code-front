@@ -2,7 +2,7 @@ import react from 'react';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useRouter } from 'next/router';
 
-const BackButton = (props) => {
+const BackButton = () => {
   const { back } = useRouter();
 
   return (

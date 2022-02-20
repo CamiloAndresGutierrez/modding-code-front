@@ -10,11 +10,11 @@ const ProblemContent = ({ problem }) => {
   const [ problemDescription, setProblemDescription ] = useState(problem.description);
   const [ inputFile, setInputFile ] = useState(null);
   const [ outputFile, setOutputFile ] = useState(null);
-  const inputRef = useRef();
-  const outputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const outputRef = useRef<HTMLInputElement>(null);
 
-  const handleModalBehaviour = (modalInfo) => {
-    setModalInfo(modalInfo);
+  const handleModalBehaviour = (modalInfo = null) => {
+    if(modalInfo) setModalInfo(modalInfo)
     setShouldShowModal(!shouldShowModal);
   }
 
@@ -65,7 +65,6 @@ const ProblemContent = ({ problem }) => {
         {modalInfo === "description" && (
           <div>
             <textarea
-              type="text"
               value={problemDescription}
               onChange={(event) => handleChange(event)}
             />

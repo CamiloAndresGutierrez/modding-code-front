@@ -5,7 +5,7 @@ const EditMinicourse = ({
   submitInfo,
   minicourse=null,
 }) => {
-  const fileRef = useRef();
+  const fileRef = useRef<HTMLInputElement>(null);
   const [ selectedCategories, setSelectedCategories ] = useState([]);
   const [ errorMessage, setErrorMessage ] = useState("");
   const [ minicourseToEdit, setMinicourseToEdit ] = useState({
@@ -87,7 +87,6 @@ const EditMinicourse = ({
         />
         <label htmlFor="minicourseDesc">Minicourse description: </label>
         <textarea
-          type="text"
           value={minicourseToEdit.description}
           onChange={(event) => handleChange("description", event)}
           name={"minicourseDesc"}
@@ -114,7 +113,7 @@ const EditMinicourse = ({
             )
           })
         }
-        <button type="button" onClick={(e) => handleSetCategories(e)}>Set categories</button>
+        <button type="button" onClick={() => handleSetCategories()}>Set categories</button>
         <div>
           {minicourseToEdit.categories.length > 0 && <b>This minicourse belongs to the following categories:</b>}
           <ul>

@@ -6,7 +6,10 @@ import MinicourseContainer from 'containers/minicourse';
 import Navbar from "components/navbar";
 import { fetchMinicourseById } from "lib/client/minicourses";
 
-type Props = { name: string };
+type Props = {
+  name: string
+  minicourse: string
+};
 
 type Ctx = {
   query: Props;

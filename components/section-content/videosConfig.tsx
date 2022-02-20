@@ -2,8 +2,7 @@ import React, { useState, useRef } from 'react';
 
 const VideosConfig = ({
   allSections,
-  continueCreation,
-  index=null,
+  continueCreation = (flag: Boolean) => {},
   video={},
   section={},
   isNew=false,
@@ -11,7 +10,7 @@ const VideosConfig = ({
   const [ selectedSection, setSelectedSection ] = useState(section.sectionName || "Context");
   const [ videoName, setVideoName ] = useState(video.name || "");
   const [ videoFile, setVideoFile ] = useState(null);
-  const fileRef = useRef();
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const handleSectionChange = (e) => {
     const value = e.target.value;

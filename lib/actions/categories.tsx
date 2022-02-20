@@ -1,4 +1,5 @@
-import { fetchAllCategories } from '../client/categories';
+import {  fetchAllCategories } from '../client/categories';
+import { Category } from 'lib/types';
 
 export const fetchCategoriesRequest = () => {
   return {
@@ -6,7 +7,7 @@ export const fetchCategoriesRequest = () => {
   }
 }
 
-export const fetchCategoriesSuccess = categories => {
+export const fetchCategoriesSuccess = (categories: Category[]) => {
   return {
     type: 'GET_CATEGORIES_SUCCESS',
     payload: categories

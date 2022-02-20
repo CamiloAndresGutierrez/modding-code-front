@@ -53,7 +53,7 @@
     "id": 3,
     "minicourseId": 10,
     "name": "Problem 3",
-    "difficulty": 3,
+    "difficulty": 3.5,
     "veredict": "unsolved",
     "description": "Aliquam tempus nulla justo, ac aliquet felis volutpat vitae. Ut tortor risus, fringilla vitae tortor at, fermentum interdum purus. Etiam semper lorem nec metus blandit feugiat. Donec ut ligula accumsan, tempus felis id, euismod est. Phasellus rhoncus erat lectus, nec fringilla erat tristique quis. Nulla in sagittis turpis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed vel sem euismod, fringilla sem eget, rutrum velit. Nulla semper massa augue, vel porttitor massa rhoncus porttitor. Proin quis posuere ex, in egestas massa. Suspendisse diam nisl, porta ut rutrum id, placerat in erat. Praesent vulputate urna pellentesque mi convallis, id maximus justo luctus. Morbi neque ipsum, dictum rhoncus sodales at, maximus ornare sem. Maecenas eget felis volutpat tellus semper vehicula.",
     "testCases": [

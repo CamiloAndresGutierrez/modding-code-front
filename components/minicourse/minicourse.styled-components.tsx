@@ -28,7 +28,9 @@ export const Head = styled.div`
 export const Body = styled.div`
     position: relative;
     padding: 15px 15px;
-    min-height: 100px;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
     @media (${mediaQueries.mobile}) {
         display: block;
     }
@@ -38,6 +40,7 @@ export const Body = styled.div`
 
 export const Uploader = styled.div`
     color: grey;
+    margin-top: auto;
 `;
 
 export const Description = styled.div`
@@ -59,8 +62,19 @@ export const BlueLink = styled.div`
 
 `;
 
-export const ArrowForwardBlue = styled(ArrowForward)`
+export const ArrowContainer = styled.div`
+    display: flex;
     cursor: pointer;
+`;
+
+export const RedirectTitle = styled.div`
+    color: ${colors.darkBlue};
+    cursor: pointer;
+    margin-top: 20px;
+    margin-right: 5px;
+`;
+
+export const ArrowForwardBlue = styled(ArrowForward)`
     margin-top: 20px;
     color: ${colors.darkBlue};
     text-align: right;

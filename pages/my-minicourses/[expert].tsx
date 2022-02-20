@@ -6,14 +6,19 @@ import Base from 'components/Base';
 import Navbar from 'components/navbar';
 import MyMinicourses from 'containers/my-minicourses';
 import { fetchExpertMinicourses } from 'lib/client/minicourses';
+import { Category } from 'lib/types';
 
-type Props = { name: string };
+type Props = {
+  name: string
+  expert: string,
+  categories: Category[]
+};
 
 type Ctx = {
   query: Props;
 };
 
-const Expert: NextPage = ({ expert, categories }) => {
+const Expert: NextPage <Props> = ({ expert, categories }: Props) => {
   const [ expertMinicourses, setExpertMinicourses ] = useState([]);
 
   useEffect(() => {

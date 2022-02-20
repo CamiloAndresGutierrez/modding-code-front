@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Container, FormContainer } from './login.styled-components';
-import Waves from "components/Waves";
+// import Waves from "components/Waves";
 import { content } from './login.content';
 
 import { Form } from "components/form";
 import { inputErrors } from "../signup/signup.content";
-
 
 const LoginContainer = () => {
     const [userInfo, setUserInfo] = useState({
@@ -32,7 +31,7 @@ const LoginContainer = () => {
             aux.push(email);
         };
 
-        setHasErrors(!isEmailFormat || isFieldEmpty );
+        setHasErrors(!isEmailFormat || isFieldEmpty);
         setFormatIssues(aux);
     };
 
@@ -59,7 +58,6 @@ const LoginContainer = () => {
 
     return (
         <Container>
-            <Waves />
             <FormContainer >
                 <Form
                     fields={fields}

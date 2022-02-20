@@ -41,32 +41,21 @@ export const JumbotronSearch = styled.div`
             border-radius: 100px;
             -webkit-appearance: none;
             box-shadow: 0px 2px 30px 1px rgba(0, 0, 0, 0.15);
-            margin-top: 12px;
             padding: 0 10px;
             display: flex;
-            .mag-glass {
-                width: 10%;
-                display: flex;
-                align-items: center;
-                justify-content: space-around;
-                cursor: pointer;
-            }
-            .search-input {
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: flex-end;
+            align-items: center;
+            justify-content: flex-end;
 
-                & > input {
-                    width: 95%;
-                    height: 90%;
-                    border: 0;
-
-                }
-                & > input:focus {
-                    outline: none;
-                }
+            & > input {
+                width: 95%;
+                height: 90%;
+                border: 0;
             }
+
+            & > input:focus {
+                outline: none;
+            }
+            
             @media (${mediaQueries.tablet}) {
                 width: 100%;
             }
