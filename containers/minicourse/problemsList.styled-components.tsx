@@ -16,7 +16,6 @@ export const StyledTable = styled.table`
 export const StyledTableHead = styled.thead`
     height: 50px;
     border-bottom: 1px solid #dddddd;
-
 `;
 
 export const Styledtd = styled.td`

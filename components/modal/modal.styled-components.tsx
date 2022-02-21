@@ -16,12 +16,13 @@ export const ModalContainer = styled.div`
   position: absolute;
   z-index: 1000;
   padding: 10px;
-  top: 200px;
+  top: 50px;
   left: 0;
   right: 0;
   margin: auto;
   width: 600px;
-  min-height: 300px;
+  height: 600px;
+  overflow: auto;
   box-shadow: 0px 30px 50px 25px #0000001A;
   background-color: white;
   border-radius: 10px;
@@ -35,7 +36,7 @@ export const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  
+
   > button {
     border: 0;
     background-color: white;

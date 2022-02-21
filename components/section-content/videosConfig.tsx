@@ -1,15 +1,42 @@
 import React, { useState, useRef } from 'react';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+
+import { ButtonGroup, UploadedVideo, VideoContainer, VideoInfo, VideoInfoContainer } from './section-content.styled-components';
+
+type Video = {
+  id: number,
+  video: string,
+  name: string,
+}
+
+type Section = {
+  sectionName: string,
+  videos: Video[],
+}
+
 
 const VideosConfig = ({
   allSections,
-  continueCreation = (flag: Boolean) => {},
-  video={},
-  section={},
-  isNew=false,
+  continueCreation = (flag: Boolean) => { },
+  video = {
+    video: "",
+    name: ""
+  },
+  section = {
+    sectionName: ""
+  },
+  isNew = false,
 }) => {
-  const [ selectedSection, setSelectedSection ] = useState(section.sectionName || "Context");
-  const [ videoName, setVideoName ] = useState(video.name || "");
-  const [ videoFile, setVideoFile ] = useState(null);
+  console.log(`%c <-- section: -->`, 'background-color: black; color: white; font-weight: bold', section);
+  console.log(`%c <-- video: -->`, 'background-color: black; color: white; font-weight: bold', video);
+  const [selectedSection, setSelectedSection] = useState(section.sectionName || "Context");
+  const [videoName, setVideoName] = useState(video.name || "");
+  const [videoFile, setVideoFile] = useState(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleSectionChange = (e) => {
@@ -27,10 +54,6 @@ const VideosConfig = ({
   };
 
   const handleUpdate = () => {
-    const oldSection = section.sectionName;
-    console.log("oldSection", section.sectionName);
-    console.log("newSection",selectedSection);
-    console.log("videoName", videoName);
     const updatedVideo = {
       ...video,
       name: videoName
@@ -55,42 +78,55 @@ const VideosConfig = ({
   }
 
   return (
-    <div>
-      { isNew && (
-          <input
-            type="file"
-            accept="video/mp4"
-            ref={fileRef}
-            onChange={() => handleVideoUpload()}
-          />
-        )
-      }
-      <input type={"text"} value={videoName} onChange={(e) => handleNameChange(e)}/>
-      <select value={selectedSection} onChange={(e) => handleSectionChange(e)}>
+    <VideoContainer>
+      {isNew && (
+        <input
+          type="file"
+          accept="video/mp4"
+          ref={fileRef}
+          onChange={() => handleVideoUpload()}
+        />
+      )}
       {
-        Array.isArray(allSections) && allSections.map(section =>
-          <option key={section.name} value={section.name}>
-            { section.name }
-          </option>
+        !isNew && (
+          <UploadedVideo>
+            <PlayArrowIcon />
+          </UploadedVideo>
         )
       }
-      </select>
-      {
-        isNew ? (
-          <div>
-            <button onClick={() => handleSaveVideo()}>Save</button>
-            <button onClick={() => handleCancelCreation()}>Delete</button>
-          </div>
-        ) : (
-          <div>
-            <button>Up</button>
-            <button>Down</button>
-            <button onClick={() => handleUpdate()}>Update</button>
-            <button>Delete</button>
-          </div>
-        )
-      }
-    </div>
+      <VideoInfoContainer>
+        <VideoInfo>
+          <input type={"text"} value={videoName} onChange={(e) => handleNameChange(e)} />
+          <select value={selectedSection} onChange={(e) => handleSectionChange(e)}>
+            {
+              Array.isArray(allSections) && allSections.map(section =>
+                <option key={section.name} value={section.name}>
+                  {section.name}
+                </option>
+              )
+            }
+          </select>
+        </VideoInfo>
+        {
+          isNew ? (
+            <ButtonGroup>
+              <button onClick={() => handleSaveVideo()}><SaveIcon /></button>
+              <button onClick={() => handleCancelCreation()}><DeleteIcon /></button>
+              <button><VisibilityIcon /></button>
+            </ButtonGroup>
+          ) : (
+            <ButtonGroup>
+              <button><KeyboardArrowUpIcon /></button>
+              <button><KeyboardArrowDownIcon /></button>
+              <button onClick={() => handleUpdate()}><SaveIcon /></button>
+              <button><DeleteIcon /></button>
+              <button><VisibilityIcon /></button>
+            </ButtonGroup>
+          )
+        }
+      </VideoInfoContainer>
+
+    </VideoContainer>
   )
 
 }

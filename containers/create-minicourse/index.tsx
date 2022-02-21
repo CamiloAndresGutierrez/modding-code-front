@@ -2,21 +2,24 @@ import React from 'react';
 import { useRouter } from 'next/router';
 
 import EditMinicourse from 'components/edit-minicourse';
+import { Container } from './create-minicourse.styled-components';
 
 const CreateMinicourseContainer = ({ categories }) => {
-  const { push } = useRouter();
+  const { push, back } = useRouter();
+  
   const handleSubmit = (info) => {
     console.log(info);
     push(`minicourse-content/10`);
   };
 
   return (
-    <div>
+    <Container>
       <EditMinicourse
         categories={categories}
         submitInfo={handleSubmit}
+        cancelButtonBehavior={back}
       />
-    </div>
+    </Container>
   )
 }
 

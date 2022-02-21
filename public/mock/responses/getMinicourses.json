@@ -3,16 +3,10 @@
         "id": 10,
         "name": "Organize list in O(n2) time",
         "description": "Aute cillum do laborum ad culpa consectetur elit magna. Sunt cillum culpa velit ex ipsum cupidatat sunt deserunt id sunt nulla occaecat esse incididunt. Mollit dolore officia tempor velit adipisicing ad nisi. Eu amet ipsum irure velit laborum ex ipsum sint in consequat irure. Id sit eu labore magna dolor tempor mollit irure duis deserunt reprehenderit.",
-        "categories": [
-            {
-                "id": 20,
-                "name": "Sorting"
-            },
-            {
-                "id": 15,
-                "name": "Complexity"
-            }
-        ],
+        "categories": {
+            "id": 15,
+            "name": "Complexity"
+        },
         "creator": {
             "id": 90,
             "name": "Camilo Andres Gutierrez Torres"
@@ -23,16 +17,10 @@
         "id": 12,
         "name": "Thieves houses",
         "description": "Consequat enim et laboris eiusmod adipisicing tempor tempor nisi in officia fugiat duis. Amet adipisicing veniam eu qui. Est veniam dolore minim esse dolore nisi aliqua. Est ad nulla labore adipisicing culpa ullamco magna ullamco magna esse amet commodo. Ipsum anim laboris dolor eu laborum eu commodo in sunt laborum non. Sint adipisicing minim irure non fugiat occaecat laboris. Sit sit excepteur ullamco excepteur magna laborum aliquip excepteur cupidatat minim Lorem culpa esse excepteur.",
-        "categories": [
-            {
-                "id": 37,
-                "name": "Dynamic Programming"
-            },
-            {
-                "id": 20,
-                "name": "Sorting"
-            }
-        ],
+        "categories": {
+            "id": 37,
+            "name": "Dynamic Programming"
+        },
         "creator": {
             "id": 47,
             "name": "Santiago Melo Medina"
@@ -43,12 +31,10 @@
         "id": 15,
         "name": "Chocolate Distribution Problem",
         "description": "Consequat enim et laboris eiusmod adipisicing tempor tempor nisi in officia fugiat duis. Amet adipisicing veniam eu qui. Est veniam dolore minim esse dolore nisi aliqua. Est ad nulla labore adipisicing culpa ullamco magna ullamco magna esse amet commodo. Ipsum anim laboris dolor eu laborum eu commodo in sunt laborum non. Sint adipisicing minim irure non fugiat occaecat laboris. Sit sit excepteur ullamco excepteur magna laborum aliquip excepteur cupidatat minim Lorem culpa esse excepteur.",
-        "categories": [
-            {
-                "id": 20,
-                "name": "Sorting"
-            }
-        ],
+        "categories": {
+            "id": 20,
+            "name": "Sorting"
+        },
         "creator": {
             "id": 47,
             "name": "Santiago Melo Medina"

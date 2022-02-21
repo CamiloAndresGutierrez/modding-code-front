@@ -130,32 +130,6 @@ const MinicourseContainer = (props) => {
             <video ref={videoRef} controls>
               <source src={video} type="video/mp4"></source>
             </video>
-            <ToolsContainer>
-              <Tools>
-                <div className={'text'}>
-                  Check class material
-                </div>
-                <div className={'icon material'}>
-                  <MenuBookIcon />
-                </div>
-              </Tools>
-              <Tools>
-                <div className={'text'}>
-                  Check class tools
-                </div>
-                <div className={'icon tools'}>
-                  <ConstructionIcon />
-                </div>
-              </Tools>
-              <Tools>
-                <div className={'text'}>
-                  Ask questions to the expert
-                </div>
-                <div className={'icon expert'}>
-                  <QuestionMarkIcon />
-                </div>
-              </Tools>
-            </ToolsContainer>
           </VideoContainer >
         )}
         {sections &&

@@ -1,14 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ProblemsCreation from 'components/problems-creation';
 import VideosCreation from 'components/videos-creation';
+import { ButtonGroup, Container } from './minicourse-content.styled-components';
 
 const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
-  const [ currentMinicourse, setCurrentMinicourse ] = useState({});
-  const [ tab, setTab ] = useState("videos");
+  const [currentMinicourse, setCurrentMinicourse] = useState({
+    "name": "",
+    "sections": "",
+  });
+  const [tab, setTab] = useState("videos");
 
   useEffect(() => {
-    if(minicourse) {
+    if (minicourse) {
       setCurrentMinicourse(minicourse);
     }
   }, [minicourse]);
@@ -18,13 +22,15 @@ const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
   };
 
   return (
-    <div>
-      <b>{`${currentMinicourse.name}`}</b>
-      <button onClick={() => handleTabSelection("videos")}>Videos</button>
-      <button onClick={() => handleTabSelection("problems")}>Problems</button>
+    <Container>
+      <ButtonGroup tab={tab}>
+        <div className={"videos"} onClick={() => handleTabSelection("videos")}>Videos</div>
+        <div className={"problems"} onClick={() => handleTabSelection("problems")}>Problems</div>
+      </ButtonGroup>
       {
         tab === "videos" && (
           <VideosCreation
+            currentMinicourseName={currentMinicourse.name}
             allSections={sections}
             minicourseSections={currentMinicourse.sections}
           />
@@ -32,11 +38,14 @@ const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
       }
       {
         tab === "problems" && (
-          <ProblemsCreation problems={problems}/>
+          <ProblemsCreation
+            problems={problems}
+            currentMinicourseName={currentMinicourse.name}
+          />
         )
       }
 
-    </div>
+    </Container>
   );
 };
 

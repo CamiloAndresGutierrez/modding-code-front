@@ -1,20 +1,35 @@
 import React, { useState, useRef } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import Modal from 'components/modal';
-import { Container } from './problem-content.styled-components'
+import {
+  ButtonGroup,
+  ButtonGroupModal,
+  ButtonWithIcons,
+  Container,
+  DescriptionContainer,
+  DetailsButtonGroup,
+  Header,
+  ProblemInfo,
+  StyledTableHead,
+  TableRow,
+  TestCasesContainer
+} from './problem-content.styled-components'
 
 const ProblemContent = ({ problem }) => {
-  const [ shouldShowModal, setShouldShowModal ] = useState(false);
-  const [ modalInfo, setModalInfo] = useState("");
-  const [ newTestCase, setNewTestCase] = useState(false);
-  const [ problemDescription, setProblemDescription ] = useState(problem.description);
-  const [ inputFile, setInputFile ] = useState(null);
-  const [ outputFile, setOutputFile ] = useState(null);
+  const [shouldShowModal, setShouldShowModal] = useState(false);
+  const [modalInfo, setModalInfo] = useState("");
+  const [newTestCase, setNewTestCase] = useState(false);
+  const [problemDescription, setProblemDescription] = useState(problem.description);
+  const [inputFile, setInputFile] = useState(null);
+  const [outputFile, setOutputFile] = useState(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLInputElement>(null);
 
   const handleModalBehaviour = (modalInfo = null) => {
-    if(modalInfo) setModalInfo(modalInfo)
+    if (modalInfo) setModalInfo(modalInfo)
     setShouldShowModal(!shouldShowModal);
   }
 
@@ -49,58 +64,89 @@ const ProblemContent = ({ problem }) => {
     console.log(outputFile);
   }
 
-
   return (
     <Container>
-      <div>{`ID: ${problem.id}`}</div>
+      <ProblemInfo>
+        <div>{problem.id}</div>
+        <div>{problem.name}</div>
+      </ProblemInfo>
+      <DetailsButtonGroup>
+        <button onClick={() => handleModalBehaviour("description")}>Description</button>
+        <button onClick={() => handleModalBehaviour("testCases")}>Test cases</button>
+      </DetailsButtonGroup>
+      <div>{problem.difficulty}</div>
+      <ButtonGroup>
+        <button><VisibilityIcon /></button>
+        <button><DeleteIcon /></button>
+      </ButtonGroup>
 
-      <div>{`Name: ${problem.name}`}</div>
-
-      <button onClick={() => handleModalBehaviour("description")}>Description</button>
-      <button onClick={() => handleModalBehaviour("testCases")}>TestCases</button>
       <Modal
         shouldShow={shouldShowModal}
         setShouldShow={handleModalBehaviour}
       >
         {modalInfo === "description" && (
-          <div>
+          <DescriptionContainer>
+            <h1>Description</h1>
             <textarea
               value={problemDescription}
               onChange={(event) => handleChange(event)}
             />
-            <button onClick={() => handleModalBehaviour()}>Cancel</button>
-            <button onClick={() => handleSaveNewDescription()}>Save</button>
-          </div>
+            <ButtonGroupModal>
+              <button className={"cancel"} onClick={() => handleModalBehaviour()}>Cancel</button>
+              <button className={"save"} onClick={() => handleSaveNewDescription()}>Save</button>
+            </ButtonGroupModal>
+          </DescriptionContainer>
         )}
         {modalInfo === "testCases" && (
-          <div>
-            <button onClick={() => handleCreateTest(true)}>Create test</button>
-            {
-              problem.testCases.map(testCase => (
-                <div key={testCase.id}>
-                  <div>{testCase.input}</div>
-                  <div>{testCase.output}</div>
-                  <button>Delete</button>
-                </div>
-              ))
-            }
-            {
-              newTestCase && (
-                <div>
-                  <input type={"file"} accept="text/plain" ref={inputRef} onChange={() => handleInputFile("input")}/>
-                  <input type={"file"} accept="text/plain" ref={outputRef} onChange={() => handleInputFile("output")}/>
-                  <button onClick={() => handleUploadTestCases()} >Save</button>
-                  <button onClick={() => handleCreateTest(false)} >Delete</button>
-                </div>
-              )
-            }
-          </div>
+          <TestCasesContainer>
+            <Header>
+              <h1>Test cases</h1>
+              <button onClick={() => handleCreateTest(true)}>Create test</button>
+            </Header>
+            <div>
+
+              <table>
+                <StyledTableHead>
+                  <tr>
+                    <th>Input</th>
+                    <th>Output</th>
+                  </tr>
+                </StyledTableHead>
+                <tbody>
+                  {
+                    problem.testCases.map(testCase => (
+                      <TableRow key={testCase}>
+                        <td>{testCase.input}</td>
+                        <td>{testCase.output}</td>
+                        <td><ButtonWithIcons><DeleteIcon /></ButtonWithIcons></td>
+                      </TableRow>
+                    ))
+                  }
+                  {
+                    newTestCase && (
+                      <TableRow>
+                        <th>
+                          <input type={"file"} accept="text/plain" ref={inputRef} onChange={() => handleInputFile("input")} />
+                        </th>
+                        <th>
+                          <input type={"file"} accept="text/plain" ref={outputRef} onChange={() => handleInputFile("output")} />
+                        </th>
+                        <th>
+                          <ButtonWithIcons onClick={() => handleUploadTestCases()} ><SaveIcon /></ButtonWithIcons>
+                        </th>
+                        <th>
+                          <ButtonWithIcons onClick={() => handleCreateTest(false)} ><DeleteIcon /></ButtonWithIcons>
+                        </th>
+                      </TableRow>
+                    )
+                  }
+                </tbody>
+              </table>
+            </div>
+          </TestCasesContainer>
         )}
 
       </Modal>
-      <div>{`difficulty: ${problem.difficulty}`}</div>
-      <button>Hide</button>
-      <button>Delete</button>
 
     </Container>
   )

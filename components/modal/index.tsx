@@ -14,14 +14,15 @@ const Modal = (props) => {
         <Container>
           <ModalContainer>
             <ButtonContainer>
-
               <button
                 onClick={() => setShouldShow()}
               >
                 <CloseIcon />
               </button>
             </ButtonContainer>
-            {children}
+            <div>
+              {children}
+            </div>
           </ModalContainer>
         </Container>
       )}

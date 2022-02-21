@@ -1,22 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { ButtonGroup, CancelButton, CategoriesContainer, Container, ErrorMessage, ImgContainer, SaveButton, SetCategories, Title } from './edit-minicourse.styled-components';
+import { FileUploader } from "react-drag-drop-files";
 
 const EditMinicourse = ({
   categories,
   submitInfo,
-  minicourse=null,
+  cancelButtonBehavior,
+  minicourse = null,
 }) => {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [ selectedCategories, setSelectedCategories ] = useState([]);
-  const [ errorMessage, setErrorMessage ] = useState("");
-  const [ minicourseToEdit, setMinicourseToEdit ] = useState({
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [minicourseToEdit, setMinicourseToEdit] = useState({
     name: "",
     description: "",
     thumbnail: null,
-    categories: []
+    categories: ""
   });
 
   useEffect(() => {
-    if(minicourse) {setMinicourseToEdit(minicourse)}
+    if (minicourse) { setMinicourseToEdit(minicourse) }
   }, [minicourse]);
 
   const handleChange = (key, event) => {
@@ -28,32 +30,21 @@ const EditMinicourse = ({
     setMinicourseToEdit(auxObj);
   };
 
-  const handleCheckBox = (e, category) => {
-    const isChecked = e.target.checked;
-    if (isChecked) {
-      setSelectedCategories([
-        ...selectedCategories,
-        category
-      ])
-    }
-    else {
-      const chosenCategories = selectedCategories.filter(cat => cat.id !== category.id);
-      setSelectedCategories(chosenCategories);
-    }
-  };
-
-  const handleSetCategories = () => {
+  const handleCategoryChange = (e) => {
+    const category = e.target.value;
+    setSelectedCategory(category);
     const auxObj = {
       ...minicourseToEdit,
-      categories: selectedCategories
+      categories: category
     };
+
     setMinicourseToEdit(auxObj);
   };
 
   const isFieldEmpy = () => Object.values(minicourseToEdit).some(element => element.length === 0);
 
   const handleSubmit = () => {
-    if (!isFieldEmpy()){
+    if (!isFieldEmpy()) {
       setErrorMessage("");
       submitInfo(minicourseToEdit);
     } else {
@@ -61,8 +52,8 @@ const EditMinicourse = ({
     };
   };
 
-  const handleImageUpload = () => {
-    const file = fileRef.current.files[0];
+  const handleImageUpload = (e) => {
+    const file = e
 
     const auxObj = {
       ...minicourseToEdit,
@@ -75,62 +66,68 @@ const EditMinicourse = ({
     return typeof src === "object" ? URL.createObjectURL(src) : src;
   }
 
+  const handleFileUpload = (file) => {
+    console.log(`%c <-- file: -->`, 'background-color: black; color: white; font-weight: bold', file);
+  };
+
   return (
-    <div>
+    <Container>
+      <Title>Minicourse Info</Title>
       <form>
-        <label htmlFor="minicourseName">Minicourse name: </label>
-        <input
-          type="text"
-          value={minicourseToEdit.name}
-          onChange={(event) => handleChange("name", event)}
-          name={"minicourseName"}
-        />
-        <label htmlFor="minicourseDesc">Minicourse description: </label>
+        <label htmlFor="minicourseName">Name</label>
+
+        <div className={"search-bar"}>
+          <div>
+            <input
+              type="text"
+              value={minicourseToEdit.name}
+              onChange={(event) => handleChange("name", event)}
+              name={"minicourseName"}
+            />
+          </div>
+        </div>
+
+        <label htmlFor="minicourseDesc">Description</label>
         <textarea
+          className={"textarea"}
           value={minicourseToEdit.description}
           onChange={(event) => handleChange("description", event)}
           name={"minicourseDesc"}
         />
-        <label>Minicourse thumbnail: </label>
+
+        <label>Minicourse thumbnail</label>
         {
           minicourseToEdit.thumbnail && (
             <img alt={`thumbnail-${minicourseToEdit.name}`} src={handleImgSrc(minicourseToEdit.thumbnail)}></img>
           )
         }
-        <input
-          type="file"
-          accept="image/png, image/jpeg"
-          ref={fileRef}
-          onChange={() => handleImageUpload()}
+
+        <FileUploader
+          handleChange={handleImageUpload}
+          name="file"
+          types={["jpg", "png"]}
+          multiple={false}
         />
-        {
-          categories.map(category => {
-            return (
-              <div key={category.id}>
-                <input onChange={(event) => handleCheckBox(event, category)} name="catName" type={"checkbox"} />
-                <label htmlFor="catName">{category.name}</label>
-              </div>
-            )
-          })
-        }
-        <button type="button" onClick={() => handleSetCategories()}>Set categories</button>
-        <div>
-          {minicourseToEdit.categories.length > 0 && <b>This minicourse belongs to the following categories:</b>}
-          <ul>
-            { Object.keys(minicourseToEdit).length && (
-                minicourseToEdit.categories.map(minicourseCategory =>
-                  <li key={minicourseCategory.id}>{minicourseCategory.name}</li>
-                )
+
+        <CategoriesContainer>
+          <select value={selectedCategory} onChange={(e) => handleCategoryChange(e)}>
+            {
+              categories.map(category =>
+                <option>{category.name}</option>
               )
             }
-          </ul>
-        </div>
-        <button type={"button"} onClick={() => handleSubmit()}>Save</button>
+          </select>
+        </CategoriesContainer>
+        {
+          errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>
+        }
+        <ButtonGroup>
+          <CancelButton onClick={() => cancelButtonBehavior()}>Cancel</CancelButton>
+          <SaveButton onClick={() => handleSubmit()}>Save</SaveButton>
+        </ButtonGroup>
       </form>
-      {
-        errorMessage && <div>{errorMessage}</div>
-      }
-    </div>
+
+    </Container>
 
   )
 }
