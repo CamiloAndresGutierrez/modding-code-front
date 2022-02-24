@@ -1,57 +1,59 @@
 import React, { useEffect, useState } from "react";
+import FilterListIcon from '@mui/icons-material/FilterList';
+
 import Minicourse from "components/minicourse";
-import { MinicoursesGrid } from "./minicourses.styled-components";
+import { MinicoursesGrid, JumbotronSearch, Filters, FilterButton, Button, BackButtonContainer } from "./minicourses.styled-components";
 import BackButton from 'components/back-button';
-import SearchIcon from '@mui/icons-material/Search';
 import Jumbotron from 'components/jumbotron';
-import content from './minicourses.content.ts';
-import { useRouter } from 'next/router';
+import content from './minicourses.content';
+import ReloadButton from "components/reload-button";
 
 const MinicoursesContainer = (props) => {
     const { minicourses } = props;
-    const [search, setSearch] = useState("");
+    const [fetchedMinicourses, setFetchedMinicourses] = useState([]);
 
     const handleInputChange = (e) => {
-        setSearch(e.target.value);
+        const searchValue = e.target.value;
+        const tmp = minicourses.filter(minicourse => minicourse.name.toLowerCase().startsWith(searchValue.toLowerCase()));
+        setFetchedMinicourses(tmp);
     }
 
-    const handleEnterKey = (e) => {
-        if (e.key === "Enter" && search !== "") {
-            console.log(search);
-        }
-    }
+    useEffect(() => {
+        setFetchedMinicourses(minicourses);
+    }, [minicourses]);
 
-    const handleSearch = () => {
-        if (search !== "") {
-            console.log(search);
-        }
-    }
-
-    const { title: {headline, text} } = content();
+    const { title: { headline, text } } = content();
 
     return (
         <div>
             <Jumbotron headline={headline} text={text}>
-              <div className={'finder'}>
-                <div className={"filters"}>
-                    <button>
-                        Filter
-                    </button>
-                </div>
-                <div >
-                    <div className={"search-input"}>
-                        <input onChange={handleInputChange} onKeyPress={handleEnterKey} type={"text"} placeholder={`Search...`}></input>
-                    </div>
-                    <div className={"mag-glass"} onClick={handleSearch}>
-                        <SearchIcon />
-                    </div>
-                </div>
-              </div>
+                <Filters>
+                    <FilterButton>
+                        <Button >
+                            Filters
+                            <FilterListIcon />
+                        </Button>
+                    </FilterButton>
+                    <JumbotronSearch >
+                        <div className={"search-bar"}>
+                            <div>
+                                <input onChange={handleInputChange} type={"text"} placeholder={`Search...`}></input>
+                            </div>
+                        </div>
+                    </JumbotronSearch>
+                </Filters>
             </Jumbotron>
-            <BackButton />
+            <BackButtonContainer >
+                <div>
+                    <BackButton />
+                </div>
+                <div>
+                    <ReloadButton />                
+                </div>
+            </BackButtonContainer>
             {
                 <MinicoursesGrid >
-                    {minicourses.map(minicourse => (
+                    {fetchedMinicourses.map(minicourse => (
                         <div key={minicourse.id}>
                             <Minicourse minicourse={minicourse} />
                         </div>

@@ -3,9 +3,8 @@ import { Head, Selection } from './userSelection-styled-components';
 import { Container } from './userSelection-styled-components';
 import Button from '../button';
 import { colors, USERS } from '../../lib/constants';
-import { SimpleButton, NameArrowContainer, NameContainer } from './form-styled-components';
+import { SimpleButton, NameArrowContainer } from './form-styled-components';
 import ArrowBackIosNewSharpIcon from '@mui/icons-material/ArrowBackIosNewSharp';
-import Name from '../Name';
 
 type UserSelectionProps = {
     selectionHeadline: string;

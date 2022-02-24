@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import VideosConfig from './videosConfig';
 
@@ -7,11 +7,10 @@ const SectionContent = ({ section, allSections }) => {
     <div>
       <b>{section.sectionName}</b>
       {
-        section.videos.map((video, index) =>
+        section.videos.map(video =>
           <VideosConfig
             key={video.name}
             video={video}
-            index={index}
             section={section}
             allSections={allSections}
           />

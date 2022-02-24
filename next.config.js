@@ -1,12 +1,19 @@
 
 const webpack = require('webpack');
 const { parsed: myEnv } = require('dotenv').config({
-  path:'.env'
+  path: '.env'
 })
 
 module.exports = {
   webpack(config) {
-    config.plugins.push(new webpack.EnvironmentPlugin(myEnv))
+    config.plugins.push(new webpack.EnvironmentPlugin(myEnv));
+    config.module.rules.push({
+      test: /\.svg$/,
+      issuer: {
+        and: [/\.(js|ts)x?$/]
+      },
+      use: ['@svgr/webpack'],
+    });
     return config
   },
   module: {

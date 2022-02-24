@@ -3,9 +3,7 @@ import Tooltip from '@mui/material/Tooltip';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useRouter } from 'next/router';
-import { bindActionCreators } from 'redux';
 
-import { setCurrentMinicourse } from 'lib/actions/minicourse';
 import {
     Container,
     Head,
@@ -14,7 +12,9 @@ import {
     Description,
     DescriptionContainer,
     BlueLink,
-    ArrowForwardBlue
+    ArrowForwardBlue,
+    ArrowContainer,
+    RedirectTitle
 } from "./minicourse.styled-components";
 
 const Minicourse = (props) => {
@@ -48,11 +48,12 @@ const Minicourse = (props) => {
                         <Description onClick={handleClick}>
                             {minicourse.description}
                         </Description>
-                        <Tooltip title="Take minicourse">
-                            <div onClick={() => handleTakeMinicourse(minicourse)}>
-                                <ArrowForwardBlue />
-                            </div>
-                        </Tooltip>
+                        <ArrowContainer onClick={() => handleTakeMinicourse(minicourse)}>
+                            <RedirectTitle>
+                                Take minicourse
+                            </RedirectTitle>
+                            <ArrowForwardBlue />
+                        </ArrowContainer>
                     </DescriptionContainer>
                 }
                 <Uploader>

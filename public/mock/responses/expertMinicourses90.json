@@ -3,16 +3,10 @@
         "id": 10,
         "name": "Organize list in O(n2) time",
         "description": "Aute cillum do laborum ad culpa consectetur elit magna. Sunt cillum culpa velit ex ipsum cupidatat sunt deserunt id sunt nulla occaecat esse incididunt. Mollit dolore officia tempor velit adipisicing ad nisi. Eu amet ipsum irure velit laborum ex ipsum sint in consequat irure. Id sit eu labore magna dolor tempor mollit irure duis deserunt reprehenderit.",
-        "categories": [
-            {
-                "id": 20,
-                "name": "Sorting"
-            },
-            {
-                "id": 15,
-                "name": "Complexity"
-            }
-        ],
+        "categories": {
+            "id": 20,
+            "name": "Sorting"
+        },
         "creator": {
             "id": 90,
             "name": "Camilo Andres Gutierrez Torres"

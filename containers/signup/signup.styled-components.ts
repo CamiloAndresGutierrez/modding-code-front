@@ -14,9 +14,6 @@ export const FormContainer = styled.div`
     padding-left: 40px;
     padding-right: 40px;
 
-    @media (${mediaQueries.tabletAndAbove}){
-        height:calc(100% - 50px);
-    }
     @media (${mediaQueries.desktopAndAbove}) {
         width: 40%;
     }

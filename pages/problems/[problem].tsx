@@ -3,8 +3,13 @@ import Base from 'components/Base';
 import Navbar from 'components/navbar';
 import ProblemContainer from 'containers/problem';
 import { fetchMinicourseProblemById } from 'lib/client/problems';
+import { NextPage, NextPageContext } from 'next';
+import { colors } from 'lib/constants';
 
-type Props = { name: string };
+type Props = { 
+  name: string
+  problem: string
+};
 
 type Ctx = {
   query: Props;
@@ -21,8 +26,8 @@ const Problem: NextPage<Props> = (props: Props) => {
   }, []);
 
   return (
-    <Base>
-      <Navbar></Navbar>
+    <Base backgroundColor={colors.lighterBlack}>
+      <Navbar height={"50px"}></Navbar>
       <ProblemContainer problem={currentProblem} />
     </Base>
   );

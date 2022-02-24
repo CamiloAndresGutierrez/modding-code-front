@@ -1,21 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Container
-} from './modal.styled-components.tsx';
+  ButtonContainer,
+  Container, ModalContainer
+} from './modal.styled-components';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Modal = (props) => {
   const { children, shouldShow, setShouldShow } = props;
 
-  return(
+  return (
     <>
-      { shouldShow && (
+      {shouldShow && (
         <Container>
-            <button
-              onClick={() => setShouldShow()}
-            >
-              Close
-            </button>
-            {children}
+          <ModalContainer>
+            <ButtonContainer>
+              <button
+                onClick={() => setShouldShow()}
+              >
+                <CloseIcon />
+              </button>
+            </ButtonContainer>
+            <div>
+              {children}
+            </div>
+          </ModalContainer>
         </Container>
       )}
     </>

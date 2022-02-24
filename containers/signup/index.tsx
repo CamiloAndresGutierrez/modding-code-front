@@ -7,9 +7,7 @@ import {
     ImageContainer,
     StyledForm
 } from './signup.styled-components';
-import { Form, UserSelection, ExpertBackground } from '../../components/form';
-import Waves from '../../components/Waves';
-import Name from '../../components/Name';
+import { Form, UserSelection, ExpertBackground } from 'components/form';
 
 const SingUpContainer = () => {
     const router = useRouter();
