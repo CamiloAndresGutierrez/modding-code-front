@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Base from 'components/Base';
-import Navbar from "components/navbar";
 import MinicoursesContainer from "containers/minicourses";
 import { fetchAllMinicourses } from 'lib/client/minicourses'
 
@@ -14,8 +13,7 @@ const MinicoursesPage = () => {
     }, []);
 
     return (
-        <Base pageTitle={`Minicourses page`}>
-            <Navbar></Navbar>
+        <Base pageTitle={`Minicourses page`} withNav>
             <MinicoursesContainer minicourses={minicourses}/>
         </Base>
     );

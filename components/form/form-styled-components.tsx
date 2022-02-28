@@ -1,9 +1,11 @@
 import styled from 'styled-components';
-import { mediaQueries } from '../../lib/constants';
+import { mediaQueries, colors } from 'lib/constants';
 
 export const Container = styled.div`
     background-color: white;
     min-height: 500px;
+    max-width: 500px;
+    margin: 0 auto 0 auto;
     padding: 40px 25px;
     box-shadow: 0px 30px 50px 25px #0000001A;
     border-radius: 10px;
@@ -16,6 +18,12 @@ export const Container = styled.div`
 
 export const Head = styled.div`
     margin-bottom: 50px;
+
+    > p > a {
+        color: ${colors.darkerBlue};
+        text-decoration: underline;
+    }
+
 `;
 
 export const InputTextFields = styled.div`

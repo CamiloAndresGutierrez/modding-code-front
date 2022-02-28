@@ -3,7 +3,6 @@ import { NextPage, NextPageContext } from 'next';
 
 import Base from 'components/Base';
 import MinicourseContainer from 'containers/minicourse';
-import Navbar from "components/navbar";
 import { fetchMinicourseById } from "lib/client/minicourses";
 
 type Props = {
@@ -26,8 +25,7 @@ const Minicourse: NextPage<Props> = (props: Props) => {
   }, []);
 
   return (
-    <Base pageTitle={minicourse && minicourse.name}>
-      <Navbar></Navbar>
+    <Base pageTitle={minicourse && minicourse.name} withNav>
       <MinicourseContainer minicourse={minicourse}/>
     </Base>
   )

@@ -3,7 +3,6 @@ import { NextPage, NextPageContext } from 'next';
 import { connect } from 'react-redux';
 
 import Base from 'components/Base';
-import Navbar from 'components/navbar';
 import MyMinicourses from 'containers/my-minicourses';
 import { fetchExpertMinicourses } from 'lib/client/minicourses';
 import { Category } from 'lib/types';
@@ -28,8 +27,7 @@ const Expert: NextPage <Props> = ({ expert, categories }: Props) => {
   }, []);
 
   return (
-    <Base>
-      <Navbar></Navbar>
+    <Base withNav>
       <MyMinicourses
         minicourses={expertMinicourses}
         categories={categories}

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{height}>`
+export const Container = styled.div<{ height }>`
     height: ${props => props.height ?? "100px"};
     background-color: white;
     box-shadow: 0px 10px 50px 10px rgba(0, 0, 0, 0.1);
@@ -34,5 +34,14 @@ export const Container = styled.div<{height}>`
         align-items: center;
         list-style-type: none;
         gap: 20px;
+    }
+`;
+
+export const NavButton = styled.button`
+    border: 0;
+    background-color: transparent;
+    font-size: 1rem;
+    :hover {
+        cursor: pointer;
     }
 `;

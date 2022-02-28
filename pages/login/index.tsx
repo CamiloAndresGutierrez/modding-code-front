@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Base from 'components/Base';
 import LoginContainer from 'containers/login';
+import { NextPage } from 'next';
+import { useAuth0 } from '@auth0/auth0-react';
 
-const Login = () => {
+const Login: NextPage = () => {
+    const { loginWithRedirect } = useAuth0();
+
+    useEffect(() => {
+        loginWithRedirect();
+    }, []);
+
     return (
         <Base pageTitle={"Login"}>
             <LoginContainer />

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Base from 'components/Base';
-import Navbar from 'components/navbar';
 import ProblemContainer from 'containers/problem';
 import { fetchMinicourseProblemById } from 'lib/client/problems';
 import { NextPage, NextPageContext } from 'next';
@@ -26,8 +25,7 @@ const Problem: NextPage<Props> = (props: Props) => {
   }, []);
 
   return (
-    <Base backgroundColor={colors.lighterBlack}>
-      <Navbar height={"50px"}></Navbar>
+    <Base backgroundColor={colors.lighterBlack} withNav navHeight='50px'>
       <ProblemContainer problem={currentProblem} />
     </Base>
   );

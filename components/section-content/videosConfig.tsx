@@ -32,8 +32,6 @@ const VideosConfig = ({
   },
   isNew = false,
 }) => {
-  console.log(`%c <-- section: -->`, 'background-color: black; color: white; font-weight: bold', section);
-  console.log(`%c <-- video: -->`, 'background-color: black; color: white; font-weight: bold', video);
   const [selectedSection, setSelectedSection] = useState(section.sectionName || "Context");
   const [videoName, setVideoName] = useState(video.name || "");
   const [videoFile, setVideoFile] = useState(null);
