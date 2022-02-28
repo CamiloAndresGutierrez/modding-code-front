@@ -38,6 +38,7 @@ const runMockServer = () => {
                 })
                 
                 this.passthrough();
+                this.passthrough("https://dev-38jrsauv.us.auth0.com/*");
             }
         })
         return server;

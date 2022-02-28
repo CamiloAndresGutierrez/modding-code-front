@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux';
 
 import Base from "components/Base";
-import Navbar from "components/navbar";
 import Categories from "containers/categories";
+import { NextPage } from "next";
 
-const CategoryPage = (props) => {
+type Props = {
+  categories: []
+};
+
+const CategoryPage: NextPage<Props> = (props) => {
   const { categories } = props;
   const [fetchedData, setFetchedData] = useState([]);
 
@@ -14,10 +18,7 @@ const CategoryPage = (props) => {
   }, [categories]);
 
   return (
-      <Base
-          pageTitle={"Algorithm categories"}
-      >
-          <Navbar />
+      <Base pageTitle={"Algorithm categories"} withNav>
           <Categories categories={fetchedData}/>
       </Base>
   )

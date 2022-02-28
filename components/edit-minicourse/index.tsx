@@ -8,7 +8,7 @@ const EditMinicourse = ({
   cancelButtonBehavior,
   minicourse = null,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [minicourseToEdit, setMinicourseToEdit] = useState({
     name: "",
@@ -113,7 +113,7 @@ const EditMinicourse = ({
           <select value={selectedCategory} onChange={(e) => handleCategoryChange(e)}>
             {
               categories.map(category =>
-                <option>{category.name}</option>
+                <option key={category.name}>{category.name}</option>
               )
             }
           </select>

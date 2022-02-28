@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { NextPage, NextPageContext } from 'next';
 
 import Base from 'components/Base';
-import Navbar from 'components/navbar';
 import { fetchMinicourseById } from 'lib/client/minicourses';
 import { fetchSections } from 'lib/client/sections';
 import { fetchMinicourseProblems } from 'lib/client/problems';
 import MinicourseContentContainer from 'containers/minicourse-content';
 
-type Props = { name: string };
+type Props = { 
+  minicourse: string
+};
 
 type Ctx = {
   query: Props;
 };
 
-const MinicourseContent = ({ minicourse }) => {
+const MinicourseContent: NextPage<Props> = ({ minicourse }) => {
   const [ currentMinicourse, setCurrentMinicourse ] = useState({});
   const [ allSections, setAllSections ] = useState([]);
   const [ problems, setProblems ] = useState([]);
@@ -36,8 +37,7 @@ const MinicourseContent = ({ minicourse }) => {
   }, []);
 
   return (
-    <Base>
-      <Navbar></Navbar>
+    <Base withNav>
       <MinicourseContentContainer
         minicourse={currentMinicourse}
         sections={allSections}

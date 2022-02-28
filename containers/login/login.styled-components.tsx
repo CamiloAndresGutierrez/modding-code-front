@@ -20,6 +20,6 @@ export const FormContainer = styled.div`
     width: 462px;
     @media (${mediaQueries.tablet}) {
         width: 100%;
-        height: 100%;
+        top: 100px;
     }
 `;

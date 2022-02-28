@@ -42,7 +42,7 @@ const MyMinicourses = ({ minicourses, categories }) => {
       <ExpertMinicoursesContainer>
         {
           minicourses.map(minicourse =>
-            <ExpertMinicourse minicourse={minicourse.id}>
+            <ExpertMinicourse minicourse={minicourse.id} key={minicourse.id}>
               <MinicourseName>
                 {minicourse.name}
               </MinicourseName>

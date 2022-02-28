@@ -65,7 +65,7 @@ const SingUpContainer = () => {
         }
     }, [step]);
 
-    const setCurrentStep = (step) => {
+    const setCurrentStep = (step?: number) => {
         setStep(step);
     };
 
