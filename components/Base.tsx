@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { createGlobalStyle } from 'styled-components';
 import Navbar from './navbar';
-import { useAuthentication } from 'utils/hooks/useAuthentication';
+import { useFetch } from 'utils/hooks/useFetch';
 import { useRouter } from 'next/router';
 import { studentAccesses, expertAccesses, studentFallback, expertFallback } from 'lib/types/userAcceses';
 import { USERS } from 'lib/constants';
@@ -34,36 +34,37 @@ const GlobalStyle = createGlobalStyle<{ backgroundColor }>`
 `
 
 const Base = ({ pageTitle, children, backgroundColor, withNav = false, navHeight = null }: BaseProps) => {
-    const { isAuthenticated, userRole, isLoading } = useAuthentication();
+    const { isAuthenticated, userRole, isLoading } = useFetch({});
+
     const { pathname, push } = useRouter();
     const title = pageTitle ? `Modding Code | ${pageTitle}` : `Modding Code`;
     const pageColor = !backgroundColor ? `white` : backgroundColor;
 
-    const goToFallback = (accessType: string[], fallback: string) => {
-        const hasAccess = accessType.includes(pathname);
-        if (!hasAccess) {
-            push(fallback);
-        }
-    }
+    // const goToFallback = (accessType: string[], fallback: string) => {
+    //     const hasAccess = accessType.includes(pathname);
+    //     if (!hasAccess) {
+    //         push(fallback);
+    //     }
+    // }
 
-    const handlePages = () => {
-        if (!isLoading) {
-            if (isAuthenticated) {
-                if (userRole === USERS.STUDENT) {
-                    goToFallback(studentAccesses, studentFallback);
-                } else if (userRole === USERS.EXPERT) {
-                    goToFallback(expertAccesses, expertFallback);
-                }
-            }
-            else {
-                push("/signup");
-            }
-        }
-    }
+    // const handlePages = () => {
+    //     if (!isLoading) {
+    //         if (isAuthenticated) {
+    //             if (userRole === USERS.STUDENT) {
+    //                 goToFallback(studentAccesses, studentFallback);
+    //             } else if (userRole === USERS.EXPERT) {
+    //                 goToFallback(expertAccesses, expertFallback);
+    //             }
+    //         }
+    //         else {
+    //             push("/signup");
+    //         }
+    //     }
+    // }
 
-    useEffect(() => {
-        handlePages();
-    }, [pathname, isAuthenticated, isLoading, userRole]);
+    // useEffect(() => {
+    //     handlePages();
+    // }, [pathname, isAuthenticated, isLoading, userRole]);
 
     return (
         <>
@@ -74,7 +75,7 @@ const Base = ({ pageTitle, children, backgroundColor, withNav = false, navHeight
                 </Head>
                 {
                     withNav &&
-                    <Navbar height={navHeight}></Navbar>
+                    <Navbar userType={userRole} height={navHeight}></Navbar>
                 }
                 {
                     (isLoading) ?

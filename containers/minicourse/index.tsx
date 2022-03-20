@@ -25,6 +25,16 @@ import {
 } from './minicourse.styled-components';
 
 import { StyledTable, StyledTableHead, Styledtd, StyledTableRow, TableContainer } from './problemsList.styled-components';
+import { State } from 'lib/types/state';
+import { Minicourse } from 'lib/types/minicourse';
+import { connect } from 'react-redux';
+import { ISections, Section, SectionContent, Video } from 'lib/types/videos';
+
+const videoSections = [
+  { slug: "CONTEXT", name: "Context" },
+  { slug: "CODE", name: "Code" },
+  { slug: "CODE_EXPLANATION", name: "Code explanation" }
+];
 
 const ProblemsList = ({ problems }) => {
   const { push } = useRouter();
@@ -52,7 +62,7 @@ const ProblemsList = ({ problems }) => {
                 <Styledtd>{element.id}</Styledtd>
                 <Styledtd>{element.name}</Styledtd>
                 <Styledtd>
-                  <Rating name="read-only" value={element.difficulty} readOnly precision={0.5}/>
+                  <Rating name="read-only" value={element.difficulty} readOnly precision={0.5} />
                 </Styledtd>
                 <Styledtd>{element.veredict}</Styledtd>
               </StyledTableRow>
@@ -65,14 +75,9 @@ const ProblemsList = ({ problems }) => {
 };
 
 const MinicourseContainer = (props) => {
-  const [sections, setSections] = useState([]);
-  const [currentVideoInfo, setCurrentVideoInfo] = useState({
-    video: '',
-    name: '',
-    sectionName: '',
-  });
-  const { minicourse } = props;
-  const { video, name, sectionName } = currentVideoInfo;
+  const [sections, setSections] = useState<ISections[]>([]);
+  const { minicourseVideos } = props;
+  const { video, name, sectionName } = props.currentVideo;
   const [shouldShowModal, setShouldShowModal] = useState(false);
   const [problems, setProblems] = useState(false);
 
@@ -95,14 +100,31 @@ const MinicourseContainer = (props) => {
     previousUrl.current = video;
   }, [video]);
 
+  const createSections = (minicourseVideos) => {
+    return videoSections.map(videoSection => ({
+      sectionName: videoSection.name,
+      videos: minicourseVideos
+        .filter(minicourseVideo => {
+          const { section, visible } = minicourseVideo;
+          return (section === videoSection.slug && visible) ? minicourseVideo : null;
+        })
+        .map(filteredVideos => {
+          const { name, id, section, order } = filteredVideos;
+          return (section === videoSection.slug) ? ({ name, id, order }) : null;
+        })
+        .sort((a, b) => {
+          const aOrder = a.order;
+          const bOrder = b.order;
+          return (aOrder < bOrder) ? -1 : (aOrder > bOrder) ? 1 : 0;
+        })
+    }))
+  }
+
   useEffect(() => {
-    setSections(minicourse && minicourse.sections);
-    if (minicourse) {
-      fetchMinicourseProblems(minicourse.id)
-        .then(response => response.json())
-        .then(r => setProblems(r));
+    if (minicourseVideos) {
+      setSections(createSections(minicourseVideos));
     }
-  }, [minicourse]);
+  }, [minicourseVideos]);
 
   return (
     <Container>
@@ -136,7 +158,6 @@ const MinicourseContainer = (props) => {
           <SectionsContainer>
             <SectionsVideos
               sections={sections}
-              currentVideo={setCurrentVideoInfo}
             />
           </SectionsContainer>
         }
@@ -149,6 +170,13 @@ const MinicourseContainer = (props) => {
       </Modal>
     </Container>
   )
+};
+
+const mapStateToProps = (state: State) => {
+  return {
+    currentMinicourse: state.minicourses.currentMinicourse,
+    currentVideo: state.minicourses.currentVideo,
+  }
 }
 
-export default MinicourseContainer;
+export default connect(mapStateToProps, null)(MinicourseContainer);

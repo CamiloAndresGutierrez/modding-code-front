@@ -1,0 +1,30 @@
+{
+    "videos": [
+        {
+            "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-dfb3218d-1647398526",
+            "creation_date": 1647398526,
+            "updated_date": null,
+            "data_state": "ACTIVE",
+            "username": "camilo.gutierrez@candidco.com",
+            "visible": true,
+            "name": "CONTEXT2",
+            "ext": "mp4",
+            "minicourse_id": "cat-ebb324734f-1646442759-a52e057b-1646970021",
+            "section": "CONTEXT",
+            "order": 2
+        },
+        {
+            "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-396c5d79-1647398884",
+            "creation_date": 1647398884,
+            "updated_date": null,
+            "data_state": "ACTIVE",
+            "username": "camilo.gutierrez@candidco.com",
+            "visible": true,
+            "name": "CONTEXT1",
+            "ext": "mp4",
+            "minicourse_id": "cat-ebb324734f-1646442759-a52e057b-1646970021",
+            "section": "CODE",
+            "order": 1
+        }
+    ]
+}

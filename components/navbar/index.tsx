@@ -10,14 +10,13 @@ import decode from 'jwt-decode';
 
 type NavbarProps = {
     height?: string;
+    userType?: string;
 }
 
 const Navbar = (props: NavbarProps) => {
     const { loginWithRedirect, getAccessTokenSilently, logout, isAuthenticated } = useAuth0();
     const [links, setLinks] = useState([]);
-    const [userType, setUser] = useState<UserType>(null);
-    const [accessToken, setAccessToken] = useState({});
-    const { height } = props;
+    const { height, userType } = props;
 
     useEffect(() => {
         switch (userType) {
@@ -32,17 +31,6 @@ const Navbar = (props: NavbarProps) => {
                 break;
         }
     }, [userType]);
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            getAccessTokenSilently()
-                .then(token => {
-                    const decodedToken: IdToken = decode(token);
-                    setAccessToken(decodedToken);
-                    setUser(decodedToken.permissions[0]);
-                });
-        }
-    }, [isAuthenticated]);
 
     return (
         <Container height={height}>

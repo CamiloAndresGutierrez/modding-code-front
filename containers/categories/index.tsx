@@ -4,21 +4,33 @@ import CategoryCard from 'components/categoryCard';
 import Jumbotron from 'components/jumbotron';
 import { Container, CardsContainer, JumbotronSearch } from './categories.styled-components';
 import content from './categories.content';
+import { Category } from 'lib/types/categories';
+import { Dispatch } from 'redux';
+import { useFetch } from 'utils/hooks/useFetch';
+import { GET_ALL_CATEGORIES } from 'lib/client/categories';
 
-const Categories = (props) => {
-    const { categories } = props;
+type CategoriesComponentTypes = {
+    setCurrentCategory: (value: Category) => Dispatch,
+}
+
+const Categories = (props: CategoriesComponentTypes) => {
+    const { response } = useFetch(GET_ALL_CATEGORIES);
+
+    const { setCurrentCategory } = props;
     const { title: { headline, text } } = content();
     const [fetchedCategories, setFetchedCategories] = useState([]);
+    const [filteredCategories, setFilteredCategories] = useState([]);
 
     const handleInputChange = (e) => {
         const searchValue = e.target.value;
-        const tmp = categories.filter(category => category.name.toLowerCase().startsWith(searchValue.toLowerCase()));
-        setFetchedCategories(tmp);
+        const tmp = fetchedCategories.filter(category => category.name.toLowerCase().includes(searchValue.toLowerCase()));
+        setFilteredCategories(tmp);
     };
 
     useEffect(() => {
-        setFetchedCategories(categories);
-    }, [categories]);
+        setFetchedCategories(response);
+        setFilteredCategories(response);
+    }, [response]);
 
     return (
         <Container>
@@ -32,13 +44,10 @@ const Categories = (props) => {
                 </JumbotronSearch>
             </Jumbotron>
             <CardsContainer>
-                {Array.isArray(fetchedCategories) && fetchedCategories.map((element, index) => (
+                {Array.isArray(filteredCategories) && filteredCategories.map((element, index) => (
                     <CategoryCard
                         key={index}
-                        head={element.name}
-                        body={element.description}
-                        ctaText={"Open"}
-                        ctaLink={`categories/${element.path}`}
+                        category={element}
                     />
                 ))}
             </CardsContainer>

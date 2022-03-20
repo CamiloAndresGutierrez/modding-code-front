@@ -3,7 +3,7 @@ import { NextPage, NextPageContext } from 'next';
 
 import Base from 'components/Base';
 import { fetchMinicourseById } from 'lib/client/minicourses';
-import { fetchSections } from 'lib/client/sections';
+import { fetchSections } from 'lib/client/videos';
 import { fetchMinicourseProblems } from 'lib/client/problems';
 import MinicourseContentContainer from 'containers/minicourse-content';
 

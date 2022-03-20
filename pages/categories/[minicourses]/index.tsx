@@ -1,50 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { NextPage, NextPageContext } from 'next';
+
 import Base from 'components/Base';
-import MinicoursesContainer from "containers/minicourses";
-import { fetchAllMinicourses } from 'lib/client/minicourses'
 
-const MinicoursesPage = () => {
-    const [minicourses, setMinicourses] = useState([]);
+import MinicoursesContainer from 'containers/minicourses';
+import { GET_RANDOMIZE_MINICOURSES } from 'lib/client/minicourses';
 
-    useEffect(() => {
-        fetchAllMinicourses()
-          .then(response => response.json())
-          .then(r => setMinicourses(r));
-    }, []);
+import { useFetch } from 'utils/hooks/useFetch';
 
-    return (
-        <Base pageTitle={`Minicourses page`} withNav>
-            <MinicoursesContainer minicourses={minicourses}/>
-        </Base>
-    );
+type Props = {
+    categoryMinicourses: string
 };
 
-// export const getStaticPaths = async () => {
-//   const response = await fetchAllMinicourses(); // Change this line to fetch minicourses related to a category
-//   const data = await response.json();
-//
-//   const paths = data.map(minicourse => ({
-//     params: {
-//       minicourse: minicourse.id.toString()
-//     }
-//   }))
-//
-//   return {
-//     paths,
-//     fallback: false
-//   };
-// };
-//
-//
-// export const getStaticProps = async ({ params }) => {
-//   const response = await fetchAllMinicourses(); // Change this line to fetch minicourses related to a category
-//   const data = await response.json();
-//
-//   return {
-//     props: {
-//       minicourses: data
-//     }
-//   }
-// }
+type Ctx = {
+    query: Props;
+};
 
-export default MinicoursesPage;
+const CategoryMinicourses: NextPage<Props> = (props) => {
+    const { response } = useFetch(GET_RANDOMIZE_MINICOURSES(props.categoryMinicourses));
+    const [minicourses, setMinicourses] = useState([]);
+    useEffect(() => {
+        if (response) {
+            const { minicourses } = response;
+            setMinicourses(minicourses);
+        }
+    }, [response]);
+
+    return (
+        <Base withNav>
+            <MinicoursesContainer
+                minicourses={minicourses}
+            />
+        </Base>
+    );
+}
+
+CategoryMinicourses.getInitialProps = (ctx: NextPageContext & Ctx) => {
+    return Promise.resolve(ctx.query);
+};
+
+export default CategoryMinicourses;

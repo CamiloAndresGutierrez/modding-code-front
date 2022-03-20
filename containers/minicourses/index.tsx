@@ -7,19 +7,27 @@ import BackButton from 'components/back-button';
 import Jumbotron from 'components/jumbotron';
 import content from './minicourses.content';
 import ReloadButton from "components/reload-button";
+import { Minicourse as MinicourseType } from "lib/types/minicourse";
 
-const MinicoursesContainer = (props) => {
-    const { minicourses } = props;
+type MinicourseContainerProps = {
+    minicourses: MinicourseType[],
+}
+
+const MinicoursesContainer = ({ minicourses }: MinicourseContainerProps) => {
     const [fetchedMinicourses, setFetchedMinicourses] = useState([]);
+    const [filteredMinicourses, setFilteredMinicourses] = useState([]);
 
     const handleInputChange = (e) => {
         const searchValue = e.target.value;
-        const tmp = minicourses.filter(minicourse => minicourse.name.toLowerCase().startsWith(searchValue.toLowerCase()));
-        setFetchedMinicourses(tmp);
+        const tmp = fetchedMinicourses.filter(minicourse => minicourse.name.toLowerCase().includes(searchValue.toLowerCase()));
+        setFilteredMinicourses(tmp);
     }
 
     useEffect(() => {
-        setFetchedMinicourses(minicourses);
+        if (minicourses) {
+            setFetchedMinicourses(minicourses);
+            setFilteredMinicourses(minicourses);
+        }
     }, [minicourses]);
 
     const { title: { headline, text } } = content();
@@ -48,12 +56,12 @@ const MinicoursesContainer = (props) => {
                     <BackButton />
                 </div>
                 <div>
-                    <ReloadButton />                
+                    <ReloadButton />
                 </div>
             </BackButtonContainer>
             {
                 <MinicoursesGrid >
-                    {fetchedMinicourses.map(minicourse => (
+                    {Array.isArray(filteredMinicourses) && filteredMinicourses.map(minicourse => (
                         <div key={minicourse.id}>
                             <Minicourse minicourse={minicourse} />
                         </div>

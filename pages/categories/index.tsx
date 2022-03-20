@@ -1,33 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { connect } from 'react-redux';
+import React from "react";
 
 import Base from "components/Base";
 import Categories from "containers/categories";
 import { NextPage } from "next";
+import { Category } from "lib/types/categories";
+import { Dispatch } from 'redux';
 
-type Props = {
-  categories: []
-};
+type DashboardTypes = {
+  setCurrentCategory: (value: Category) => Dispatch,
+  currentCategory: Category,
+}
 
-const CategoryPage: NextPage<Props> = (props) => {
-  const { categories } = props;
-  const [fetchedData, setFetchedData] = useState([]);
-
-  useEffect(() => {
-    setFetchedData(categories);
-  }, [categories]);
-
+const DashboardPage: NextPage<DashboardTypes> = (props) => {
   return (
-      <Base pageTitle={"Algorithm categories"} withNav>
-          <Categories categories={fetchedData}/>
-      </Base>
+    <Base pageTitle={"Algorithm categories"} withNav>
+      <Categories
+        setCurrentCategory={props.setCurrentCategory}
+      />
+    </Base>
   )
 }
 
-const mapStateToProps = (state) => {
-  return ({
-    categories: state.categories.data
-  })
-}
-
-export default connect(mapStateToProps, null)(CategoryPage);
+export default DashboardPage;

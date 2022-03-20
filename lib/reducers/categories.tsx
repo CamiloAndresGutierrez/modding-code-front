@@ -1,30 +1,18 @@
+import { CategoryActionTypes } from 'lib/actions/categories';
+import { InitialStateType } from 'lib/types/categories';
 
-const initialState = {
-  loading: false,
-  data: [],
-  error: '',
+const initialState: InitialStateType = {
+  currentCategory: {}
 }
 
 export const categoriesReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case "GET_CATEGORIES_REQUEST":
-            return {
-              ...state,
-              loading: true
-            }
-        case "GET_CATEGORIES_SUCCESS":
-            return {
-              loading: false,
-              data: action.payload,
-              error: ''
-            }
-        case "GET_CATEGORIES_FAILURE":
-          return {
-            loading: false,
-            data: [],
-            error: action.payload
-          }
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case CategoryActionTypes.SET_CURRENT_CATEGORY:
+      return {
+        ...state,
+        currentCategory: action.payload
+      }
+    default:
+      return state;
+  }
 }

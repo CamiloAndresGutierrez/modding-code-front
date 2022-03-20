@@ -60,7 +60,6 @@ const SingUpContainer = () => {
                 userType,
                 professionalBackground,
             };
-            console.log(`%c <-- user: -->`, 'background-color: black; color: white; font-weight: bold', user);
             router.push('login');
         }
     }, [step]);

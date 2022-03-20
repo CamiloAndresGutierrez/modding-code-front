@@ -2,14 +2,11 @@ import '../styles/globals.css';
 import runMockServer from 'lib/mock';
 import { Provider } from 'react-redux';
 import { initStore } from 'lib/store/store';
-import { fetchCategories } from 'lib/actions/categories';
 import { Auth0Provider } from '@auth0/auth0-react';
 
 function MyApp({ Component, pageProps }) {
-  runMockServer();
-
   const store = initStore();
-  store.dispatch(fetchCategories());
+  runMockServer();
 
   return (
     <Auth0Provider
