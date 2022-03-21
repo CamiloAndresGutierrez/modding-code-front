@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useRouter } from 'next/router';
+import { connect } from 'react-redux';
 import { Tooltip } from '@mui/material';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import ConstructionIcon from '@mui/icons-material/Construction';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import Rating from '@mui/material/Rating';
 
 import SectionsVideos from 'components/sectionsVideos';
 import Modal from 'components/modal';
-import { fetchMinicourseProblems } from 'lib/client/problems';
+import ProblemsList from 'components/ProblemList';
+
+import { State } from 'lib/types/state';
+import { ISections } from 'lib/types/videos';
+import { GET_PROBLEMS_BY_MINICOURSE } from 'lib/client/problems';
+
+import { useFetch } from 'utils/hooks/useFetch';
+
 import {
   Container,
   VideoContainer,
@@ -20,15 +23,7 @@ import {
   ButtonText,
   PlayerContainer,
   SectionsContainer,
-  Tools,
-  ToolsContainer
 } from './minicourse.styled-components';
-
-import { StyledTable, StyledTableHead, Styledtd, StyledTableRow, TableContainer } from './problemsList.styled-components';
-import { State } from 'lib/types/state';
-import { Minicourse } from 'lib/types/minicourse';
-import { connect } from 'react-redux';
-import { ISections, Section, SectionContent, Video } from 'lib/types/videos';
 
 const videoSections = [
   { slug: "CONTEXT", name: "Context" },
@@ -36,50 +31,13 @@ const videoSections = [
   { slug: "CODE_EXPLANATION", name: "Code explanation" }
 ];
 
-const ProblemsList = ({ problems }) => {
-  const { push } = useRouter();
-
-  const handleProblemSelection = (problemId) => {
-    push(`/problems/${problemId}`);
-  }
-
-  return (
-    <TableContainer>
-      <h2>Practice with some problems</h2>
-      <StyledTable>
-        <StyledTableHead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Difficulty</th>
-            <th>Veredict</th>
-          </tr>
-        </StyledTableHead>
-        <tbody>
-          {
-            problems.map(element =>
-              <StyledTableRow key={element.id} onClick={() => handleProblemSelection(element.id)}>
-                <Styledtd>{element.id}</Styledtd>
-                <Styledtd>{element.name}</Styledtd>
-                <Styledtd>
-                  <Rating name="read-only" value={element.difficulty} readOnly precision={0.5} />
-                </Styledtd>
-                <Styledtd>{element.veredict}</Styledtd>
-              </StyledTableRow>
-            )
-          }
-        </tbody>
-      </StyledTable>
-    </TableContainer>
-  )
-};
-
 const MinicourseContainer = (props) => {
   const [sections, setSections] = useState<ISections[]>([]);
   const { minicourseVideos } = props;
   const { video, name, sectionName } = props.currentVideo;
   const [shouldShowModal, setShouldShowModal] = useState(false);
   const [problems, setProblems] = useState(false);
+  const { response } = useFetch(GET_PROBLEMS_BY_MINICOURSE(props.currentMinicourse.id));
 
   const handleModalBehaviour = () => {
     setShouldShowModal(!shouldShowModal);
@@ -117,14 +75,21 @@ const MinicourseContainer = (props) => {
           const bOrder = b.order;
           return (aOrder < bOrder) ? -1 : (aOrder > bOrder) ? 1 : 0;
         })
-    }))
-  }
+    }));
+  };
 
   useEffect(() => {
     if (minicourseVideos) {
       setSections(createSections(minicourseVideos));
     }
   }, [minicourseVideos]);
+
+  useEffect(() => {
+    if (response) {
+      const { problems } = response;
+      setProblems(problems);
+    }
+  }, [response]);
 
   return (
     <Container>

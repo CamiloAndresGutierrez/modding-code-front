@@ -1,6 +1,7 @@
 import { colors, mediaQueries } from 'lib/constants';
 import styled from 'styled-components';
 import QuizIcon from '@mui/icons-material/Quiz';
+import Rating from '@mui/material/Rating';
 
 const leftSideWidth = "75%";
 const rightSideWidth = "25%";
@@ -101,7 +102,7 @@ export const ButtonText = styled.div`
   }
 `;
 
-export const PlayerContainer= styled.div<{ layout: number }>`
+export const PlayerContainer = styled.div<{ layout: number }>`
   display: flex;
   flex-direction: row;
 

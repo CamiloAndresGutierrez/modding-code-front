@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Base from 'components/Base';
 import ProblemContainer from 'containers/problem';
-import { fetchMinicourseProblemById } from 'lib/client/problems';
+import { GET_PROBLEMS_BY_ID } from 'lib/client/problems';
 import { NextPage, NextPageContext } from 'next';
 import { colors } from 'lib/constants';
+import { useFetch } from 'utils/hooks/useFetch';
 
 type Props = { 
   name: string
@@ -16,13 +17,14 @@ type Ctx = {
 
 const Problem: NextPage<Props> = (props: Props) => {
   const { problem } = props;
-  const [ currentProblem, setCurrentProblem ] = useState({})
+  const [ currentProblem, setCurrentProblem ] = useState({});
+  const { response } = useFetch(GET_PROBLEMS_BY_ID(problem));
 
   useEffect(() => {
-    fetchMinicourseProblemById(problem)
-      .then(response => response.json())
-      .then(data => setCurrentProblem(data));
-  }, []);
+    if(response) {
+      setCurrentProblem(response)
+    }
+  }, [response])
 
   return (
     <Base backgroundColor={colors.lighterBlack} withNav navHeight='50px'>
@@ -34,16 +36,5 @@ const Problem: NextPage<Props> = (props: Props) => {
 Problem.getInitialProps = async (ctx: NextPageContext & Ctx) => {
   return Promise.resolve(ctx.query);
 };
-
-// Problem.getInitialProps = async (ctx: NextPageContext & Ctx) => {
-//     const { problem } = Promise.resolve(ctx.query);
-//     const response = await fetchMinicourseProblemById(problem);
-//     const minicourseProblem = await response.json();
-//
-//     return ({
-//       problem: minicourseProblem
-//     })
-// };
-
 
 export default Problem;

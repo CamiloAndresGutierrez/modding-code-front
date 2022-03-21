@@ -1,14 +1,5 @@
 
 import getCategories from './responses/getCategories.json';
-import getMinicourses from './responses/getMinicourses.json';
-import minicourse1 from './responses/minicourse1.json';
-import minicourse2 from './responses/minicourse2.json';
-import problems10 from './responses/problems10.json';
-import problem1 from './responses/problem1.json';
-import problem2 from './responses/problem2.json';
-import problem3 from './responses/problem3.json';
-import expertMinicourses90 from './responses/expertMinicourses90.json';
-import getSections from './responses/getSections.json';
 
 const RESPONSES = [
   {
@@ -23,7 +14,11 @@ const RESPONSES = [
   {
     path: '/video/get',
     method: 'POST'
-  }
+  },
+  {
+    path: '/problem/get',
+    method: 'POST'
+  },
   // {
   //   path: '/problems/get/10',
   //   method: 'GET',

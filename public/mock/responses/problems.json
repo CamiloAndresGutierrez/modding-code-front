@@ -1,0 +1,32 @@
+{
+  "problems": [
+      {
+          "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201",
+          "creation_date": 1647817201,
+          "updated_date": null,
+          "data_state": "ACTIVE",
+          "username": "camilo.gutierrez@candidco.com",
+          "visible": true,
+          "name": "problem1",
+          "minicourse_id": "cat-ebb324734f-1646442759-a52e057b-1646970021",
+          "description": "This is a description for the problem1",
+          "test_case": null,
+          "difficulty": 4,
+          "status": "CREATED"
+      },
+      {
+          "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-38d8019f9c-1647817880",
+          "creation_date": 1647817880,
+          "updated_date": null,
+          "data_state": "ACTIVE",
+          "username": "camilo.gutierrez@candidco.com",
+          "visible": true,
+          "name": "problem3",
+          "minicourse_id": "cat-ebb324734f-1646442759-a52e057b-1646970021",
+          "description": "This is a description for the problem3",
+          "test_case": null,
+          "difficulty": 0.5,
+          "status": "CREATED"
+      }
+  ]
+}

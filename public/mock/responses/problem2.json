@@ -1,9 +1,14 @@
 {
-  "id": 2,
-  "minicourseId": 10,
-  "name": "Problem 2",
-  "difficulty": 4,
-  "veredict": "solved",
-  "description": "Etiam nibh sapien, ullamcorper at maximus sed, malesuada nec neque. Etiam quis finibus metus, id tristique mi. Suspendisse convallis tellus ante, sit amet molestie elit auctor quis. Maecenas rhoncus urna sed cursus accumsan. Suspendisse non ante a sem mattis convallis. Aliquam mauris elit, molestie id mi non, imperdiet eleifend arcu. Cras ligula lorem, venenatis lacinia dui id, tempus vestibulum velit. Etiam hendrerit turpis mi, ut ornare odio dapibus a. Curabitur non placerat libero, non bibendum dolor. Donec ut nulla ac urna porttitor fermentum porta malesuada dolor. Praesent justo lectus, feugiat et pharetra et, luctus vitae ante. Suspendisse blandit, lorem vitae blandit pharetra, risus justo molestie nibh, id rhoncus dui ante sodales urna.",
-  "testCases": 5
+  "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-38d8019f9c-1647817880",
+  "creation_date": 1647817880,
+  "updated_date": null,
+  "data_state": "ACTIVE",
+  "username": "camilo.gutierrez@candidco.com",
+  "visible": true,
+  "name": "problem3",
+  "minicourse_id": "cat-ebb324734f-1646442759-a52e057b-1646970021",
+  "description": "This is a description for the problem3",
+  "test_case": null,
+  "difficulty": 0.5,
+  "status": "CREATED"
 }
