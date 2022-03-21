@@ -1,21 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { NextPage } from "next";
 
 import Base from "components/Base";
+
 import Categories from "containers/categories";
-import { NextPage } from "next";
-import { Category } from "lib/types/categories";
-import { Dispatch } from 'redux';
 
-type DashboardTypes = {
-  setCurrentCategory: (value: Category) => Dispatch,
-  currentCategory: Category,
-}
+import { GET_ALL_CATEGORIES } from "lib/client/categories";
 
-const DashboardPage: NextPage<DashboardTypes> = (props) => {
+import { useFetch } from "utils/hooks/useFetch";
+
+const DashboardPage: NextPage = () => {
+  const { response } = useFetch(GET_ALL_CATEGORIES);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (response) {
+      const { categories } = response;
+      setCategories(categories);
+    }
+  }, [response])
+
   return (
     <Base pageTitle={"Algorithm categories"} withNav>
       <Categories
-        setCurrentCategory={props.setCurrentCategory}
+        categories={categories}
       />
     </Base>
   )

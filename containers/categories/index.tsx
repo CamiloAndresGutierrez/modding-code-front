@@ -10,13 +10,11 @@ import { useFetch } from 'utils/hooks/useFetch';
 import { GET_ALL_CATEGORIES } from 'lib/client/categories';
 
 type CategoriesComponentTypes = {
-    setCurrentCategory: (value: Category) => Dispatch,
+    categories: Category[]
 }
 
 const Categories = (props: CategoriesComponentTypes) => {
-    const { response } = useFetch(GET_ALL_CATEGORIES);
-
-    const { setCurrentCategory } = props;
+    const { categories } = props;
     const { title: { headline, text } } = content();
     const [fetchedCategories, setFetchedCategories] = useState([]);
     const [filteredCategories, setFilteredCategories] = useState([]);
@@ -28,9 +26,9 @@ const Categories = (props: CategoriesComponentTypes) => {
     };
 
     useEffect(() => {
-        setFetchedCategories(response);
-        setFilteredCategories(response);
-    }, [response]);
+        setFetchedCategories(categories);
+        setFilteredCategories(categories);
+    }, [categories]);
 
     return (
         <Container>

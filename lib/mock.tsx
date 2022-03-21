@@ -21,6 +21,13 @@ import problem2 from 'public/mock/responses/problem2.json';
 
 import problems from 'public/mock/responses/problems.json';
 
+import expertMinicourses from 'public/mock/responses/expertMinicourses.json';
+
+import updatedMinicourse1 from 'public/mock/responses/updatedMinicourse1.json';
+import updatedMinicourse2 from 'public/mock/responses/updatedMinicourse2.json';
+
+import createMinicourse from 'public/mock/responses/createMinicourse.json';
+
 const url = (path: string) => `${process.env.APIURL}${path}`;
 
 const Actions = {
@@ -64,13 +71,29 @@ const getResponseData = (parsedRequest) => {
         case Actions.GET_PROBLEMS_BY_MINICOURSE_ACTION:
             return problems;
         case Actions.GET_PROBLEMS_BY_ID_ACTION:
-            if (parsedRequest.params.id === 
+            if (parsedRequest.params.id ===
                 'cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201') {
                 return problem1
             }
             else if (parsedRequest.params.id ===
                 'cat-ebb324734f-1646442759-a52e057b-1646970021-38d8019f9c-1647817880') {
                 return problem2
+            }
+        case Actions.GET_MINICOURSE_BY_USERNAME_ACTION:
+            return expertMinicourses
+    }
+}
+
+const updateData = (parsedRequest, requestUrl: string) => {
+    switch (requestUrl) {
+        case url('/minicourse'):
+            if (parsedRequest.id ===
+                'cat-ebb324734f-1646442759-46beec34-1646970768') {
+                return updatedMinicourse1;
+            }
+            else if (parsedRequest.id ===
+                'cat-ebb324734f-1646442759-a52e057b-1646970021') {
+                return updatedMinicourse2;
             }
     }
 }
@@ -84,6 +107,14 @@ const responseData = (schema: any, request: Request, method: string) => {
         request.url === url("/video/get") ||
         request.url === url("/problem/get")) {
         responseData = getResponseData(parsedRequest);
+    }
+
+    if (method === "PUT") {
+        responseData = updateData(parsedRequest, request.url);
+    }
+
+    if (method === "POST" && request.url === url("/minicourse")) {
+        responseData = createMinicourse
     }
 
     RESPONSES.forEach(response => {

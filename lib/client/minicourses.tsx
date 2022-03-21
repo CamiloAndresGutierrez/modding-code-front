@@ -1,4 +1,5 @@
 import { Method, RequestBodyType } from "lib/types";
+import { Minicourse } from "lib/types/minicourse";
 
 type RequestOptions = {
     requestUrl?: string,
@@ -8,7 +9,8 @@ type RequestOptions = {
 
 export const Actions = {
     GET_RANDOMIZE_MINICOURSES_ACTION: 'get_randomized_minicourses',
-    GET_MINICOURSE_BY_ID_ACTION: 'get_minicourse'
+    GET_MINICOURSE_BY_ID_ACTION: 'get_minicourse',
+    GET_MINICOURSE_BY_USERNAME_ACTION: 'get_minicourses_by_username'
 }
 
 export const GET_RANDOMIZE_MINICOURSES = (categoryId: string): RequestOptions => ({
@@ -31,5 +33,31 @@ export const GET_MINICOURSE_BY_ID = (minicourseId: string): RequestOptions => ({
             "id": minicourseId,
             "get_thumb": true
         }
+    }
+});
+
+export const GET_MINICOURSE_BY_USERNAME: RequestOptions = {
+    requestUrl: '/minicourse/get',
+    method: 'POST',
+    body: {
+        "action": Actions.GET_MINICOURSE_BY_USERNAME_ACTION,
+        "params": {}
+    }
+}
+
+export const CREATE_MINICOURSE = (newMinicourseDetails: Minicourse): RequestOptions => ({
+    requestUrl: '/minicourse',
+    method: 'POST',
+    body: {
+        ...newMinicourseDetails,
+        "ext": "..jpg"
+    }
+})
+
+export const UPDATE_MINICOURSE = (minicourseDetails: Minicourse): RequestOptions => ({
+    requestUrl: '/minicourse',
+    method: 'PUT',
+    body: {
+        ...minicourseDetails
     }
 })

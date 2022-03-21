@@ -61,13 +61,13 @@ export const ExpertMinicoursesContainer = styled.div`
 
 `;
 
-export const ExpertMinicourse = styled.div`
+export const ExpertMinicourse = styled.div<{randomColorOne, randomColorTwo}>`
   height: 200px;
   width: 100%;
   border-radius: 10px;
-  background-color: ${colors.darkBlue};
+  background: linear-gradient(0deg, ${props => props.randomColorOne}, ${props => props.randomColorTwo});
   padding: 25px;
-  color: white;
+  color: black;
   font-weight: bold;
   display: flex;
   gap: 10px;

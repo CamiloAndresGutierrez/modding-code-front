@@ -10,7 +10,8 @@ export type Minicourse = {
     category_id?: string,
     name?: string,
     ext?: string,
-    rate?: null
+    rate?: null,
+    thumb_upload_url?: string
 };
 
 export type InitialStateType = {

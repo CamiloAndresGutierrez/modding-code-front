@@ -1,42 +1,44 @@
-[
-    {
-        "id": "cat-ebb324734f-1646442759",
-        "creation_date": 1646442759,
-        "updated_date": null,
-        "data_state": "ACTIVE",
-        "username": "camilo@admin.com",
-        "visible": true,
-        "name": "category10",
-        "description": "category description"
-    },
-    {
-        "id": "cat-ebb324734f-1646442751",
-        "creation_date": 1646442759,
-        "updated_date": null,
-        "data_state": "ACTIVE",
-        "username": "camilo@admin.com",
-        "visible": true,
-        "name": "Graphs and Trees",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis."
-    },
-    {
-        "id": "cat-ebb324734f-1646442752",
-        "creation_date": 1646442759,
-        "updated_date": null,
-        "data_state": "ACTIVE",
-        "username": "camilo@admin.com",
-        "visible": true,
-        "name": "Complexity",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis."
-    },
-    {
-        "id": "cat-ebb324734f-1646442753",
-        "creation_date": 1646442759,
-        "updated_date": null,
-        "data_state": "ACTIVE",
-        "username": "camilo@admin.com",
-        "visible": false,
-        "name": "Sorting",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis."
-    }
-]
+{
+    "categories": [
+        {
+            "id": "cat-ebb324734f-1646442759",
+            "creation_date": 1646442759,
+            "updated_date": null,
+            "data_state": "ACTIVE",
+            "username": "camilo@admin.com",
+            "visible": true,
+            "name": "category10",
+            "description": "category description"
+        },
+        {
+            "id": "cat-ebb324734f-1646442751",
+            "creation_date": 1646442759,
+            "updated_date": null,
+            "data_state": "ACTIVE",
+            "username": "camilo@admin.com",
+            "visible": true,
+            "name": "Graphs and Trees",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis."
+        },
+        {
+            "id": "cat-ebb324734f-1646442752",
+            "creation_date": 1646442759,
+            "updated_date": null,
+            "data_state": "ACTIVE",
+            "username": "camilo@admin.com",
+            "visible": true,
+            "name": "Complexity",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis."
+        },
+        {
+            "id": "cat-ebb324734f-1646442753",
+            "creation_date": 1646442759,
+            "updated_date": null,
+            "data_state": "ACTIVE",
+            "username": "camilo@admin.com",
+            "visible": false,
+            "name": "Sorting",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet est a felis eleifend, in tincidunt arcu pulvinar. Sed tristique dolor eget lorem vestibulum convallis."
+        }
+    ]
+}
