@@ -24,12 +24,7 @@ import {
   PlayerContainer,
   SectionsContainer,
 } from './minicourse.styled-components';
-
-const videoSections = [
-  { slug: "CONTEXT", name: "Context" },
-  { slug: "CODE", name: "Code" },
-  { slug: "CODE_EXPLANATION", name: "Code explanation" }
-];
+import { createSections } from 'lib/utils';
 
 const MinicourseContainer = (props) => {
   const [sections, setSections] = useState<ISections[]>([]);
@@ -57,26 +52,6 @@ const MinicourseContainer = (props) => {
 
     previousUrl.current = video;
   }, [video]);
-
-  const createSections = (minicourseVideos) => {
-    return videoSections.map(videoSection => ({
-      sectionName: videoSection.name,
-      videos: minicourseVideos
-        .filter(minicourseVideo => {
-          const { section, visible } = minicourseVideo;
-          return (section === videoSection.slug && visible) ? minicourseVideo : null;
-        })
-        .map(filteredVideos => {
-          const { name, id, section, order } = filteredVideos;
-          return (section === videoSection.slug) ? ({ name, id, order }) : null;
-        })
-        .sort((a, b) => {
-          const aOrder = a.order;
-          const bOrder = b.order;
-          return (aOrder < bOrder) ? -1 : (aOrder > bOrder) ? 1 : 0;
-        })
-    }));
-  };
 
   useEffect(() => {
     if (minicourseVideos) {

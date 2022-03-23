@@ -4,7 +4,7 @@ import SectionContent from 'components/section-content';
 import VideosConfig from 'components/section-content/videosConfig';
 import { Body, Container, Header, MinicourseName } from './videos-creation.styled-components';
 
-const VideoCreation = ({ allSections, minicourseSections, currentMinicourseName }) => {
+const VideoCreation = ({ minicourseSections, currentMinicourseName }) => {
   const [isNewVideo, setIsNewVideo] = useState(false);
 
   const handleNewVideo = (flag) => {
@@ -24,12 +24,10 @@ const VideoCreation = ({ allSections, minicourseSections, currentMinicourseName 
           Upload video
         </button>
       </Header>
-      <hr />
       <Body>
         {
           isNewVideo && (
             <VideosConfig
-              allSections={allSections}
               continueCreation={handleNewVideo}
               isNew={isNewVideo}
             />
@@ -40,7 +38,6 @@ const VideoCreation = ({ allSections, minicourseSections, currentMinicourseName 
             <SectionContent
               key={section.sectionName}
               section={section}
-              allSections={allSections}
             />
           )}
       </Body>

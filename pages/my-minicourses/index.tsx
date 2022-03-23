@@ -17,14 +17,14 @@ const Expert: NextPage = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    if (minicoursesByUsername.response) {
+    if (!minicoursesByUsername.hasErrors && minicoursesByUsername.response) {
       const { minicourses } = minicoursesByUsername.response;
       setExpertMinicourses(minicourses);
     }
   }, [minicoursesByUsername]);
 
   useEffect(() => {
-    if (allCategories.response) {
+    if (!allCategories.hasErrors && allCategories.response) {
       const { categories } = allCategories.response;
       setCategories(categories);
     }

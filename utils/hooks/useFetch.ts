@@ -16,6 +16,7 @@ export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
     const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
     const [response, setResponse] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
+    const [hasErrors, setHasErrors] = useState(null);
 
     const fetchData = async () => {
         if (isAuthenticated) {
@@ -28,10 +29,11 @@ export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
                 if (shouldMakeRequest) {
                     const serverResponse = await makeRequest(url(requestUrl), body, method, accessToken);
                     setResponse(serverResponse);
-                }
+                };
+                setHasErrors(false);
             }
             catch (e) {
-                console.log(`%c <-- e: -->`, 'background-color: black; color: white; font-weight: bold', e);
+                setHasErrors(true);
             }
         }
     }
@@ -45,6 +47,7 @@ export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
         userRole,
         isLoading,
         response,
-        accessToken
+        accessToken,
+        hasErrors
     }
 }

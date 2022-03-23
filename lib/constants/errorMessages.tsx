@@ -1,3 +1,9 @@
 export const minicourseWithoutVideos = "Sorry, this minicourse has no videos yet.";
 export const noCategories = "Sorry, there are no categories setup yet.";
 export const missingFields = 'All fields must be filled.'
+export const updateFailed = 'Could not update the minicourse, please try again later.';
+export const deleteFailed = 'Could not delete the minicourse, please try again later.';
+export const failedFetchingMinicourses = 'Could not fetch the minicourses, please try refreshing the page.';
+export const videoDeleteFailed = 'Could not delete the video, please try again later.';
+export const videoUpdateFailed = 'Could not update the video, please try again later.';
+export const videoFailedVisibilityChange = 'Could not change the visibility of the video, please try again later.';

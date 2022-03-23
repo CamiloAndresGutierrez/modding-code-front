@@ -82,6 +82,10 @@ export const ExpertMinicourse = styled.div<{randomColorOne, randomColorTwo}>`
 
 export const MinicourseName = styled.h3`
   width: 90%;
+  :hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `;
 
 export const ButtonGroup = styled.div`
@@ -93,10 +97,25 @@ export const ButtonGroup = styled.div`
 
   .edit {
     color: ${colors.darkerBlue};
+    :hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
   }
 
   .delete {
     color: red;
+    :hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+  }
+
+  .visible {
+    :hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
   }
 
   > div {

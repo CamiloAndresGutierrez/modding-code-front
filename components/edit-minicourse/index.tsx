@@ -8,6 +8,7 @@ const EditMinicourse = ({
   submitInfo,
   cancelButtonBehavior,
   minicourse = null,
+  isEdit=false
 }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -49,10 +50,10 @@ const EditMinicourse = ({
     setMinicourseToEdit(auxObj);
   };
 
-  const isFieldEmpy = () => Object.values(minicourseToEdit).some(element => !element || element.length === 0);
+  const hasEmptyFields = () => Object.values(minicourseToEdit).some(element => !element || element.length === 0);
 
   const handleSubmit = () => {
-    if (!isFieldEmpy()) {
+    if (isEdit || !hasEmptyFields()) {
       setErrorMessage("");
       submitInfo(minicourseToEdit);
     } else {

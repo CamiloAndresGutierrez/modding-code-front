@@ -1,39 +1,46 @@
 import React, { useState, useRef } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
-import { ButtonGroup, UploadedVideo, VideoContainer, VideoInfo, VideoInfoContainer } from './section-content.styled-components';
+import {
+  ButtonGroup,
+  StyledDeleteIcon,
+  StyledSaveIcon,
+  UploadedVideo,
+  VideoContainer,
+  VideoInfo,
+  VideoInfoContainer
+} from './section-content.styled-components';
 
-type Video = {
-  id: number,
-  video: string,
-  name: string,
+import { url, videoSections } from 'lib/constants';
+import { DELETE_VIDEO, UPDATE_VIDEO } from 'lib/client/videos';
+import makeRequest from 'lib/client';
+import { useFetch } from 'utils/hooks/useFetch';
+import { videoDeleteFailed, videoFailedVisibilityChange, videoUpdateFailed } from 'lib/constants/errorMessages';
+import { ISections, Video } from 'lib/types/videos';
+import { changedVisibility, deletedVideoSuccess, videoUpdateSuccess } from 'lib/constants/successMessages';
+
+
+type VideosConfigTypes = {
+  video?: Video,
+  section?: ISections,
+  isNew?: Boolean,
+  continueCreation?: (value: any) => any,
+  positionChange?: (value: string, value2: any) => any,
 }
-
-type Section = {
-  sectionName: string,
-  videos: Video[],
-}
-
 
 const VideosConfig = ({
-  allSections,
-  continueCreation = (flag: Boolean) => { },
-  video = {
-    video: "",
-    name: ""
-  },
-  section = {
-    sectionName: ""
-  },
+  video,
+  section,
+  positionChange = (value: string, value2: any) => { },
   isNew = false,
-}) => {
-  const [selectedSection, setSelectedSection] = useState(section.sectionName || "Context");
-  const [videoName, setVideoName] = useState(video.name || "");
+  continueCreation = (flag: Boolean) => { },
+}: VideosConfigTypes) => {
+  const { accessToken } = useFetch({});
+  const [selectedSection, setSelectedSection] = useState(section && section.sectionName || "Context");
+  const [videoName, setVideoName] = useState(video && video.name || "");
   const [videoFile, setVideoFile] = useState(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -51,12 +58,25 @@ const VideosConfig = ({
     setVideoName(value);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     const updatedVideo = {
       ...video,
-      name: videoName
+      name: videoName,
+      section: selectedSection,
     }
-    console.log("updatedVideo", updatedVideo);
+
+    const { requestUrl, body, method } = UPDATE_VIDEO({
+      id: video.id,
+      ...updatedVideo
+    });
+
+    try {
+      await makeRequest(url(requestUrl), body, method, accessToken);
+      alert(videoUpdateSuccess);
+    }
+    catch {
+      alert(videoUpdateFailed);
+    }
   };
 
   const handleVideoUpload = () => {
@@ -72,6 +92,57 @@ const VideosConfig = ({
       console.log(selectedSection);
       console.log(videoName);
       console.log(videoFile);
+    }
+  }
+
+  const handleChangePosition = (action: string) => {
+    const { videos } = section;
+    const idx = videos.findIndex(sectionVideo => sectionVideo.id === video.id);
+    const newVideosOrder = [...videos];
+    let currentVideoPos;
+    switch (action) {
+      case "increase":
+        if (idx === newVideosOrder.length - 1) { break; }
+        currentVideoPos = newVideosOrder[idx];
+        newVideosOrder[idx] = newVideosOrder[idx + 1];
+        newVideosOrder[idx + 1] = currentVideoPos;
+        break;
+      case "decrease":
+        if (idx === 0) { break; }
+        currentVideoPos = newVideosOrder[idx];
+        newVideosOrder[idx] = newVideosOrder[idx - 1];
+        newVideosOrder[idx - 1] = currentVideoPos;
+        break;
+    }
+    positionChange(section.sectionName, newVideosOrder);
+  }
+
+  const handleDeleteVideo = async () => {
+    const { requestUrl, body, method } = DELETE_VIDEO(video.id);
+    try {
+      const wasDeleted = await makeRequest(url(requestUrl), body, method, accessToken);
+      if (wasDeleted === "Success") {
+        alert(deletedVideoSuccess);
+      }
+    }
+    catch {
+      alert(videoDeleteFailed);
+    }
+  }
+
+  const handleVideoVisibility = async () => {
+    const isVisible = video.visible;
+    const { requestUrl, body, method } = UPDATE_VIDEO({
+      id: video.id,
+      visible: !isVisible,
+    });
+
+    try {
+      await makeRequest(url(requestUrl), body, method, accessToken);
+      alert(changedVisibility);
+    }
+    catch {
+      alert(videoFailedVisibilityChange);
     }
   }
 
@@ -97,8 +168,8 @@ const VideosConfig = ({
           <input type={"text"} value={videoName} onChange={(e) => handleNameChange(e)} />
           <select value={selectedSection} onChange={(e) => handleSectionChange(e)}>
             {
-              Array.isArray(allSections) && allSections.map(section =>
-                <option key={section.name} value={section.name}>
+              videoSections.map(section =>
+                <option key={section.name} value={section.slug}>
                   {section.name}
                 </option>
               )
@@ -108,22 +179,26 @@ const VideosConfig = ({
         {
           isNew ? (
             <ButtonGroup>
-              <button onClick={() => handleSaveVideo()}><SaveIcon /></button>
-              <button onClick={() => handleCancelCreation()}><DeleteIcon /></button>
+              <button onClick={() => handleSaveVideo()}><StyledSaveIcon /></button>
+              <button onClick={() => handleCancelCreation()}><StyledDeleteIcon /></button>
               <button><VisibilityIcon /></button>
             </ButtonGroup>
           ) : (
             <ButtonGroup>
-              <button><KeyboardArrowUpIcon /></button>
-              <button><KeyboardArrowDownIcon /></button>
-              <button onClick={() => handleUpdate()}><SaveIcon /></button>
-              <button><DeleteIcon /></button>
-              <button><VisibilityIcon /></button>
+              {
+                section.videos.length > 1 ?
+                  <>
+                    <button onClick={() => handleChangePosition("decrease")}><KeyboardArrowUpIcon /></button>
+                    <button onClick={() => handleChangePosition("increase")}><KeyboardArrowDownIcon /></button>
+                  </> : null
+              }
+              <button onClick={() => handleUpdate()}><StyledSaveIcon /></button>
+              <button onClick={() => handleDeleteVideo()}><StyledDeleteIcon /></button>
+              <button onClick={() => handleVideoVisibility()}><VisibilityIcon /></button>
             </ButtonGroup>
           )
         }
       </VideoInfoContainer>
-
     </VideoContainer>
   )
 

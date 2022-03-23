@@ -50,6 +50,9 @@ const getResponseData = (parsedRequest) => {
                 'cat-ebb324734f-1646442759-a52e057b-1646970021') {
                 return minicourse2;
             }
+            else {
+                return null;
+            }
         case Actions.GET_VIDEOS_BY_MINICOURSE:
             if (parsedRequest.params.minicourse_id ===
                 'cat-ebb324734f-1646442759-46beec34-1646970768') {
@@ -59,6 +62,9 @@ const getResponseData = (parsedRequest) => {
                 'cat-ebb324734f-1646442759-a52e057b-1646970021') {
                 return videosMinicourse2;
             }
+            else {
+                return null;
+            }
         case Actions.GET_VIDEO_BY_ID:
             if (parsedRequest.params.id ===
                 'cat-ebb324734f-1646442759-a52e057b-1646970021-396c5d79-1647398884') {
@@ -67,6 +73,9 @@ const getResponseData = (parsedRequest) => {
             else if (parsedRequest.params.id ===
                 'cat-ebb324734f-1646442759-a52e057b-1646970021-dfb3218d-1647398526') {
                 return videoWithUrl2
+            }
+            else {
+                return null;
             }
         case Actions.GET_PROBLEMS_BY_MINICOURSE_ACTION:
             return problems;
@@ -78,6 +87,9 @@ const getResponseData = (parsedRequest) => {
             else if (parsedRequest.params.id ===
                 'cat-ebb324734f-1646442759-a52e057b-1646970021-38d8019f9c-1647817880') {
                 return problem2
+            }
+            else {
+                return null;
             }
         case Actions.GET_MINICOURSE_BY_USERNAME_ACTION:
             return expertMinicourses
@@ -115,6 +127,10 @@ const responseData = (schema: any, request: Request, method: string) => {
 
     if (method === "POST" && request.url === url("/minicourse")) {
         responseData = createMinicourse
+    }
+
+    if (method === "DELETE" && request.url === url("/minicourse")) {
+        responseData = "Success"
     }
 
     RESPONSES.forEach(response => {

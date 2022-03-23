@@ -10,7 +10,8 @@ type RequestOptions = {
 export const Actions = {
     GET_RANDOMIZE_MINICOURSES_ACTION: 'get_randomized_minicourses',
     GET_MINICOURSE_BY_ID_ACTION: 'get_minicourse',
-    GET_MINICOURSE_BY_USERNAME_ACTION: 'get_minicourses_by_username'
+    GET_MINICOURSE_BY_USERNAME_ACTION: 'get_minicourses_by_username',
+    GET_MINICOURSE_THUMB_UPLOAD_URL_ACTION: 'get_minicourse_thumb_upload_url'
 }
 
 export const GET_RANDOMIZE_MINICOURSES = (categoryId: string): RequestOptions => ({
@@ -43,7 +44,7 @@ export const GET_MINICOURSE_BY_USERNAME: RequestOptions = {
         "action": Actions.GET_MINICOURSE_BY_USERNAME_ACTION,
         "params": {}
     }
-}
+};
 
 export const CREATE_MINICOURSE = (newMinicourseDetails: Minicourse): RequestOptions => ({
     requestUrl: '/minicourse',
@@ -52,12 +53,31 @@ export const CREATE_MINICOURSE = (newMinicourseDetails: Minicourse): RequestOpti
         ...newMinicourseDetails,
         "ext": "..jpg"
     }
-})
+});
 
 export const UPDATE_MINICOURSE = (minicourseDetails: Minicourse): RequestOptions => ({
     requestUrl: '/minicourse',
     method: 'PUT',
     body: {
         ...minicourseDetails
+    }
+});
+
+export const DELETE_MINICOURSE = (minicourseId: string): RequestOptions => ({
+    requestUrl: '/minicourse',
+    method: 'DELETE',
+    body: {
+        "id": minicourseId
+    }
+})
+
+export const GET_MINICOURSE_THUMB_UPLOAD_URL = (minicourseId: string): RequestOptions => ({
+    requestUrl: '/minicourse',
+    method: 'PUT',
+    body: {
+        "action": Actions.GET_MINICOURSE_THUMB_UPLOAD_URL_ACTION,
+        "params": {
+            "id": minicourseId
+        }
     }
 })

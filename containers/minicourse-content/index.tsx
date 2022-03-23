@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import ProblemsCreation from 'components/problems-creation';
 import VideosCreation from 'components/videos-creation';
 import { ButtonGroup, Container } from './minicourse-content.styled-components';
+import { createSections } from 'lib/utils';
+import { Minicourse } from 'lib/types/minicourse';
 
 const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
-  const [currentMinicourse, setCurrentMinicourse] = useState({
-    "name": "",
-    "sections": "",
-  });
+  const [currentMinicourse, setCurrentMinicourse] = useState<Minicourse>({});
+  const [sortedSections, setSortedSections] = useState({});
   const [tab, setTab] = useState("videos");
 
   useEffect(() => {
@@ -21,6 +21,13 @@ const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
     setTab(tab);
   };
 
+  useEffect(() => {
+    if (sections) {
+      const sorted = createSections(sections);
+      setSortedSections(sorted);
+    }
+  }, [sections]);
+
   return (
     <Container>
       <ButtonGroup tab={tab}>
@@ -31,8 +38,7 @@ const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
         tab === "videos" && (
           <VideosCreation
             currentMinicourseName={currentMinicourse.name}
-            allSections={sections}
-            minicourseSections={currentMinicourse.sections}
+            minicourseSections={sortedSections}
           />
         )
       }
