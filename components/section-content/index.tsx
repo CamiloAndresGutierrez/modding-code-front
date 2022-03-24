@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
-import { ISections } from 'lib/types/videos';
-
 import { Button, HR, SectionHeader } from './section-content.styled-components';
 import VideosConfig from './videosConfig';
 
-const SectionContent = ({ section }) => {
+import { ISections } from 'lib/types/videos';
+import { UPDATE_VIDEO } from 'lib/client/videos';
+import { url } from 'lib/constants';
+import makeRequest from 'lib/client';
+
+import { State } from 'lib/types/state';
+import { connect } from 'react-redux';
+
+const SectionContent = ({ section, accessToken }) => {
   const [changedSection, setChangedSection] = useState("");
   const [sectionInfo, setSectionInfo] = useState<ISections>({
     sectionName: "",
@@ -23,6 +29,22 @@ const SectionContent = ({ section }) => {
   }
 
   const saveNewOrder = () => {
+    const newOrderUpdate = sectionInfo.videos.map((element, index) => {
+      const update = {
+        id: element.id,
+        order: index + 1
+      }
+      const { requestUrl, method, body } = UPDATE_VIDEO(update);
+      return makeRequest(url(requestUrl), body, method, accessToken);
+    });
+
+    Promise.all(newOrderUpdate)
+      .then(() =>
+        alert("Updated order")
+      )
+      .catch(() =>
+        alert("Failed to update order")
+      );
   }
 
   useEffect(() => {
@@ -55,4 +77,10 @@ const SectionContent = ({ section }) => {
   );
 };
 
-export default SectionContent;
+const mapStateToProps = (state: State) => {
+  return ({
+    accessToken: state.site.accessToken
+  })
+}
+
+export default connect(mapStateToProps, null)(SectionContent);

@@ -1,6 +1,5 @@
 import { Minicourse } from "lib/types/minicourse";
 import { SectionContent, VideoContent, VideosUrls } from "lib/types/videos";
-import { AnyAction, Dispatch } from "redux";
 
 export const MinicourseActionTypes = {
   SET_CURRENT_MINICOURSE: 'SET_CURRENT_MINICOURSE',

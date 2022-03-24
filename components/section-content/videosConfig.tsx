@@ -3,6 +3,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import {
   ButtonGroup,
@@ -15,30 +16,35 @@ import {
 } from './section-content.styled-components';
 
 import { url, videoSections } from 'lib/constants';
-import { DELETE_VIDEO, UPDATE_VIDEO } from 'lib/client/videos';
-import makeRequest from 'lib/client';
+import { CREATE_VIDEO, DELETE_VIDEO, UPDATE_VIDEO } from 'lib/client/videos';
+import makeRequest, { makeFileUploadRequest } from 'lib/client';
 import { useFetch } from 'utils/hooks/useFetch';
 import { videoDeleteFailed, videoFailedVisibilityChange, videoUpdateFailed } from 'lib/constants/errorMessages';
 import { ISections, Video } from 'lib/types/videos';
 import { changedVisibility, deletedVideoSuccess, videoUpdateSuccess } from 'lib/constants/successMessages';
+import { Minicourse } from 'lib/types/minicourse';
+import { getParamsFromUrl } from 'lib/utils';
+import { connect } from 'react-redux';
+import { State } from 'lib/types/state';
 
 
 type VideosConfigTypes = {
   video?: Video,
   section?: ISections,
   isNew?: Boolean,
-  continueCreation?: (value: any) => any,
   positionChange?: (value: string, value2: any) => any,
+  currentMinicourse?: Minicourse,
+  accessToken?: string
 }
 
 const VideosConfig = ({
   video,
   section,
+  currentMinicourse = {},
   positionChange = (value: string, value2: any) => { },
   isNew = false,
-  continueCreation = (flag: Boolean) => { },
+  accessToken = ""
 }: VideosConfigTypes) => {
-  const { accessToken } = useFetch({});
   const [selectedSection, setSelectedSection] = useState(section && section.sectionName || "Context");
   const [videoName, setVideoName] = useState(video && video.name || "");
   const [videoFile, setVideoFile] = useState(null);
@@ -47,10 +53,6 @@ const VideosConfig = ({
   const handleSectionChange = (e) => {
     const value = e.target.value;
     setSelectedSection(value);
-  };
-
-  const handleCancelCreation = () => {
-    continueCreation(false);
   };
 
   const handleNameChange = (e) => {
@@ -84,14 +86,27 @@ const VideosConfig = ({
     setVideoFile(file);
   };
 
-  const handleSaveVideo = () => {
+  const createNewVideoRequest = () => {
+    const { requestUrl, body, method } = CREATE_VIDEO({
+      name: videoName,
+      minicourse_id: currentMinicourse.id,
+      section: selectedSection,
+    })
+
+    return makeRequest(url(requestUrl), body, method, accessToken);
+  }
+
+  const handleSaveVideo = async () => {
     const isVideoNameSet = !!videoName.length;
     const areFieldsValid = !!videoFile && isVideoNameSet;
-
     if (areFieldsValid) {
-      console.log(selectedSection);
-      console.log(videoName);
-      console.log(videoFile);
+      const response = await createNewVideoRequest();
+      const thumbnailURL = response.upload_url;
+      const params = getParamsFromUrl(thumbnailURL);
+      // makeFileUploadRequest(thumbnailURL, params, videoFile);
+    }
+    else {
+      alert("All fields in new video are required.")
     }
   }
 
@@ -180,8 +195,6 @@ const VideosConfig = ({
           isNew ? (
             <ButtonGroup>
               <button onClick={() => handleSaveVideo()}><StyledSaveIcon /></button>
-              <button onClick={() => handleCancelCreation()}><StyledDeleteIcon /></button>
-              <button><VisibilityIcon /></button>
             </ButtonGroup>
           ) : (
             <ButtonGroup>
@@ -194,14 +207,23 @@ const VideosConfig = ({
               }
               <button onClick={() => handleUpdate()}><StyledSaveIcon /></button>
               <button onClick={() => handleDeleteVideo()}><StyledDeleteIcon /></button>
-              <button onClick={() => handleVideoVisibility()}><VisibilityIcon /></button>
+              <button onClick={() => handleVideoVisibility()}>
+                {
+                  video.visible ? <VisibilityIcon /> : <VisibilityOffIcon />
+                }
+              </button>
             </ButtonGroup>
           )
         }
       </VideoInfoContainer>
     </VideoContainer>
   )
+};
 
+const mapStateToProps = (state: State) => {
+  return ({
+    accessToken: state.site.accessToken
+  })
 }
 
-export default VideosConfig;
+export default connect(mapStateToProps, null)(VideosConfig);

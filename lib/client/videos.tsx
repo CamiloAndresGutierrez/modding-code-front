@@ -35,6 +35,15 @@ export const GET_VIDEO_URL_BY_ID = (videoId, getUrl = false): RequestOptions => 
   }
 });
 
+export const CREATE_VIDEO = (newVideoInfo: Video): RequestOptions => ({
+  requestUrl: '/video',
+  method: 'POST',
+  body: {
+    ...newVideoInfo,
+    ext: "mp4"
+  }
+})
+
 export const DELETE_VIDEO = (videoId: string): RequestOptions => ({
   requestUrl: '/video',
   method: 'POST',

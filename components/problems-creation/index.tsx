@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import ProblemContent from 'components/problem-content';
 import CreateProblem from 'components/problem-content/create-problem';
 import { Header, MinicourseName, Container, Body } from './problems-creation.styled-components';
+import { State } from 'lib/types/state';
+import { connect } from 'react-redux';
 
 
-const ProblemsCreation = ({ problems, currentMinicourseName }) => {
+const ProblemsCreation = ({ problems, currentMinicourse }) => {
   const [isNewProblem, setIsNewProblem] = useState(false);
   const handleCreateProblem = () => {
     setIsNewProblem(!isNewProblem);
@@ -14,7 +16,7 @@ const ProblemsCreation = ({ problems, currentMinicourseName }) => {
     <Container>
       <Header>
         <MinicourseName>
-          {currentMinicourseName}
+          {currentMinicourse.name}
         </MinicourseName>
         <button onClick={() => handleCreateProblem()}>{isNewProblem ? "Cancel" : "Create problem"} </button>
       </Header>
@@ -39,4 +41,10 @@ const ProblemsCreation = ({ problems, currentMinicourseName }) => {
   )
 }
 
-export default ProblemsCreation;
+const mapStateToProps = (state: State) => {
+  return ({
+    currentMinicourse: state.minicourses.currentMinicourse
+  })
+}
+
+export default connect(mapStateToProps, null)(ProblemsCreation);

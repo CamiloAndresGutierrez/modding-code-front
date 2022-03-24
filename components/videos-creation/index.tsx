@@ -3,33 +3,32 @@ import React, { useState } from 'react';
 import SectionContent from 'components/section-content';
 import VideosConfig from 'components/section-content/videosConfig';
 import { Body, Container, Header, MinicourseName } from './videos-creation.styled-components';
+import { State } from 'lib/types/state';
+import { connect } from 'react-redux';
 
-const VideoCreation = ({ minicourseSections, currentMinicourseName }) => {
+const VideosCreation = ({ minicourseSections, currentMinicourse }) => {
   const [isNewVideo, setIsNewVideo] = useState(false);
-
-  const handleNewVideo = (flag) => {
-    setIsNewVideo(flag);
-  };
 
   return (
     <Container>
       <Header>
         <MinicourseName>
-          {currentMinicourseName}
+          {currentMinicourse.name}
         </MinicourseName>
         <button
-          disabled={isNewVideo}
-          onClick={() => handleNewVideo(true)}
+          onClick={() => setIsNewVideo(!isNewVideo)}
         >
-          Upload video
+          {
+            isNewVideo ? "Cancel" : "Upload video"
+          }
         </button>
       </Header>
       <Body>
         {
           isNewVideo && (
             <VideosConfig
-              continueCreation={handleNewVideo}
               isNew={isNewVideo}
+              currentMinicourse={currentMinicourse}
             />
           )
         }
@@ -45,4 +44,10 @@ const VideoCreation = ({ minicourseSections, currentMinicourseName }) => {
   )
 }
 
-export default VideoCreation;
+const mapStateToProps = (state: State) => {
+  return ({
+    currentMinicourse: state.minicourses.currentMinicourse
+  })
+}
+
+export default connect(mapStateToProps, null)(VideosCreation);

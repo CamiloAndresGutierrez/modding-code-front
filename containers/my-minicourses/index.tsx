@@ -14,7 +14,7 @@ import { ButtonContainer, ButtonGroup, Container, ExpertMinicourse, ExpertMinico
 import content from './my-minicourses.content'
 
 import { DELETE_MINICOURSE, GET_MINICOURSE_BY_USERNAME, GET_MINICOURSE_THUMB_UPLOAD_URL, UPDATE_MINICOURSE } from 'lib/client/minicourses';
-import makeRequest from 'lib/client';
+import makeRequest, { makeFileUploadRequest } from 'lib/client';
 import { url } from 'lib/constants';
 import { Minicourse } from 'lib/types/minicourse';
 import { deleteFailed, failedFetchingMinicourses, updateFailed } from 'lib/constants/errorMessages';
@@ -45,7 +45,7 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
   const requestMinicourseThumbnailUrl = async (minicourseId: string) => {
     const { requestUrl, body, method } = GET_MINICOURSE_THUMB_UPLOAD_URL(minicourseId);
 
-    return await makeRequest(url(requestUrl), body, method, accessToken);
+    return makeRequest(url(requestUrl), body, method, accessToken);
   }
 
   const handleSubmitInfo = async (info) => {
@@ -53,7 +53,7 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
       const response: Minicourse = await requestMinicourseThumbnailUrl(info.id);
       const thumbnailURL = response.thumb_upload_url;
       const params = getParamsFromUrl(thumbnailURL);
-      // makeFileUploadRequest(thumbnailURL, params, info.thumbnail);
+      makeFileUploadRequest(thumbnailURL, params, info.thumbnail);
     }
     const { requestUrl, body, method } = UPDATE_MINICOURSE(info);
     const serverResponse = await makeRequest(url(requestUrl), body, method, accessToken);
@@ -103,7 +103,6 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
     catch (e) {
       alert(deleteFailed);
     }
-
   }
 
   const getNewRandomColor = () => {

@@ -23,7 +23,7 @@ const CreateMinicourseContainer = ({ categories }) => {
       "category_id": category
     });
 
-    return await makeRequest(url(requestUrl), body, method, accessToken);
+    return makeRequest(url(requestUrl), body, method, accessToken);
   }
 
   const handleSubmit = async (details) => {
