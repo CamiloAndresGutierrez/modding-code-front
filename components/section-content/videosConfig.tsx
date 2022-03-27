@@ -20,7 +20,7 @@ import { CREATE_VIDEO, DELETE_VIDEO, UPDATE_VIDEO } from 'lib/client/videos';
 import makeRequest, { makeFileUploadRequest } from 'lib/client';
 import { useFetch } from 'utils/hooks/useFetch';
 import { videoDeleteFailed, videoFailedVisibilityChange, videoUpdateFailed } from 'lib/constants/errorMessages';
-import { ISections, Video } from 'lib/types/videos';
+import { ISections, Section, Video } from 'lib/types/videos';
 import { changedVisibility, deletedVideoSuccess, videoUpdateSuccess } from 'lib/constants/successMessages';
 import { Minicourse } from 'lib/types/minicourse';
 import { getParamsFromUrl } from 'lib/utils';
@@ -34,43 +34,54 @@ type VideosConfigTypes = {
   isNew?: Boolean,
   positionChange?: (value: string, value2: any) => any,
   currentMinicourse?: Minicourse,
-  accessToken?: string
+  accessToken?: string,
+  allSections?: ISections[]
 }
 
 const VideosConfig = ({
   video,
   section,
+  allSections = [],
   currentMinicourse = {},
   positionChange = (value: string, value2: any) => { },
   isNew = false,
   accessToken = ""
 }: VideosConfigTypes) => {
-  const [selectedSection, setSelectedSection] = useState(section && section.sectionName || "Context");
+  const [selectedSection, setSelectedSection] = useState(section && section.sectionSlug || "CONTEXT");
   const [videoName, setVideoName] = useState(video && video.name || "");
   const [videoFile, setVideoFile] = useState(null);
+  const [hasChanged, setHasChanged] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleSectionChange = (e) => {
     const value = e.target.value;
     setSelectedSection(value);
+    setHasChanged(true);
   };
 
   const handleNameChange = (e) => {
     const value = e.target.value;
     setVideoName(value);
+    setHasChanged(true);
   };
 
-  const handleUpdate = async () => {
-    const updatedVideo = {
-      ...video,
-      name: videoName,
-      section: selectedSection,
+  const handleUpdate = async ({ videoId = null, order = null }) => {
+    let updatedVideo;
+    if (order && videoId) {
+      updatedVideo = {
+        id: videoId,
+        order: order
+      }
+    } else {
+      updatedVideo = {
+        ...video,
+        id: video.id,
+        name: videoName,
+        section: selectedSection
+      }
     }
 
-    const { requestUrl, body, method } = UPDATE_VIDEO({
-      id: video.id,
-      ...updatedVideo
-    });
+    const { requestUrl, body, method } = UPDATE_VIDEO({ ...updatedVideo });
 
     try {
       await makeRequest(url(requestUrl), body, method, accessToken);
@@ -91,19 +102,28 @@ const VideosConfig = ({
       name: videoName,
       minicourse_id: currentMinicourse.id,
       section: selectedSection,
-    })
+    });
 
     return makeRequest(url(requestUrl), body, method, accessToken);
   }
 
   const handleSaveVideo = async () => {
-    const isVideoNameSet = !!videoName.length;
-    const areFieldsValid = !!videoFile && isVideoNameSet;
+    const areFieldsValid = !!videoName.length && !!videoFile;
+
     if (areFieldsValid) {
       const response = await createNewVideoRequest();
       const thumbnailURL = response.upload_url;
-      const params = getParamsFromUrl(thumbnailURL);
+      // const params = getParamsFromUrl(thumbnailURL);
       // makeFileUploadRequest(thumbnailURL, params, videoFile);
+
+      const newVideoSection = allSections.find(section =>
+        section.sectionSlug === selectedSection);
+
+      const
+        videoId = response.video.id,
+        order = newVideoSection.videos.length
+
+      handleUpdate({ videoId, order });
     }
     else {
       alert("All fields in new video are required.")
@@ -205,7 +225,7 @@ const VideosConfig = ({
                     <button onClick={() => handleChangePosition("increase")}><KeyboardArrowDownIcon /></button>
                   </> : null
               }
-              <button onClick={() => handleUpdate()}><StyledSaveIcon /></button>
+              {hasChanged && <button onClick={() => handleUpdate({})}><StyledSaveIcon /></button>}
               <button onClick={() => handleDeleteVideo()}><StyledDeleteIcon /></button>
               <button onClick={() => handleVideoVisibility()}>
                 {

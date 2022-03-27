@@ -1,4 +1,5 @@
 import { Method, RequestBodyType } from "lib/types";
+import { Problem } from "lib/types/problems";
 
 type RequestOptions = {
   requestUrl?: string,
@@ -32,3 +33,19 @@ export const GET_PROBLEMS_BY_ID = (problemId: string): RequestOptions => ({
     }
   }
 });
+
+export const CREATE_PROBLEM = (problemDetails: Problem): RequestOptions => ({
+  requestUrl: '/problem',
+  method: 'POST',
+  body: {
+    ...problemDetails
+  }
+})
+
+export const UPDATE_PROBLEM = (problemDetails: Problem): RequestOptions => ({
+  requestUrl: '/problem',
+  method: 'PUT',
+  body: {
+    ...problemDetails
+  }
+})

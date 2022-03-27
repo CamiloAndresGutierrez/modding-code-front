@@ -30,6 +30,7 @@ export const convertFileToBinaryString = (file: File): Promise<ArrayBuffer | str
 export const createSections = (minicourseVideos) => {
     return videoSections.map(videoSection => ({
         sectionName: videoSection.name,
+        sectionSlug: videoSection.slug,
         videos: minicourseVideos
             .filter(minicourseVideo => {
                 const { section, visible } = minicourseVideo;

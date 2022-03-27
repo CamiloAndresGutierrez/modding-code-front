@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import CircleIcon from '@mui/icons-material/Circle';
+
 import { StyledRating, StyledTable, StyledTableHead, StyledTableRow, Styledtd, TableContainer } from "./problemsList.styled-components";
 
 const ProblemsList = ({ problems }) => {
@@ -11,8 +12,6 @@ const ProblemsList = ({ problems }) => {
     const handleProblemSelection = (problemId) => {
         push(`/problems/${problemId}`);
     }
-
-    console.log(`%c <-- problems: -->`, 'background-color: black; color: white; font-weight: bold', problems);
 
     return (
         <TableContainer>
@@ -26,25 +25,23 @@ const ProblemsList = ({ problems }) => {
                     </tr>
                 </StyledTableHead>
                 <tbody>
-                    {
-                        problems.map(element => {
-                            return element.visible ? (
-                                <StyledTableRow key={element.id} onClick={() => handleProblemSelection(element.id)}>
-                                    <Styledtd>{element.name}</Styledtd>
-                                    <Styledtd>
-                                        <StyledRating
-                                            name="read-only"
-                                            value={element.difficulty}
-                                            precision={0.5}
-                                            icon={<CircleIcon />}
-                                            emptyIcon={<CircleOutlinedIcon />}
-                                            readOnly
-                                        />
-                                    </Styledtd>
-                                    <Styledtd>{element.veredict}</Styledtd>
-                                </StyledTableRow>) : null
-                        })
-                    }
+                    {problems.map(element => {
+                        return element.visible ? (
+                            <StyledTableRow key={element.id} onClick={() => handleProblemSelection(element.id)}>
+                                <Styledtd>{element.name}</Styledtd>
+                                <Styledtd>
+                                    <StyledRating
+                                        name="read-only"
+                                        value={element.difficulty}
+                                        precision={0.5}
+                                        icon={<CircleIcon />}
+                                        emptyIcon={<CircleOutlinedIcon />}
+                                        readOnly
+                                    />
+                                </Styledtd>
+                                <Styledtd>{element.veredict}</Styledtd>
+                            </StyledTableRow>) : null
+                    })}
                 </tbody>
             </StyledTable>
         </TableContainer>

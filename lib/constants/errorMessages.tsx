@@ -7,3 +7,4 @@ export const failedFetchingMinicourses = 'Could not fetch the minicourses, pleas
 export const videoDeleteFailed = 'Could not delete the video, please try again later.';
 export const videoUpdateFailed = 'Could not update the video, please try again later.';
 export const videoFailedVisibilityChange = 'Could not change the visibility of the video, please try again later.';
+export const videoFailedVisibilityChange2 = 'You need to add test cases to this minicourse in order to make it visible.'

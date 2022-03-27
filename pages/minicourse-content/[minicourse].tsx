@@ -17,6 +17,7 @@ import makeRequest from 'lib/client';
 import { url } from 'lib/constants';
 import { setAccessToken } from 'lib/actions/site';
 import { Dispatch } from 'redux';
+import { GET_PROBLEMS_BY_MINICOURSE } from 'lib/client/problems';
 
 type Props = {
   minicourse: string,
@@ -36,12 +37,17 @@ const MinicourseContent: NextPage<Props> = ({ minicourse, setCurrentMinicourse, 
   const getMinicourseVideosRequest = () => {
     const { requestUrl, method, body } = GET_VIDEOS_BY_MINICOURSE_ID(minicourse);
     return makeRequest(url(requestUrl), body, method, accessToken);
-  }
+  };
 
   const getMinicourseRequest = () => {
     const { requestUrl, method, body } = GET_MINICOURSE_BY_ID(minicourse);
     return makeRequest(url(requestUrl), body, method, accessToken);
-  }
+  };
+
+  const getProblemsRequest = () => {
+    const { requestUrl, method, body } = GET_PROBLEMS_BY_MINICOURSE(minicourse);
+    return makeRequest(url(requestUrl), body, method, accessToken);
+  };
 
   useEffect(() => {
     getMinicourseVideosRequest()
@@ -56,8 +62,16 @@ const MinicourseContent: NextPage<Props> = ({ minicourse, setCurrentMinicourse, 
         setCurrentMinicourse(minicourse)
       });
 
-    setAccessToken(accessToken);
+    getProblemsRequest()
+      .then(response => {
+        const { problems } = response;
+        setProblems(problems)
+      });
   }, []);
+
+  useEffect(() => {
+    if (accessToken) setAccessToken(accessToken);
+  }, [accessToken]);
 
   return (
     <Base withNav>

@@ -40,5 +40,6 @@ export type VideosUrls = {
 
 export interface ISections {
     sectionName?: string,
+    sectionSlug?: string,
     videos?: Video[],
 }

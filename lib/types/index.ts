@@ -1,3 +1,5 @@
+import { ProblemDescription } from "./problems";
+
 export type InputFields = {
     field: string,
     type: string,
@@ -24,7 +26,7 @@ export type RequestBodyType = {
     params?: params,
     id?: string,
     name?: string,
-    description?: string,
+    description?: string | ProblemDescription,
     category_id?: string,
     ext?: string,
     rate?: number,

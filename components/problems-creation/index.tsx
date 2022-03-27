@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import ProblemContent from 'components/problem-content';
-import CreateProblem from 'components/problem-content/create-problem';
-import { Header, MinicourseName, Container, Body } from './problems-creation.styled-components';
-import { State } from 'lib/types/state';
 import { connect } from 'react-redux';
 
+import ProblemContent from 'components/problem-content';
+import CreateProblem from 'components/problem-content/create-problem';
+
+import { Header, MinicourseName, Container, Body } from './problems-creation.styled-components';
+
+import { State } from 'lib/types/state';
 
 const ProblemsCreation = ({ problems, currentMinicourse }) => {
   const [isNewProblem, setIsNewProblem] = useState(false);
+
   const handleCreateProblem = () => {
     setIsNewProblem(!isNewProblem);
   }
@@ -22,12 +25,7 @@ const ProblemsCreation = ({ problems, currentMinicourse }) => {
       </Header>
       <hr />
       <Body>
-
-        {
-          isNewProblem && (
-            <CreateProblem />
-          )
-        }
+        { isNewProblem && ( <CreateProblem />) }
         {
           problems.map(problem => (
             <ProblemContent

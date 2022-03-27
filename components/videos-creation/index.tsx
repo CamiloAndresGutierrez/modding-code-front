@@ -15,23 +15,18 @@ const VideosCreation = ({ minicourseSections, currentMinicourse }) => {
         <MinicourseName>
           {currentMinicourse.name}
         </MinicourseName>
-        <button
-          onClick={() => setIsNewVideo(!isNewVideo)}
-        >
-          {
-            isNewVideo ? "Cancel" : "Upload video"
-          }
+        <button onClick={() => setIsNewVideo(!isNewVideo)}>
+          {isNewVideo ? "Cancel" : "New video"}
         </button>
       </Header>
       <Body>
-        {
-          isNewVideo && (
-            <VideosConfig
-              isNew={isNewVideo}
-              currentMinicourse={currentMinicourse}
-            />
-          )
-        }
+        {isNewVideo && (
+          <VideosConfig
+            isNew={isNewVideo}
+            currentMinicourse={currentMinicourse}
+            allSections={minicourseSections}
+          />
+        )}
         {Array.isArray(minicourseSections) &&
           minicourseSections.map(section =>
             <SectionContent
