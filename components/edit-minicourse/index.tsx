@@ -1,21 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ButtonGroup, CancelButton, CategoriesContainer, Container, ErrorMessage, ImgContainer, SaveButton, SetCategories, Title } from './edit-minicourse.styled-components';
 import { FileUploader } from "react-drag-drop-files";
+import { missingFields } from 'lib/constants/errorMessages';
 
 const EditMinicourse = ({
   categories,
   submitInfo,
   cancelButtonBehavior,
   minicourse = null,
+  isEdit=false
 }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [fetchedCategories, setFetchedCategories] = useState([]);
   const [minicourseToEdit, setMinicourseToEdit] = useState({
     name: "",
     description: "",
     thumbnail: null,
-    categories: ""
+    category: ""
   });
+
+  useEffect(() => {
+    if (categories) {
+      setFetchedCategories(categories);
+    }
+  }, [categories])
 
   useEffect(() => {
     if (minicourse) { setMinicourseToEdit(minicourse) }
@@ -35,20 +44,20 @@ const EditMinicourse = ({
     setSelectedCategory(category);
     const auxObj = {
       ...minicourseToEdit,
-      categories: category
+      category: category
     };
 
     setMinicourseToEdit(auxObj);
   };
 
-  const isFieldEmpy = () => Object.values(minicourseToEdit).some(element => element.length === 0);
+  const hasEmptyFields = () => Object.values(minicourseToEdit).some(element => !element || element.length === 0);
 
   const handleSubmit = () => {
-    if (!isFieldEmpy()) {
+    if (isEdit || !hasEmptyFields()) {
       setErrorMessage("");
       submitInfo(minicourseToEdit);
     } else {
-      setErrorMessage("All fields must be filled.");
+      setErrorMessage(missingFields);
     };
   };
 
@@ -75,7 +84,6 @@ const EditMinicourse = ({
       <Title>Minicourse Info</Title>
       <form>
         <label htmlFor="minicourseName">Name</label>
-
         <div className={"search-bar"}>
           <div>
             <input
@@ -111,9 +119,10 @@ const EditMinicourse = ({
 
         <CategoriesContainer>
           <select value={selectedCategory} onChange={(e) => handleCategoryChange(e)}>
+            <option value={""} defaultValue={""} disabled>Choose a category</option>
             {
-              categories.map(category =>
-                <option key={category.name}>{category.name}</option>
+              fetchedCategories.map((category) =>
+                <option key={category.name} value={category.id} >{category.name}</option>
               )
             }
           </select>

@@ -27,37 +27,38 @@ const Minicourse = (props) => {
     };
 
     const handleTakeMinicourse = (minicourse) => {
-        push(`${asPath}/${minicourse.id}`, null, { shallow: true });
+        push(`${asPath}/${minicourse.id}`);
     };
 
     return (
         <Container >
             <Head >
-                <img alt={`thumbnail-${minicourse.name}`} src={minicourse.thumbnail}></img>
+                <img alt={`thumbnail-${minicourse.name}`} src={minicourse.thumb_download_url}></img>
             </Head>
             <Body>
                 <h3>
                     {minicourse.name}
                 </h3>
                 <BlueLink onClick={handleClick}>
-                    {showDescription ? 'Hide' : 'Show' } details
-                    {showDescription ? <ExpandLessIcon /> : <ExpandMoreIcon /> }
+                    {showDescription ? 'Hide' : 'Show'} details
+                    {showDescription ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 </BlueLink>
                 {showDescription &&
                     <DescriptionContainer>
                         <Description onClick={handleClick}>
-                            {minicourse.description}
+                            {/* {minicourse.description} */}
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero magnam facilis a ipsam doloremque modi, accusantium porro quas, iste doloribus libero consectetur? Cumque voluptatum nemo, veniam minima incidunt earum recusandae.
                         </Description>
-                        <ArrowContainer onClick={() => handleTakeMinicourse(minicourse)}>
-                            <RedirectTitle>
-                                Take minicourse
-                            </RedirectTitle>
-                            <ArrowForwardBlue />
-                        </ArrowContainer>
                     </DescriptionContainer>
                 }
+                <ArrowContainer onClick={() => handleTakeMinicourse(minicourse)}>
+                    <RedirectTitle>
+                        Take minicourse
+                    </RedirectTitle>
+                    <ArrowForwardBlue />
+                </ArrowContainer>
                 <Uploader>
-                    by {minicourse.creator.name}
+                    by {minicourse.username}
                 </Uploader>
             </Body>
         </Container>

@@ -3,44 +3,35 @@ import React, { useState } from 'react';
 import SectionContent from 'components/section-content';
 import VideosConfig from 'components/section-content/videosConfig';
 import { Body, Container, Header, MinicourseName } from './videos-creation.styled-components';
+import { State } from 'lib/types/state';
+import { connect } from 'react-redux';
 
-const VideoCreation = ({ allSections, minicourseSections, currentMinicourseName }) => {
+const VideosCreation = ({ minicourseSections, currentMinicourse }) => {
   const [isNewVideo, setIsNewVideo] = useState(false);
-
-  const handleNewVideo = (flag) => {
-    setIsNewVideo(flag);
-  };
 
   return (
     <Container>
       <Header>
         <MinicourseName>
-          {currentMinicourseName}
+          {currentMinicourse.name}
         </MinicourseName>
-        <button
-          disabled={isNewVideo}
-          onClick={() => handleNewVideo(true)}
-        >
-          Upload video
+        <button onClick={() => setIsNewVideo(!isNewVideo)}>
+          {isNewVideo ? "Cancel" : "New video"}
         </button>
       </Header>
-      <hr />
       <Body>
-        {
-          isNewVideo && (
-            <VideosConfig
-              allSections={allSections}
-              continueCreation={handleNewVideo}
-              isNew={isNewVideo}
-            />
-          )
-        }
+        {isNewVideo && (
+          <VideosConfig
+            isNew={isNewVideo}
+            currentMinicourse={currentMinicourse}
+            allSections={minicourseSections}
+          />
+        )}
         {Array.isArray(minicourseSections) &&
           minicourseSections.map(section =>
             <SectionContent
               key={section.sectionName}
               section={section}
-              allSections={allSections}
             />
           )}
       </Body>
@@ -48,4 +39,10 @@ const VideoCreation = ({ allSections, minicourseSections, currentMinicourseName 
   )
 }
 
-export default VideoCreation;
+const mapStateToProps = (state: State) => {
+  return ({
+    currentMinicourse: state.minicourses.currentMinicourse
+  })
+}
+
+export default connect(mapStateToProps, null)(VideosCreation);

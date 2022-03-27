@@ -39,7 +39,7 @@ const ProblemContainer = ({ problem }) => {
     {"name": "Test case 6"},
     {"name": "Test case 7"},
   ]
-  const commentTemplate = "Write your code here...";
+  const commentTemplate = "Write your code here, keep in mind to handle the data input...";
   const languages = supportedLanguages();
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [languageMirror, setLanguageMirror] = useState(javascript());
@@ -79,7 +79,7 @@ const ProblemContainer = ({ problem }) => {
     <Container>
       <ProblemName>
         <BackButton />
-        {`${problem.id} - ${problem.name}`}
+        {`${problem.name}`}
       </ProblemName>
       <FlexContainer>
         <ProblemContext>

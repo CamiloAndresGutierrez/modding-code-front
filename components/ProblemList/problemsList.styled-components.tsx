@@ -1,6 +1,12 @@
-import { colors } from 'lib/constants';
-import styled from 'styled-components';
+import { Rating } from '@mui/material'
+import { colors } from 'lib/constants'
+import styled from 'styled-components'
 
+export const StyledRating = styled(Rating)`
+  & .MuiRating-iconFilled {
+    color: ${colors.darkBlue}
+  }
+`
 export const TableContainer = styled.div`
     padding: 20px;
 `;

@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useRouter } from 'next/router';
+import { connect } from 'react-redux';
 import { Tooltip } from '@mui/material';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import ConstructionIcon from '@mui/icons-material/Construction';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import Rating from '@mui/material/Rating';
 
 import SectionsVideos from 'components/sectionsVideos';
 import Modal from 'components/modal';
-import { fetchMinicourseProblems } from 'lib/client/problems';
+import ProblemsList from 'components/ProblemList';
+
+import { State } from 'lib/types/state';
+import { ISections } from 'lib/types/videos';
+import { GET_PROBLEMS_BY_MINICOURSE } from 'lib/client/problems';
+
+import { useFetch } from 'utils/hooks/useFetch';
+
 import {
   Container,
   VideoContainer,
@@ -20,61 +23,16 @@ import {
   ButtonText,
   PlayerContainer,
   SectionsContainer,
-  Tools,
-  ToolsContainer
 } from './minicourse.styled-components';
-
-import { StyledTable, StyledTableHead, Styledtd, StyledTableRow, TableContainer } from './problemsList.styled-components';
-
-const ProblemsList = ({ problems }) => {
-  const { push } = useRouter();
-
-  const handleProblemSelection = (problemId) => {
-    push(`/problems/${problemId}`);
-  }
-
-  return (
-    <TableContainer>
-      <h2>Practice with some problems</h2>
-      <StyledTable>
-        <StyledTableHead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Difficulty</th>
-            <th>Veredict</th>
-          </tr>
-        </StyledTableHead>
-        <tbody>
-          {
-            problems.map(element =>
-              <StyledTableRow key={element.id} onClick={() => handleProblemSelection(element.id)}>
-                <Styledtd>{element.id}</Styledtd>
-                <Styledtd>{element.name}</Styledtd>
-                <Styledtd>
-                  <Rating name="read-only" value={element.difficulty} readOnly precision={0.5}/>
-                </Styledtd>
-                <Styledtd>{element.veredict}</Styledtd>
-              </StyledTableRow>
-            )
-          }
-        </tbody>
-      </StyledTable>
-    </TableContainer>
-  )
-};
+import { createSections } from 'lib/utils';
 
 const MinicourseContainer = (props) => {
-  const [sections, setSections] = useState([]);
-  const [currentVideoInfo, setCurrentVideoInfo] = useState({
-    video: '',
-    name: '',
-    sectionName: '',
-  });
-  const { minicourse } = props;
-  const { video, name, sectionName } = currentVideoInfo;
+  const [sections, setSections] = useState<ISections[]>([]);
+  const { minicourseVideos } = props;
+  const { video, name, sectionName } = props.currentVideo;
   const [shouldShowModal, setShouldShowModal] = useState(false);
   const [problems, setProblems] = useState(false);
+  const { response } = useFetch(GET_PROBLEMS_BY_MINICOURSE(props.currentMinicourse.id));
 
   const handleModalBehaviour = () => {
     setShouldShowModal(!shouldShowModal);
@@ -96,13 +54,17 @@ const MinicourseContainer = (props) => {
   }, [video]);
 
   useEffect(() => {
-    setSections(minicourse && minicourse.sections);
-    if (minicourse) {
-      fetchMinicourseProblems(minicourse.id)
-        .then(response => response.json())
-        .then(r => setProblems(r));
+    if (minicourseVideos) {
+      setSections(createSections(minicourseVideos));
     }
-  }, [minicourse]);
+  }, [minicourseVideos]);
+
+  useEffect(() => {
+    if (response) {
+      const { problems } = response;
+      setProblems(problems);
+    }
+  }, [response]);
 
   return (
     <Container>
@@ -136,7 +98,6 @@ const MinicourseContainer = (props) => {
           <SectionsContainer>
             <SectionsVideos
               sections={sections}
-              currentVideo={setCurrentVideoInfo}
             />
           </SectionsContainer>
         }
@@ -149,6 +110,13 @@ const MinicourseContainer = (props) => {
       </Modal>
     </Container>
   )
+};
+
+const mapStateToProps = (state: State) => {
+  return {
+    currentMinicourse: state.minicourses.currentMinicourse,
+    currentVideo: state.minicourses.currentVideo,
+  }
 }
 
-export default MinicourseContainer;
+export default connect(mapStateToProps, null)(MinicourseContainer);

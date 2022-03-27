@@ -1,9 +1,23 @@
-import React from 'react';
-import Base from 'components/Base';
-import CreateMinicourseContainer from 'containers/create-minicourse';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { NextPage } from 'next';
 
-const CreateMinicourse = ({ categories }) => {
+import CreateMinicourseContainer from 'containers/create-minicourse';
+
+import Base from 'components/Base';
+import { useFetch } from 'utils/hooks/useFetch';
+import { GET_ALL_CATEGORIES } from 'lib/client/categories';
+
+const CreateMinicourse: NextPage = () => {
+  const allCategories = useFetch(GET_ALL_CATEGORIES);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (allCategories.response) {
+      const { categories } = allCategories.response;
+      setCategories(categories);
+    }
+  }, [allCategories]);
+
   return (
     <Base pageTitle={"Create a minicourse"} withNav>
       <CreateMinicourseContainer categories={categories} />
@@ -11,10 +25,4 @@ const CreateMinicourse = ({ categories }) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  return ({
-    categories: state.categories.data
-  })
-}
-
-export default connect(mapStateToProps, null)(CreateMinicourse);
+export default CreateMinicourse;

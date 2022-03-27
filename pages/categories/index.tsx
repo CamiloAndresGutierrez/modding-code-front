@@ -1,33 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { connect } from 'react-redux';
-
-import Base from "components/Base";
-import Categories from "containers/categories";
 import { NextPage } from "next";
 
-type Props = {
-  categories: []
-};
+import Base from "components/Base";
 
-const CategoryPage: NextPage<Props> = (props) => {
-  const { categories } = props;
-  const [fetchedData, setFetchedData] = useState([]);
+import Categories from "containers/categories";
+
+import { GET_ALL_CATEGORIES } from "lib/client/categories";
+
+import { useFetch } from "utils/hooks/useFetch";
+
+const DashboardPage: NextPage = () => {
+  const { response } = useFetch(GET_ALL_CATEGORIES);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    setFetchedData(categories);
-  }, [categories]);
+    if (response) {
+      const { categories } = response;
+      setCategories(categories);
+    }
+  }, [response])
 
   return (
-      <Base pageTitle={"Algorithm categories"} withNav>
-          <Categories categories={fetchedData}/>
-      </Base>
+    <Base pageTitle={"Algorithm categories"} withNav>
+      <Categories
+        categories={categories}
+      />
+    </Base>
   )
 }
 
-const mapStateToProps = (state) => {
-  return ({
-    categories: state.categories.data
-  })
-}
-
-export default connect(mapStateToProps, null)(CategoryPage);
+export default DashboardPage;

@@ -61,13 +61,13 @@ export const ExpertMinicoursesContainer = styled.div`
 
 `;
 
-export const ExpertMinicourse = styled.div`
+export const ExpertMinicourse = styled.div<{randomColorOne, randomColorTwo}>`
   height: 200px;
   width: 100%;
   border-radius: 10px;
-  background-color: ${colors.darkBlue};
+  background: linear-gradient(0deg, ${props => props.randomColorOne}, ${props => props.randomColorTwo});
   padding: 25px;
-  color: white;
+  color: black;
   font-weight: bold;
   display: flex;
   gap: 10px;
@@ -82,6 +82,10 @@ export const ExpertMinicourse = styled.div`
 
 export const MinicourseName = styled.h3`
   width: 90%;
+  :hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `;
 
 export const ButtonGroup = styled.div`
@@ -93,10 +97,25 @@ export const ButtonGroup = styled.div`
 
   .edit {
     color: ${colors.darkerBlue};
+    :hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
   }
 
   .delete {
     color: red;
+    :hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+  }
+
+  .visible {
+    :hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
   }
 
   > div {

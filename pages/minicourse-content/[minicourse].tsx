@@ -2,45 +2,81 @@ import React, { useEffect, useState } from 'react';
 import { NextPage, NextPageContext } from 'next';
 
 import Base from 'components/Base';
-import { fetchMinicourseById } from 'lib/client/minicourses';
-import { fetchSections } from 'lib/client/sections';
-import { fetchMinicourseProblems } from 'lib/client/problems';
+
 import MinicourseContentContainer from 'containers/minicourse-content';
 
-type Props = { 
-  minicourse: string
+// import { fetchMinicourseProblems } from 'lib/client/problems';
+import { GET_MINICOURSE_BY_ID } from 'lib/client/minicourses';
+import { useFetch } from 'utils/hooks/useFetch';
+import { GET_VIDEOS_BY_MINICOURSE_ID } from 'lib/client/videos';
+import { connect } from 'react-redux';
+import { State } from 'lib/types/state';
+import { setCurrentMinicourse } from 'lib/actions/minicourses';
+import { Minicourse } from 'lib/types/minicourse';
+import makeRequest from 'lib/client';
+import { url } from 'lib/constants';
+import { setAccessToken } from 'lib/actions/site';
+import { Dispatch } from 'redux';
+import { GET_PROBLEMS_BY_MINICOURSE } from 'lib/client/problems';
+
+type Props = {
+  minicourse: string,
+  setCurrentMinicourse?: (value: any) => any
+  setAccessToken?: (value: any) => any
 };
 
 type Ctx = {
   query: Props;
 };
 
-const MinicourseContent: NextPage<Props> = ({ minicourse }) => {
-  const [ currentMinicourse, setCurrentMinicourse ] = useState({});
-  const [ allSections, setAllSections ] = useState([]);
-  const [ problems, setProblems ] = useState([]);
+const MinicourseContent: NextPage<Props> = ({ minicourse, setCurrentMinicourse, setAccessToken }) => {
+  const { accessToken } = useFetch({});
+  const [currentMinicourseSections, setCurrentMinicourseSections] = useState([]);
+  const [problems, setProblems] = useState([]);
+
+  const getMinicourseVideosRequest = () => {
+    const { requestUrl, method, body } = GET_VIDEOS_BY_MINICOURSE_ID(minicourse);
+    return makeRequest(url(requestUrl), body, method, accessToken);
+  };
+
+  const getMinicourseRequest = () => {
+    const { requestUrl, method, body } = GET_MINICOURSE_BY_ID(minicourse);
+    return makeRequest(url(requestUrl), body, method, accessToken);
+  };
+
+  const getProblemsRequest = () => {
+    const { requestUrl, method, body } = GET_PROBLEMS_BY_MINICOURSE(minicourse);
+    return makeRequest(url(requestUrl), body, method, accessToken);
+  };
 
   useEffect(() => {
-    fetchSections()
-      .then(response => response.json())
-      .then(r => setAllSections(r));
+    getMinicourseVideosRequest()
+      .then(response => {
+        const { videos } = response;
+        setCurrentMinicourseSections(videos);
+      });
 
-    fetchMinicourseById(minicourse)
-      .then(response => response.json())
-      .then(r => setCurrentMinicourse(r));
+    getMinicourseRequest()
+      .then(response => {
+        const { minicourse } = response;
+        setCurrentMinicourse(minicourse)
+      });
 
-    fetchMinicourseProblems(minicourse)
-      .then(response => response.json())
-      .then(r => setProblems(r));
-
-
+    getProblemsRequest()
+      .then(response => {
+        const { problems } = response;
+        setProblems(problems)
+      });
   }, []);
+
+  useEffect(() => {
+    if (accessToken) setAccessToken(accessToken);
+  }, [accessToken]);
 
   return (
     <Base withNav>
       <MinicourseContentContainer
-        minicourse={currentMinicourse}
-        sections={allSections}
+        sections={currentMinicourseSections}
         problems={problems}
       />
     </Base>
@@ -48,7 +84,20 @@ const MinicourseContent: NextPage<Props> = ({ minicourse }) => {
 };
 
 MinicourseContent.getInitialProps = (ctx: NextPageContext & Ctx) => {
-    return Promise.resolve(ctx.query);
+  return Promise.resolve(ctx.query);
 };
 
-export default MinicourseContent;
+const mapStateToProps = (state: State) => {
+  return ({
+    currentMinicourse: state.minicourses.currentMinicourse,
+  })
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return ({
+    setCurrentMinicourse: (minicourse: Minicourse) => dispatch(setCurrentMinicourse(minicourse)),
+    setAccessToken: (accessToken: string) => dispatch(setAccessToken(accessToken)),
+  })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MinicourseContent);

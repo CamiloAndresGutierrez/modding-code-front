@@ -1,38 +1,82 @@
 import React, { useEffect, useState } from 'react';
 import { NextPage, NextPageContext } from 'next';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+
 
 import Base from 'components/Base';
+
 import MinicourseContainer from 'containers/minicourse';
-import { fetchMinicourseById } from "lib/client/minicourses";
+
+import { useFetch } from 'utils/hooks/useFetch';
+
+import { Minicourse as MinicourseType } from 'lib/types/minicourse';
+import { GET_VIDEOS_BY_MINICOURSE_ID } from 'lib/client/videos';
+import { GET_MINICOURSE_BY_ID } from 'lib/client/minicourses';
+import { State } from 'lib/types/state';
+import { setCurrentMinicourse, setMinicourseVideoSections } from 'lib/actions/minicourses';
+import { SectionContent } from 'lib/types/videos';
+// import { fetchMinicourseById } from "lib/client/minicourses";
 
 type Props = {
-  name: string
-  minicourse: string
+    name: string
+    minicourse: string
+    minicourses: string
+    setCurrentMinicourse: (value: any) => Dispatch
+    currentMinicourse: MinicourseType
 };
 
 type Ctx = {
-  query: Props;
+    query: Props;
 };
 
 const Minicourse: NextPage<Props> = (props: Props) => {
-  const [minicourse, setMinicourse] = useState(null);
-  const courseID = props.minicourse;
+    const minicourseId = props.minicourse;
+    const [minicourseVideos, setMinicourseVideos] = useState<MinicourseType>(null);
+    const videosById = useFetch(GET_VIDEOS_BY_MINICOURSE_ID(minicourseId));
+    const minicourseById = useFetch(GET_MINICOURSE_BY_ID(minicourseId));
 
-  useEffect(() => {
-    fetchMinicourseById(courseID)
-      .then(response => response.json())
-      .then(r => setMinicourse(r));
-  }, []);
+    useEffect(() => {
+        const { response } = videosById;
+        if (response) {
+            const { videos } = response;
+            setMinicourseVideos(videos);
+        }
+    }, [videosById]);
 
-  return (
-    <Base pageTitle={minicourse && minicourse.name} withNav>
-      <MinicourseContainer minicourse={minicourse}/>
-    </Base>
-  )
+    useEffect(() => {
+        const { response } = minicourseById;
+        if (response) {
+            const { minicourse } = response;
+            props.setCurrentMinicourse(minicourse);
+        }
+    }, [minicourseById])
+
+    return (
+        <Base pageTitle={props.currentMinicourse && props.currentMinicourse.name} withNav>
+            <MinicourseContainer minicourseVideos={minicourseVideos} />
+        </Base>
+    )
 }
 
 Minicourse.getInitialProps = (ctx: NextPageContext & Ctx) => {
     return Promise.resolve(ctx.query);
 };
 
-export default Minicourse;
+const mapStateToProps = (state: State) => {
+    return {
+        currentMinicourse: state.minicourses.currentMinicourse,
+        sectionsContent: state.minicourses.sectionsContent
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCurrentMinicourse:
+            (minicourse: MinicourseType) => dispatch(setCurrentMinicourse(minicourse)),
+        setMinicourseVideoSections:
+            (sectionContent: SectionContent[]) => dispatch(setMinicourseVideoSections(sectionContent))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Minicourse);

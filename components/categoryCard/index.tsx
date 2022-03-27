@@ -5,33 +5,31 @@ import {
     CardBody,
     CardButton,
 } from './card.styled-components';
-import { useRouter } from 'next/router';
+import { Category } from "lib/types/categories";
+import { useRouter } from "next/router";
 
 type CategoryCard = {
-    head: string;
-    body: string;
-    ctaText: string;
-    ctaLink: string;
+    category: Category,
 }
 
 const CategoryCard = (props: CategoryCard) => {
-    const router = useRouter();
-    const { head, body, ctaText, ctaLink } = props;
+    const { category } = props;
+    const { asPath, push } = useRouter();
 
-    const redirect = () => {
-        router.push(ctaLink);
+    const handleOpenClick = () => {
+        push(`${asPath}/${category.id}`);
     }
 
     return (
         <Container>
-            <CardHead>{head}</CardHead>
+            <CardHead>{category.name}</CardHead>
             <CardBody>
-                {body}
+                {category.description}
             </CardBody>
             <CardButton
-                onClick={redirect}
+                onClick={handleOpenClick}
             >
-                {ctaText}
+                Open
             </CardButton>
         </Container>
     );

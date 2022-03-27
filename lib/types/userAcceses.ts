@@ -2,7 +2,6 @@ export const studentAccesses = [
     "/categories",
     "/categories/[minicourses]",
     "/categories/[minicourses]/[minicourse]",
-    "/minicourse-content/[minicourse]",
     "/problems/[problem]",
 ]
 

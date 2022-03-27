@@ -49,7 +49,6 @@ export const Description = styled.div`
 
 export const DescriptionContainer = styled.div`
     margin-bottom: 20px;
-    margin-top: 20px;
 `;
 
 export const BlueLink = styled.div`
@@ -65,17 +64,17 @@ export const BlueLink = styled.div`
 export const ArrowContainer = styled.div`
     display: flex;
     cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
 `;
 
 export const RedirectTitle = styled.div`
     color: ${colors.darkBlue};
     cursor: pointer;
-    margin-top: 20px;
     margin-right: 5px;
 `;
 
 export const ArrowForwardBlue = styled(ArrowForward)`
-    margin-top: 20px;
     color: ${colors.darkBlue};
     text-align: right;
 `

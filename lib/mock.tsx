@@ -1,15 +1,141 @@
 
 import { Server, Request } from 'miragejs';
 import RESPONSES from '../public/mock';
+import { Actions as minicourseActions } from 'lib/client/minicourses';
+import { Actions as videosActions } from 'lib/client/videos';
+import { Actions as problemsActions } from 'lib/client/problems';
+
+import getMinicourses from 'public/mock/responses/getMinicourses.json';
+
+import minicourse1 from 'public/mock/responses/minicourse1.json';
+import minicourse2 from 'public/mock/responses/minicourse2.json';
+
+import videosMinicourse1 from 'public/mock/responses/videosMinicourse1.json';
+import videosMinicourse2 from 'public/mock/responses/videosMinicourse2.json';
+
+import videoWithUrl1 from 'public/mock/responses/videoWithUrl1.json';
+import videoWithUrl2 from 'public/mock/responses/videoWithUrl2.json';
+
+import problem1 from 'public/mock/responses/problem1.json';
+import problem2 from 'public/mock/responses/problem2.json';
+
+import problems from 'public/mock/responses/problems.json';
+
+import expertMinicourses from 'public/mock/responses/expertMinicourses.json';
+
+import updatedMinicourse1 from 'public/mock/responses/updatedMinicourse1.json';
+import updatedMinicourse2 from 'public/mock/responses/updatedMinicourse2.json';
+
+import createMinicourse from 'public/mock/responses/createMinicourse.json';
 
 const url = (path: string) => `${process.env.APIURL}${path}`;
 
-const responseData = (schema: any, request: Request) => {
-    const data = new Map<string, any>();
+const Actions = {
+    ...minicourseActions,
+    ...videosActions,
+    ...problemsActions
+}
 
+const getResponseData = (parsedRequest) => {
+    const action = parsedRequest.action;
+    switch (action) {
+        case Actions.GET_RANDOMIZE_MINICOURSES_ACTION:
+            return getMinicourses;
+        case Actions.GET_MINICOURSE_BY_ID_ACTION:
+            if (parsedRequest.params.id ===
+                'cat-ebb324734f-1646442759-46beec34-1646970768') {
+                return minicourse1;
+            }
+            else if (parsedRequest.params.id ===
+                'cat-ebb324734f-1646442759-a52e057b-1646970021') {
+                return minicourse2;
+            }
+            else {
+                return null;
+            }
+        case Actions.GET_VIDEOS_BY_MINICOURSE:
+            if (parsedRequest.params.minicourse_id ===
+                'cat-ebb324734f-1646442759-46beec34-1646970768') {
+                return videosMinicourse1;
+            }
+            else if (parsedRequest.params.minicourse_id ===
+                'cat-ebb324734f-1646442759-a52e057b-1646970021') {
+                return videosMinicourse2;
+            }
+            else {
+                return null;
+            }
+        case Actions.GET_VIDEO_BY_ID:
+            if (parsedRequest.params.id ===
+                'cat-ebb324734f-1646442759-a52e057b-1646970021-396c5d79-1647398884') {
+                return videoWithUrl1
+            }
+            else if (parsedRequest.params.id ===
+                'cat-ebb324734f-1646442759-a52e057b-1646970021-dfb3218d-1647398526') {
+                return videoWithUrl2
+            }
+            else {
+                return null;
+            }
+        case Actions.GET_PROBLEMS_BY_MINICOURSE_ACTION:
+            return problems;
+        case Actions.GET_PROBLEMS_BY_ID_ACTION:
+            if (parsedRequest.params.id ===
+                'cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201') {
+                return problem1
+            }
+            else if (parsedRequest.params.id ===
+                'cat-ebb324734f-1646442759-a52e057b-1646970021-38d8019f9c-1647817880') {
+                return problem2
+            }
+            else {
+                return null;
+            }
+        case Actions.GET_MINICOURSE_BY_USERNAME_ACTION:
+            return expertMinicourses
+    }
+}
+
+const updateData = (parsedRequest, requestUrl: string) => {
+    switch (requestUrl) {
+        case url('/minicourse'):
+            if (parsedRequest.id ===
+                'cat-ebb324734f-1646442759-46beec34-1646970768') {
+                return updatedMinicourse1;
+            }
+            else if (parsedRequest.id ===
+                'cat-ebb324734f-1646442759-a52e057b-1646970021') {
+                return updatedMinicourse2;
+            }
+    }
+}
+
+const responseData = (schema: any, request: Request, method: string) => {
+    const data = new Map<string, any>();
     // Define routes results here!
+    const parsedRequest = JSON.parse(request.requestBody);
+    let responseData;
+    if (request.url === url("/minicourse/get") ||
+        request.url === url("/video/get") ||
+        request.url === url("/problem/get")) {
+        responseData = getResponseData(parsedRequest);
+    }
+
+    if (method === "PUT") {
+        responseData = updateData(parsedRequest, request.url);
+    }
+
+    if (method === "POST" && request.url === url("/minicourse")) {
+        responseData = createMinicourse
+    }
+
+    if (method === "DELETE" && request.url === url("/minicourse")) {
+        responseData = "Success"
+    }
+
     RESPONSES.forEach(response => {
-        data.set(url(response.path), response.data);
+        // data.set(url(response.path), response.data );
+        data.set(url(response.path), response.data || responseData);
     });
 
     return data.get(request.url);
@@ -23,20 +149,32 @@ const runMockServer = () => {
                 RESPONSES.forEach(response => {
                     switch (response.method) {
                         case 'GET':
-                            this.get(url(response.path), responseData);
+                            this.get(url(response.path),
+                                (schema, request) =>
+                                    responseData(schema, request, response.method)
+                            );
                             break;
                         case 'POST':
-                            this.post(url(response.path), responseData);
+                            this.post(url(response.path),
+                                (schema, request) =>
+                                    responseData(schema, request, response.method)
+                            );
                             break;
                         case 'PUT':
-                            this.put(url(response.path), responseData);
+                            this.put(url(response.path),
+                                (schema, request) =>
+                                    responseData(schema, request, response.method)
+                            );
                             break;
                         case 'DELETE':
-                            this.delete(url(response.path), responseData);
+                            this.delete(url(response.path),
+                                (schema, request) =>
+                                    responseData(schema, request, response.method)
+                            );
                             break;
                     }
                 })
-                
+
                 this.passthrough();
                 this.passthrough("https://dev-38jrsauv.us.auth0.com/*");
             }

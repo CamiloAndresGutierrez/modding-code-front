@@ -1,0 +1,14 @@
+{
+    "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-dfb3218d-1647398526",
+    "creation_date": 1647398526,
+    "updated_date": null,
+    "data_state": "ACTIVE",
+    "username": "camilo.gutierrez@candidco.com",
+    "visible": false,
+    "name": "test2",
+    "ext": "mp4",
+    "minicourse_id": "cat-ebb324734f-1646442759-a52e057b-1646970021",
+    "section": "CONTEXT",
+    "order": null,
+    "video_download_url": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+}

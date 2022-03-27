@@ -15,7 +15,7 @@ export const Container = styled.div<{ hide }>`
 export const ModalContainer = styled.div`
   position: absolute;
   z-index: 1000;
-  padding: 10px;
+  padding: 10px 40px;
   top: 50px;
   left: 0;
   right: 0;

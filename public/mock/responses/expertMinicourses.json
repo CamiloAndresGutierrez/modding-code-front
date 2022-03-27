@@ -1,0 +1,28 @@
+{
+    "minicourses": [
+        {
+            "id": "cat-ebb324734f-1646442759-a52e057b-1646970021",
+            "creation_date": 1646970021,
+            "updated_date": 1647005928,
+            "data_state": "ACTIVE",
+            "username": "camilo.gutierrez@candidco.com",
+            "visible": false,
+            "category_id": "cat-ebb324734f-1646442759",
+            "name": "Minicourse 2",
+            "ext": "jpg",
+            "rate": 5
+        },
+        {
+            "id": "cat-ebb324734f-1646442759-46beec34-1646970768",
+            "creation_date": 1646970768,
+            "updated_date": null,
+            "data_state": "ACTIVE",
+            "username": "camilo.gutierrez@candidco.com",
+            "visible": false,
+            "category_id": "cat-ebb324734f-1646442759",
+            "name": "Minicourse 1",
+            "ext": "jpg",
+            "rate": null
+        }
+    ]
+}

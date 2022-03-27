@@ -3,23 +3,25 @@ import React, { useEffect, useState } from 'react';
 import ProblemsCreation from 'components/problems-creation';
 import VideosCreation from 'components/videos-creation';
 import { ButtonGroup, Container } from './minicourse-content.styled-components';
+import { createSections } from 'lib/utils';
+import { Minicourse } from 'lib/types/minicourse';
+import { State } from 'lib/types/state';
+import { connect } from 'react-redux';
 
-const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
-  const [currentMinicourse, setCurrentMinicourse] = useState({
-    "name": "",
-    "sections": "",
-  });
+const MinicourseContentContainer = ({ currentMinicourse, sections, problems }) => {
+  const [sortedSections, setSortedSections] = useState({});
   const [tab, setTab] = useState("videos");
-
-  useEffect(() => {
-    if (minicourse) {
-      setCurrentMinicourse(minicourse);
-    }
-  }, [minicourse]);
 
   const handleTabSelection = (tab) => {
     setTab(tab);
   };
+
+  useEffect(() => {
+    if (sections) {
+      const sorted = createSections(sections);
+      setSortedSections(sorted);
+    }
+  }, [sections]);
 
   return (
     <Container>
@@ -30,9 +32,7 @@ const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
       {
         tab === "videos" && (
           <VideosCreation
-            currentMinicourseName={currentMinicourse.name}
-            allSections={sections}
-            minicourseSections={currentMinicourse.sections}
+            minicourseSections={sortedSections}
           />
         )
       }
@@ -40,7 +40,6 @@ const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
         tab === "problems" && (
           <ProblemsCreation
             problems={problems}
-            currentMinicourseName={currentMinicourse.name}
           />
         )
       }
@@ -49,4 +48,10 @@ const MinicourseContentContainer = ({ minicourse, sections, problems }) => {
   );
 };
 
-export default MinicourseContentContainer;
+const mapStateToProps = (state: State) => {
+  return ({
+    currentMinicourse: state.minicourses.currentMinicourse
+  })
+}
+
+export default connect(mapStateToProps, null)(MinicourseContentContainer);
