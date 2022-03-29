@@ -20,11 +20,12 @@ import {
   StyledSaveIcon,
 } from './problem-content.styled-components';
 
-import { videoFailedVisibilityChange2 } from 'lib/constants/errorMessages';
+import { genericError, problemUpdateFailed, problemVisibilityFailed, videoFailedVisibilityChange2 } from 'lib/constants/errorMessages';
 import { CREATE_PROBLEM } from 'lib/client/problems';
 import makeRequest from 'lib/client';
 import { url } from 'lib/constants';
 import { State } from 'lib/types/state';
+import { responseHasErrors } from 'lib/utils';
 
 const ProblemContent = ({ problem, accessToken }) => {
   const [shouldShowModal, setShouldShowModal] = useState(false);
@@ -100,13 +101,13 @@ const ProblemContent = ({ problem, accessToken }) => {
     };
   };
 
-  const updateVideo = async (params) => {
+  const updateVideo = (params) => {
     const { requestUrl, body, method } = CREATE_PROBLEM({
       id: problem.id,
       ...params
     });
 
-    await makeRequest(url(requestUrl), body, method, accessToken);
+    return makeRequest(url(requestUrl), body, method, accessToken);
   }
 
   const handleDifficultyChange = (newValue) => {
@@ -117,22 +118,30 @@ const ProblemContent = ({ problem, accessToken }) => {
     console.log(testCases);
   }
 
-  const handleVisibilityChange = () => {
-    if (!problem.test_case) {
+  const handleVisibilityChange = async () => {
+    if (problem.test_case) {
       alert(videoFailedVisibilityChange2);
       return;
     }
-    updateVideo({
-      visible: !problem.visible
-    })
+
+    try {
+      const response = await updateVideo({
+        visible: !problem.visible
+      });
+      if (responseHasErrors(response, problemVisibilityFailed)) return;
+
+    } catch (e) {
+      alert(genericError);
+    }
   };
 
-  const handleUpdate = () => {
-    updateVideo({
+  const handleUpdate = async () => {
+    const response = await updateVideo({
       name: problemName,
       descripion: problemDescription,
       difficulty: problemDifficulty
-    })
+    });
+    if (responseHasErrors(response, problemUpdateFailed)) return;
   }
 
   return (

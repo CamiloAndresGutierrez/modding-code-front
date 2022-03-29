@@ -47,3 +47,10 @@ export const createSections = (minicourseVideos) => {
             })
     }));
 };
+
+export const responseHasErrors = (response: any, message = null) => {
+    const isUnathorized = response?.message === "Unauthorized";
+    const hasError = response === "Error" || isUnathorized;
+    if (message && hasError) alert(message);
+    return hasError;
+}
