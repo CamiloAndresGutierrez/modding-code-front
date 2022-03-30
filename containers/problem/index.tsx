@@ -19,25 +19,33 @@ import {
 import supportedLanguages from './supportedLanguages';
 import { Tooltip } from "@mui/material";
 import BackButton from "components/back-button";
+import Modal from "components/modal";
+import FAQ from "components/faq";
 
-const TestCase = ({testCase}) => {
+const questions = [
+  {
+    detail: 'This is question1',
+    answer: 'This is the answer to question 1'
+  }
+];
+
+const TestCase = ({ testCase }) => {
   return (
     <TestCaseContainer>
       {testCase.name}
     </TestCaseContainer>
   )
-
 }
 
 const ProblemContainer = ({ problem }) => {
   const testCases = [
-    {"name": "Test case 1"},
-    {"name": "Test case 2"},
-    {"name": "Test case 3"},
-    {"name": "Test case 4"},
-    {"name": "Test case 5"},
-    {"name": "Test case 6"},
-    {"name": "Test case 7"},
+    { "name": "Test case 1" },
+    { "name": "Test case 2" },
+    { "name": "Test case 3" },
+    { "name": "Test case 4" },
+    { "name": "Test case 5" },
+    { "name": "Test case 6" },
+    { "name": "Test case 7" },
   ]
   const commentTemplate = "Write your code here, keep in mind to handle the data input...";
   const languages = supportedLanguages();
@@ -45,6 +53,7 @@ const ProblemContainer = ({ problem }) => {
   const [languageMirror, setLanguageMirror] = useState(javascript());
   const [comment, setComment] = useState(`// ${commentTemplate}`);
   const [code, setCode] = useState("");
+  const [shouldShowModal, setShouldShowModal] = useState(false);
 
   const handleLanguageSelection = (event) => {
     const language = event.target.value;
@@ -75,6 +84,10 @@ const ProblemContainer = ({ problem }) => {
     console.log(code);
   }
 
+  const handleModalBehaviour = () => {
+    setShouldShowModal(!shouldShowModal);
+  }
+
   return (
     <Container>
       <ProblemName>
@@ -85,7 +98,7 @@ const ProblemContainer = ({ problem }) => {
         <ProblemContext>
           <ButtonGroup>
             <Tooltip title={"Frequently asked questions"}>
-              <div>FAQ</div>
+              <div onClick={handleModalBehaviour}>FAQ</div>
             </Tooltip>
             <Tooltip title={"Ask the expert"}>
               <div>
@@ -124,6 +137,12 @@ const ProblemContainer = ({ problem }) => {
           </ResultsContainer>
         </CodeEditor>
       </FlexContainer>
+      <Modal
+        shouldShow={shouldShowModal}
+        setShouldShow={handleModalBehaviour}
+      >
+        <FAQ questions={questions}></FAQ>
+      </Modal>
     </Container>
   );
 };
