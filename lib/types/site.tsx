@@ -1,3 +1,3 @@
 export type InitialStateType = {
-    accessToken: string
+    accessToken?: string
 }

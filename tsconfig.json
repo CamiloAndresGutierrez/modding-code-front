@@ -22,15 +22,27 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "jest.config.js"
   ],
   "exclude": [
     "node_modules"
   ],
   "paths": {
-    "lib": ["./lib"],
-    "containers": ["./containers/"],
-    "components": ["./components/"],
-    "^components/(.+)": ["./components/\\1"],
+    "lib": [
+      "./lib"
+    ],
+    "containers": [
+      "./containers/"
+    ],
+    "utils": [
+      "./utils/"
+    ],
+    "components": [
+      "./components/"
+    ],
+    "^components/(.+)": [
+      "./components/\\1"
+    ],
   }
 }

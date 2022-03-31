@@ -57,10 +57,12 @@ const MinicourseContent: NextPage<Props> = ({ minicourse, setCurrentMinicourse, 
 
   useEffect(() => {
     setResponses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (accessToken) setAccessToken(accessToken);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken]);
 
   return (

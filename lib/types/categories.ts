@@ -2,7 +2,7 @@ export type Category = {
     id?: string,
     creation_date?: number,
     updated_date?: number,
-    data_state?: "ACTIVE" | "INACTIVE",
+    data_state?: string,
     username?: string,
     visible?: Boolean,
     name?: string,
@@ -10,5 +10,5 @@ export type Category = {
 }
 
 export type InitialStateType = {
-    currentCategory: Category
+    currentCategory?: Category
 }

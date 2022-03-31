@@ -30,9 +30,9 @@ const FAQ = ({ questions }: FAQTypes) => {
         <div>
             <Title>FAQ</Title>
             {
-                questions.map(question => {
+                questions.map((question, index) => {
                     return (
-                        <Accordion>
+                        <Accordion key={index}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"

@@ -3,7 +3,6 @@ import { NextPage, NextPageContext } from 'next';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-
 import Base from 'components/Base';
 
 import MinicourseContainer from 'containers/minicourse';
@@ -16,7 +15,6 @@ import { GET_MINICOURSE_BY_ID } from 'lib/client/minicourses';
 import { State } from 'lib/types/state';
 import { setCurrentMinicourse, setMinicourseVideoSections } from 'lib/actions/minicourses';
 import { SectionContent } from 'lib/types/videos';
-// import { fetchMinicourseById } from "lib/client/minicourses";
 
 type Props = {
     name: string
@@ -42,6 +40,7 @@ const Minicourse: NextPage<Props> = (props: Props) => {
             const { videos } = response;
             setMinicourseVideos(videos);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [videosById]);
 
     useEffect(() => {
@@ -50,6 +49,7 @@ const Minicourse: NextPage<Props> = (props: Props) => {
             const { minicourse } = response;
             props.setCurrentMinicourse(minicourse);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [minicourseById])
 
     return (
