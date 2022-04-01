@@ -18,6 +18,8 @@ import { url } from 'lib/constants';
 import { setAccessToken } from 'lib/actions/site';
 import { Dispatch } from 'redux';
 import { GET_PROBLEMS_BY_MINICOURSE } from 'lib/client/problems';
+import { genericError } from 'lib/constants/errorMessages';
+import { responseHasErrors } from 'lib/utils';
 
 type Props = {
   minicourse: string,
@@ -34,43 +36,33 @@ const MinicourseContent: NextPage<Props> = ({ minicourse, setCurrentMinicourse, 
   const [currentMinicourseSections, setCurrentMinicourseSections] = useState([]);
   const [problems, setProblems] = useState([]);
 
-  const getMinicourseVideosRequest = () => {
-    const { requestUrl, method, body } = GET_VIDEOS_BY_MINICOURSE_ID(minicourse);
-    return makeRequest(url(requestUrl), body, method, accessToken);
+  const getResponse = async (action) => {
+    const { requestUrl, method, body } = action(minicourse);
+    const response = await makeRequest(url(requestUrl), body, method, accessToken);
+    if (responseHasErrors(response, genericError)) return [];
+
+    return response;
   };
 
-  const getMinicourseRequest = () => {
-    const { requestUrl, method, body } = GET_MINICOURSE_BY_ID(minicourse);
-    return makeRequest(url(requestUrl), body, method, accessToken);
-  };
+  const setResponses = async () => {
+    const minicourseVidResponse = await getResponse(GET_VIDEOS_BY_MINICOURSE_ID);
+    setCurrentMinicourseSections(minicourseVidResponse.videos);
 
-  const getProblemsRequest = () => {
-    const { requestUrl, method, body } = GET_PROBLEMS_BY_MINICOURSE(minicourse);
-    return makeRequest(url(requestUrl), body, method, accessToken);
+    const minicourseResponse = await getResponse(GET_MINICOURSE_BY_ID);
+    setCurrentMinicourse(minicourseResponse.minicourse);
+
+    const minicourseProbResponse = await getResponse(GET_PROBLEMS_BY_MINICOURSE);
+    setProblems(minicourseProbResponse.problems);
   };
 
   useEffect(() => {
-    getMinicourseVideosRequest()
-      .then(response => {
-        const { videos } = response;
-        setCurrentMinicourseSections(videos);
-      });
-
-    getMinicourseRequest()
-      .then(response => {
-        const { minicourse } = response;
-        setCurrentMinicourse(minicourse)
-      });
-
-    getProblemsRequest()
-      .then(response => {
-        const { problems } = response;
-        setProblems(problems)
-      });
+    setResponses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (accessToken) setAccessToken(accessToken);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken]);
 
   return (

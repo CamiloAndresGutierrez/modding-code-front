@@ -10,15 +10,15 @@ import EditMinicourse from 'components/edit-minicourse';
 import Jumbotron from 'components/jumbotron'
 import Modal from 'components/modal';
 
-import { ButtonContainer, ButtonGroup, Container, ExpertMinicourse, ExpertMinicoursesContainer, MinicourseName, NewMinicourse } from './my-minicourses.styled-components';
+import { ButtonContainer, ButtonGroup, Container, ExpertMinicourse, ExpertMinicoursesContainer, MinicourseName, NewMinicourse, NoMinicoursesDialog } from './my-minicourses.styled-components';
 import content from './my-minicourses.content'
 
 import { DELETE_MINICOURSE, GET_MINICOURSE_BY_USERNAME, GET_MINICOURSE_THUMB_UPLOAD_URL, UPDATE_MINICOURSE } from 'lib/client/minicourses';
 import makeRequest, { makeFileUploadRequest } from 'lib/client';
 import { url } from 'lib/constants';
 import { Minicourse } from 'lib/types/minicourse';
-import { deleteFailed, failedFetchingMinicourses, updateFailed } from 'lib/constants/errorMessages';
-import { getParamsFromUrl } from 'lib/utils';
+import { deleteFailed, failedFetchingMinicourses, genericError, updateFailed } from 'lib/constants/errorMessages';
+import { getParamsFromUrl, responseHasErrors } from 'lib/utils';
 
 const MyMinicourses = ({ minicourses, categories, accessToken }) => {
   const { push } = useRouter();
@@ -51,12 +51,15 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
   const handleSubmitInfo = async (info) => {
     if (info.thumbnail) {
       const response: Minicourse = await requestMinicourseThumbnailUrl(info.id);
-      const thumbnailURL = response.thumb_upload_url;
-      const params = getParamsFromUrl(thumbnailURL);
-      makeFileUploadRequest(thumbnailURL, params, info.thumbnail);
-    }
+      if (!responseHasErrors(response, genericError)) {
+        const thumbnailURL = response.thumb_upload_url;
+        const params = getParamsFromUrl(thumbnailURL);
+        await makeFileUploadRequest(thumbnailURL, params, info.thumbnail);
+      };
+    };
     const { requestUrl, body, method } = UPDATE_MINICOURSE(info);
     const serverResponse = await makeRequest(url(requestUrl), body, method, accessToken);
+    if (responseHasErrors(serverResponse, updateFailed)) return;
     handleNewData(serverResponse);
   }
 
@@ -68,6 +71,7 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
     const { requestUrl, body, method } = GET_MINICOURSE_BY_USERNAME;
     try {
       const minicoursesByUsername: any = await makeRequest(url(requestUrl), body, method, accessToken);
+      if (responseHasErrors(minicoursesByUsername, updateFailed)) return;
       const { minicourses } = minicoursesByUsername;
       setAllMinicourses(minicourses);
     }
@@ -76,7 +80,7 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
     }
   }
 
-  const changeVisility = async (minicourse: Minicourse) => {
+  const changeVisibility = async (minicourse: Minicourse) => {
     const isVisible = minicourse.visible;
     const info = {
       id: minicourse.id,
@@ -84,7 +88,8 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
     }
     try {
       const { requestUrl, body, method } = UPDATE_MINICOURSE(info);
-      await makeRequest(url(requestUrl), body, method, accessToken);
+      const response = await makeRequest(url(requestUrl), body, method, accessToken);
+      if (responseHasErrors(response, updateFailed)) return;
 
       updateMinicourses();
     }
@@ -96,7 +101,8 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
   const deleteMinicourse = async (minicourse: Minicourse) => {
     try {
       const { requestUrl, body, method } = DELETE_MINICOURSE(minicourse.id);
-      await makeRequest(url(requestUrl), body, method, accessToken);
+      const response = await makeRequest(url(requestUrl), body, method, accessToken);
+      if (responseHasErrors(response, updateFailed)) return;
 
       updateMinicourses();
     }
@@ -125,35 +131,42 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
           <NewMinicourse onClick={() => push("/create-minicourse")}>New minicourse</NewMinicourse>
         </ButtonContainer>
       </Jumbotron>
-      <ExpertMinicoursesContainer>
-        {
-          allMinicourses.map(minicourse =>
-            <ExpertMinicourse
-              key={minicourse.id}
-              randomColorOne={() => getNewRandomColor()}
-              randomColorTwo={() => getNewRandomColor()}
-            >
-              <MinicourseName
-                onClick={() => handleClickMinicourse(minicourse.id)}
+      {
+        Array.isArray(allMinicourses) && allMinicourses.length ?
+          <ExpertMinicoursesContainer>
+            {allMinicourses.map(minicourse =>
+              <ExpertMinicourse
+                key={minicourse.id}
+                randomColorOne={() => getNewRandomColor()}
+                randomColorTwo={() => getNewRandomColor()}
               >
-                {minicourse.name}
-              </MinicourseName>
-              <ButtonGroup>
-                <div className={"edit"} onClick={() => handleModalBehaviour(minicourse)}>
-                  <EditIcon />
-                </div>
-                <div className={"visible"} onClick={() => changeVisility(minicourse)}>
-                  {
-                    minicourse.visible ? <VisibilityIcon /> : <VisibilityOffIcon />
-                  }
-                </div>
-                <div className={"delete"} onClick={() => deleteMinicourse(minicourse)}>
-                  <DeleteIcon />
-                </div>
-              </ButtonGroup>
-            </ExpertMinicourse>)
-        }
-      </ExpertMinicoursesContainer>
+                <MinicourseName
+                  onClick={() => handleClickMinicourse(minicourse.id)}
+                >
+                  {minicourse.name}
+                </MinicourseName>
+                <ButtonGroup>
+                  <div className={"edit"} onClick={() => handleModalBehaviour(minicourse)}>
+                    <EditIcon />
+                  </div>
+                  <div className={"visible"} onClick={() => changeVisibility(minicourse)}>
+                    {
+                      minicourse.visible ? <VisibilityIcon /> : <VisibilityOffIcon />
+                    }
+                  </div>
+                  <div className={"delete"} onClick={() => deleteMinicourse(minicourse)}>
+                    <DeleteIcon />
+                  </div>
+                </ButtonGroup>
+              </ExpertMinicourse>)}
+          </ExpertMinicoursesContainer> :
+          <NoMinicoursesDialog>
+            <h3>
+              You have no minicourses yet.
+              Start by creating one.
+            </h3>
+          </NoMinicoursesDialog>
+      }
       <Modal
         shouldShow={shouldShowModal}
         setShouldShow={setShouldShowModal}

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "test": "yarn lint && yarn jest"
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.9.0",
@@ -28,9 +29,9 @@
     "jwt-decode": "^3.1.2",
     "miragejs": "0.1.43",
     "next": "11.1.2",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-drag-drop-files": "^2.3.4",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "react-drag-drop-files": "2.3.4",
     "react-redux": "7.2.6",
     "react-router-dom": "6.2.1",
     "redux": "4.1.2",
@@ -47,9 +48,42 @@
     "@storybook/addon-essentials": "6.3.12",
     "@storybook/addon-links": "6.3.12",
     "@storybook/react": "6.3.12",
+    "@testing-library/react": "^12.1.4",
+    "@types/jest": "^27.4.1",
     "babel-loader": "8.2.3",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
+    "jest": "^27.5.1",
+    "jest-fetch-mock": "^3.0.3",
+    "ts-jest": "^27.1.4",
     "typescript": "4.4.4"
+  },
+  "jest": {
+    "verbose": true,
+    "automock": false,
+    "testEnvironment": "jsdom",
+    "setupFiles": [
+      "<rootDir>/setupJest.js"
+    ],
+    "reporters": [
+      "default"
+    ],
+    "testPathIgnorePatterns": [
+      "/out/",
+      "/node_modules/",
+      "/.next/",
+      "/tmp/"
+    ],
+    "roots": [
+      "<rootDir>"
+    ],
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ]
   }
 }

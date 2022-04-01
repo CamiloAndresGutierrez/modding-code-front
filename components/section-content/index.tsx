@@ -10,6 +10,7 @@ import makeRequest from 'lib/client';
 
 import { State } from 'lib/types/state';
 import { connect } from 'react-redux';
+import { genericError } from 'lib/constants/errorMessages';
 
 const SectionContent = ({ section, accessToken }) => {
   const [changedSection, setChangedSection] = useState("");
@@ -43,7 +44,7 @@ const SectionContent = ({ section, accessToken }) => {
         alert("Updated order")
       )
       .catch(() =>
-        alert("Failed to update order")
+        alert(genericError)
       );
   }
 

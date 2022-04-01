@@ -5,9 +5,6 @@ import Jumbotron from 'components/jumbotron';
 import { Container, CardsContainer, JumbotronSearch } from './categories.styled-components';
 import content from './categories.content';
 import { Category } from 'lib/types/categories';
-import { Dispatch } from 'redux';
-import { useFetch } from 'utils/hooks/useFetch';
-import { GET_ALL_CATEGORIES } from 'lib/client/categories';
 
 type CategoriesComponentTypes = {
     categories: Category[]
@@ -16,8 +13,8 @@ type CategoriesComponentTypes = {
 const Categories = (props: CategoriesComponentTypes) => {
     const { categories } = props;
     const { title: { headline, text } } = content();
-    const [fetchedCategories, setFetchedCategories] = useState([]);
-    const [filteredCategories, setFilteredCategories] = useState([]);
+    const [fetchedCategories, setFetchedCategories] = useState(categories);
+    const [filteredCategories, setFilteredCategories] = useState(categories);
 
     const handleInputChange = (e) => {
         const searchValue = e.target.value;

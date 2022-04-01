@@ -9,7 +9,8 @@ import { CREATE_MINICOURSE } from 'lib/client/minicourses';
 import makeRequest, { makeFileUploadRequest } from 'lib/client';
 import { url } from 'lib/constants';
 import { Minicourse } from 'lib/types/minicourse';
-import { getParamsFromUrl } from 'lib/utils';
+import { getParamsFromUrl, responseHasErrors } from 'lib/utils';
+import { genericError, minicourseCreationFailed } from 'lib/constants/errorMessages';
 
 import { useFetch } from 'utils/hooks/useFetch';
 
@@ -27,12 +28,18 @@ const CreateMinicourseContainer = ({ categories }) => {
   }
 
   const handleSubmit = async (details) => {
-    const response: Minicourse = await createMinicourseRequest(details);
-    const thumbnailURL = response.thumb_upload_url;
-    const params = getParamsFromUrl(thumbnailURL);
-    // makeFileUploadRequest(thumbnailURL, params, details.thumbnail);
-
-    push(`minicourse-content/${response.id}`);
+    try {
+      const response: Minicourse = await createMinicourseRequest(details);
+      if (responseHasErrors(response, minicourseCreationFailed)) return;
+      const thumbnailURL = response.thumb_upload_url;
+      const params = getParamsFromUrl(thumbnailURL);
+      // await makeFileUploadRequest(thumbnailURL, params, details.thumbnail);
+      
+      push(`minicourse-content/${response.id}`);
+    }
+    catch {
+      alert(genericError);
+    }
   };
 
   return (

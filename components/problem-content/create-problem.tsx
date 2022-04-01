@@ -10,21 +10,19 @@ import { State } from 'lib/types/state';
 
 import Modal from 'components/modal';
 import {
-  ButtonGroupModal,
   Container,
-  DescriptionContainer,
   DetailsButtonGroup,
-  StyledSaveDescription,
   StyledSaveIcon
 } from './problem-content.styled-components';
 import { CREATE_PROBLEM } from 'lib/client/problems';
 import makeRequest from 'lib/client';
 import { url } from 'lib/constants';
-import { missingFields } from 'lib/constants/errorMessages';
+import { genericError, missingFields, problemCreateFailed, problemDescriptionFailed, videoUpdateFailed } from 'lib/constants/errorMessages';
 import { videoCreationSuccess } from 'lib/constants/successMessages';
 import DescriptionModalComponent from './description-modal-component';
+import { responseHasErrors } from 'lib/utils';
 
-const CreateProblem = ({ currentMinicourse, accessToken }) => {
+const CreateProblem = ({ currentMinicourse, accessToken, handleNewProblemCreated }) => {
   const [problemName, setProblemName] = useState("");
   const [description, setDescription] = useState({
     description: '',
@@ -77,7 +75,7 @@ const CreateProblem = ({ currentMinicourse, accessToken }) => {
     setDifficulty(0);
   }
 
-  const updateVideo = async (videoId: string) => {
+  const updateVideo = (videoId: string) => {
     const { requestUrl, body, method } = CREATE_PROBLEM({
       id: videoId,
       description: {
@@ -87,7 +85,7 @@ const CreateProblem = ({ currentMinicourse, accessToken }) => {
       }
     });
 
-    await makeRequest(url(requestUrl), body, method, accessToken);
+    return makeRequest(url(requestUrl), body, method, accessToken);
   }
 
   const handleSubmit = async () => {
@@ -105,12 +103,21 @@ const CreateProblem = ({ currentMinicourse, accessToken }) => {
         difficulty: difficulty
       });
 
-      const response = await makeRequest(url(requestUrl), body, method, accessToken);
-      updateVideo(response.id);
-      resetFields();
-      alert(videoCreationSuccess);
+      try {
+        const response = await makeRequest(url(requestUrl), body, method, accessToken);
+        if (responseHasErrors(response, problemCreateFailed)) return;
+
+        const update = await updateVideo(response.id);
+        if (responseHasErrors(update, problemDescriptionFailed)) return;
+
+        alert(videoCreationSuccess);
+        handleNewProblemCreated();
+        resetFields();
+      } catch (e) {
+        alert(genericError);
+      }
     } else { alert(missingFields) }
-  }
+  };
 
   const handleModalBehaviour = () => {
     setShouldShowModal(!shouldShowModal);

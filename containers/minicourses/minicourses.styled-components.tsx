@@ -98,6 +98,12 @@ export const Button = styled.button`
     width: 90px;
     height: 40px;
     color: white;
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
+
+    :hover {
+        transform: scale(1.1);
+    }
     
     @media (${mediaQueries.tablet}) {
         width: 100%;
@@ -143,5 +149,14 @@ export const BackButtonContainer = styled.div`
 
     @media (${mediaQueries.tablet}) {
         padding: 0 40px;
+    }
+`;
+
+export const FilterContainer = styled.div`
+    padding: 20px;
+    width: 180px;
+    height: 150px;
+    > button {
+        margin-top: 20px;
     }
 `;

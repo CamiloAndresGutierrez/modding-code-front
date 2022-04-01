@@ -9,6 +9,7 @@ const Login: NextPage = () => {
 
     useEffect(() => {
         loginWithRedirect();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

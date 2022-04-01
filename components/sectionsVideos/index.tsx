@@ -7,13 +7,14 @@ import { setCurrentMinicourseVideosUrls, setCurrentVideo } from 'lib/actions/min
 import makeRequest from 'lib/client';
 import { GET_VIDEO_URL_BY_ID } from 'lib/client/videos';
 import { url } from 'lib/constants';
-import { minicourseWithoutVideos } from 'lib/constants/errorMessages';
+import { genericError, minicourseWithoutVideos } from 'lib/constants/errorMessages';
 import { State } from 'lib/types/state';
 import { ISections, Video as VideoType, VideosUrls } from 'lib/types/videos';
 
 import { useFetch } from 'utils/hooks/useFetch';
 
 import { Container, Section, SectionName, StyledPlayArrowIcon, Thumbnail, Video, VideoName } from './sectionVideos.styled-components';
+import { responseHasErrors } from 'lib/utils';
 
 interface IMapStateToProps {
   videosUrls?: VideosUrls[]
@@ -42,18 +43,25 @@ const SectionsVideos = ({
     const fileteredSections = sections.filter(section => section.videos.length > 0);
     setFilteredVideoSections(fileteredSections);
     if (fileteredSections.length > 0) {
-      const { requestUrl, body, method } = GET_VIDEO_URL_BY_ID(fileteredSections[0].videos[0].id, true)
-      const serverResponse: VideoType = await makeRequest(url(requestUrl), body, method, videoInfo.accessToken);
-      setCurrentVideo({
-        video: serverResponse.video_download_url,
-        name: fileteredSections[0].videos[0].name,
-        sectionName: fileteredSections[0].sectionName,
-      });
+      try {
+        const { requestUrl, body, method } = GET_VIDEO_URL_BY_ID(fileteredSections[0].videos[0].id, true)
+        const serverResponse: VideoType = await makeRequest(url(requestUrl), body, method, videoInfo.accessToken);
+        if (responseHasErrors(serverResponse, genericError)) return;
 
-      setVideosUrls({
-        id: fileteredSections[0].videos[0].id,
-        videoUrl: serverResponse.video_download_url,
-      });
+        setCurrentVideo({
+          video: serverResponse.video_download_url,
+          name: fileteredSections[0].videos[0].name,
+          sectionName: fileteredSections[0].sectionName,
+        });
+
+        setVideosUrls({
+          id: fileteredSections[0].videos[0].id,
+          videoUrl: serverResponse.video_download_url,
+        });
+      }
+      catch {
+        alert(genericError);
+      }
     }
     else {
       setErrorMessage(minicourseWithoutVideos);
@@ -76,19 +84,25 @@ const SectionsVideos = ({
       });
     }
     else {
-      const { requestUrl, body, method } = GET_VIDEO_URL_BY_ID(video.id, true);
-      const serverResponse: VideoType = await makeRequest(url(requestUrl), body, method, videoInfo.accessToken);
+      try {
+        const { requestUrl, body, method } = GET_VIDEO_URL_BY_ID(video.id, true);
+        const serverResponse: VideoType = await makeRequest(url(requestUrl), body, method, videoInfo.accessToken);
+        if (responseHasErrors(serverResponse, genericError)) return;
 
-      setCurrentVideo({
-        video: serverResponse.video_download_url,
-        name: serverResponse.name,
-        sectionName: section,
-      });
+        setCurrentVideo({
+          video: serverResponse.video_download_url,
+          name: serverResponse.name,
+          sectionName: section,
+        });
 
-      setVideosUrls({
-        id: serverResponse.id,
-        videoUrl: serverResponse.video_download_url
-      });
+        setVideosUrls({
+          id: serverResponse.id,
+          videoUrl: serverResponse.video_download_url
+        });
+      }
+      catch {
+        alert(genericError);
+      }
     };
   };
 

@@ -4,6 +4,7 @@ import jwtDecode from "jwt-decode";
 import makeRequest from "lib/client";
 import { url } from 'lib/constants';
 import { Method, RequestBodyType } from "lib/types";
+import { responseHasErrors } from "lib/utils";
 
 type useFetchType = {
     requestUrl?: string,
@@ -28,6 +29,7 @@ export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
                 const shouldMakeRequest = requestUrl && method && body;
                 if (shouldMakeRequest) {
                     const serverResponse = await makeRequest(url(requestUrl), body, method, accessToken);
+                    if (responseHasErrors(serverResponse)) return;
                     setResponse(serverResponse);
                 };
                 setHasErrors(false);

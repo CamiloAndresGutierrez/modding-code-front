@@ -18,12 +18,11 @@ import {
 import { url, videoSections } from 'lib/constants';
 import { CREATE_VIDEO, DELETE_VIDEO, UPDATE_VIDEO } from 'lib/client/videos';
 import makeRequest, { makeFileUploadRequest } from 'lib/client';
-import { useFetch } from 'utils/hooks/useFetch';
-import { videoDeleteFailed, videoFailedVisibilityChange, videoUpdateFailed } from 'lib/constants/errorMessages';
-import { ISections, Section, Video } from 'lib/types/videos';
+import { genericError, videoCreationFailed, videoDeleteFailed, videoFailedVisibilityChange, videoUpdateFailed } from 'lib/constants/errorMessages';
+import { ISections, Video } from 'lib/types/videos';
 import { changedVisibility, deletedVideoSuccess, videoUpdateSuccess } from 'lib/constants/successMessages';
 import { Minicourse } from 'lib/types/minicourse';
-import { getParamsFromUrl } from 'lib/utils';
+import { getParamsFromUrl, responseHasErrors } from 'lib/utils';
 import { connect } from 'react-redux';
 import { State } from 'lib/types/state';
 
@@ -84,11 +83,12 @@ const VideosConfig = ({
     const { requestUrl, body, method } = UPDATE_VIDEO({ ...updatedVideo });
 
     try {
-      await makeRequest(url(requestUrl), body, method, accessToken);
+      const response = await makeRequest(url(requestUrl), body, method, accessToken);
+      if (responseHasErrors(response, videoUpdateFailed)) return;
       alert(videoUpdateSuccess);
     }
     catch {
-      alert(videoUpdateFailed);
+      alert(genericError);
     }
   };
 
@@ -111,19 +111,25 @@ const VideosConfig = ({
     const areFieldsValid = !!videoName.length && !!videoFile;
 
     if (areFieldsValid) {
-      const response = await createNewVideoRequest();
-      const thumbnailURL = response.upload_url;
-      // const params = getParamsFromUrl(thumbnailURL);
-      // makeFileUploadRequest(thumbnailURL, params, videoFile);
+      try {
+        const response = await createNewVideoRequest();
+        if (responseHasErrors(response, videoCreationFailed)) return;
+        const thumbnailURL = response.upload_url;
+        // const params = getParamsFromUrl(thumbnailURL);
+        // await makeFileUploadRequest(thumbnailURL, params, videoFile);
 
-      const newVideoSection = allSections.find(section =>
-        section.sectionSlug === selectedSection);
+        const newVideoSection = allSections.find(section =>
+          section.sectionSlug === selectedSection);
 
-      const
-        videoId = response.video.id,
-        order = newVideoSection.videos.length
+        const
+          videoId = response.video.id,
+          order = newVideoSection.videos.length
 
-      handleUpdate({ videoId, order });
+        handleUpdate({ videoId, order });
+      }
+      catch (e) {
+        alert(genericError);
+      }
     }
     else {
       alert("All fields in new video are required.")
@@ -156,12 +162,11 @@ const VideosConfig = ({
     const { requestUrl, body, method } = DELETE_VIDEO(video.id);
     try {
       const wasDeleted = await makeRequest(url(requestUrl), body, method, accessToken);
-      if (wasDeleted === "Success") {
-        alert(deletedVideoSuccess);
-      }
+      if (responseHasErrors(wasDeleted, videoDeleteFailed)) return;
+      if (wasDeleted === "Success") { alert(deletedVideoSuccess) }
     }
     catch {
-      alert(videoDeleteFailed);
+      alert(genericError);
     }
   }
 
@@ -173,8 +178,8 @@ const VideosConfig = ({
     });
 
     try {
-      await makeRequest(url(requestUrl), body, method, accessToken);
-      alert(changedVisibility);
+      const response = await makeRequest(url(requestUrl), body, method, accessToken);
+      if (responseHasErrors(response, changedVisibility)) return;
     }
     catch {
       alert(videoFailedVisibilityChange);

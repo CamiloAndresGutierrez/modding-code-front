@@ -130,3 +130,9 @@ export const ButtonGroup = styled.div`
     justify-content: center;
   }
 `;
+
+export const NoMinicoursesDialog = styled.div`
+  width: 300px;
+  margin: auto;
+  text-align: center;
+`
