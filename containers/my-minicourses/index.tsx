@@ -10,7 +10,7 @@ import EditMinicourse from 'components/edit-minicourse';
 import Jumbotron from 'components/jumbotron'
 import Modal from 'components/modal';
 
-import { ButtonContainer, ButtonGroup, Container, ExpertMinicourse, ExpertMinicoursesContainer, MinicourseName, NewMinicourse } from './my-minicourses.styled-components';
+import { ButtonContainer, ButtonGroup, Container, ExpertMinicourse, ExpertMinicoursesContainer, MinicourseName, NewMinicourse, NoMinicoursesDialog } from './my-minicourses.styled-components';
 import content from './my-minicourses.content'
 
 import { DELETE_MINICOURSE, GET_MINICOURSE_BY_USERNAME, GET_MINICOURSE_THUMB_UPLOAD_URL, UPDATE_MINICOURSE } from 'lib/client/minicourses';
@@ -131,35 +131,42 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
           <NewMinicourse onClick={() => push("/create-minicourse")}>New minicourse</NewMinicourse>
         </ButtonContainer>
       </Jumbotron>
-      <ExpertMinicoursesContainer>
-        {
-          allMinicourses.map(minicourse =>
-            <ExpertMinicourse
-              key={minicourse.id}
-              randomColorOne={() => getNewRandomColor()}
-              randomColorTwo={() => getNewRandomColor()}
-            >
-              <MinicourseName
-                onClick={() => handleClickMinicourse(minicourse.id)}
+      {
+        Array.isArray(allMinicourses) && allMinicourses.length ?
+          <ExpertMinicoursesContainer>
+            {allMinicourses.map(minicourse =>
+              <ExpertMinicourse
+                key={minicourse.id}
+                randomColorOne={() => getNewRandomColor()}
+                randomColorTwo={() => getNewRandomColor()}
               >
-                {minicourse.name}
-              </MinicourseName>
-              <ButtonGroup>
-                <div className={"edit"} onClick={() => handleModalBehaviour(minicourse)}>
-                  <EditIcon />
-                </div>
-                <div className={"visible"} onClick={() => changeVisibility(minicourse)}>
-                  {
-                    minicourse.visible ? <VisibilityIcon /> : <VisibilityOffIcon />
-                  }
-                </div>
-                <div className={"delete"} onClick={() => deleteMinicourse(minicourse)}>
-                  <DeleteIcon />
-                </div>
-              </ButtonGroup>
-            </ExpertMinicourse>)
-        }
-      </ExpertMinicoursesContainer>
+                <MinicourseName
+                  onClick={() => handleClickMinicourse(minicourse.id)}
+                >
+                  {minicourse.name}
+                </MinicourseName>
+                <ButtonGroup>
+                  <div className={"edit"} onClick={() => handleModalBehaviour(minicourse)}>
+                    <EditIcon />
+                  </div>
+                  <div className={"visible"} onClick={() => changeVisibility(minicourse)}>
+                    {
+                      minicourse.visible ? <VisibilityIcon /> : <VisibilityOffIcon />
+                    }
+                  </div>
+                  <div className={"delete"} onClick={() => deleteMinicourse(minicourse)}>
+                    <DeleteIcon />
+                  </div>
+                </ButtonGroup>
+              </ExpertMinicourse>)}
+          </ExpertMinicoursesContainer> :
+          <NoMinicoursesDialog>
+            <h3>
+              You have no minicourses yet.
+              Start by creating one.
+            </h3>
+          </NoMinicoursesDialog>
+      }
       <Modal
         shouldShow={shouldShowModal}
         setShouldShow={setShouldShowModal}
