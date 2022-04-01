@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python';
 import { cpp } from '@codemirror/lang-cpp';
+
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
+import { CircularProgress, Tooltip } from "@mui/material";
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 import {
   Container,
@@ -14,13 +20,24 @@ import {
   FlexContainer,
   ResultsContainer,
   ButtonGroup,
-  TestCaseContainer
+  TestCaseContainer,
+  InfoButton,
+  Veredict
 } from './problem.styled-components';
 import supportedLanguages from './supportedLanguages';
-import { Tooltip } from "@mui/material";
+
 import BackButton from "components/back-button";
 import Modal from "components/modal";
 import FAQ from "components/faq";
+import Dialog from "components/Dialog";
+
+import { Evaluation, Problem } from "lib/types/problems";
+import { State } from "lib/types/state";
+import makeRequest from "lib/client";
+import { EVALUATE_PROBLEM } from "lib/client/evaluation";
+import { url } from "lib/constants";
+import { isObjectEmpty, responseHasErrors } from "lib/utils";
+import { genericError } from "lib/constants/errorMessages";
 
 const questions = [
   {
@@ -29,31 +46,27 @@ const questions = [
   }
 ];
 
-const TestCase = ({ testCase }) => {
-  return (
-    <TestCaseContainer>
-      {testCase.name}
-    </TestCaseContainer>
-  )
+type ProblemContainerProps = {
+  problem: Problem;
+  accessToken?: string
 }
 
-const ProblemContainer = ({ problem }) => {
-  const testCases = [
-    { "name": "Test case 1" },
-    { "name": "Test case 2" },
-    { "name": "Test case 3" },
-    { "name": "Test case 4" },
-    { "name": "Test case 5" },
-    { "name": "Test case 6" },
-    { "name": "Test case 7" },
-  ]
+const ProblemContainer = ({ problem, accessToken }: ProblemContainerProps) => {
   const commentTemplate = "Write your code here, keep in mind to handle the data input...";
   const languages = supportedLanguages();
   const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [isEvaluating, setIsEvaluating] = useState(false);
+  const [problemEvaluation, setProblemEvaluation] = useState("");
+  const [evaluationResult, setEvaluationResult] = useState([]);
   const [languageMirror, setLanguageMirror] = useState(javascript());
   const [comment, setComment] = useState(`// ${commentTemplate}`);
   const [code, setCode] = useState("");
   const [shouldShowModal, setShouldShowModal] = useState(false);
+  const [description, setDescription] = useState({
+    description: "",
+    sample_input: "",
+    sample_output: ""
+  })
 
   const handleLanguageSelection = (event) => {
     const language = event.target.value;
@@ -80,71 +93,134 @@ const ProblemContainer = ({ problem }) => {
     setCode(value);
   }
 
-  const handleSubmit = () => {
-    console.log(code);
+  const handleSubmit = async () => {
+    try {
+      setIsEvaluating(true);
+      const { requestUrl, body, method } = EVALUATE_PROBLEM(problem.id, code);
+      const response: Evaluation = await makeRequest(url(requestUrl), body, method, accessToken);
+      if (responseHasErrors(response, genericError)) return;
+      const { veredict, inputs_veredict } = response;
+      setEvaluationResult(inputs_veredict);
+      setProblemEvaluation(veredict);
+      setIsEvaluating(false);
+    } catch {
+      alert(genericError);
+    }
   }
 
   const handleModalBehaviour = () => {
     setShouldShowModal(!shouldShowModal);
   }
 
+  useEffect(() => {
+    if (!isObjectEmpty(problem)) {
+      setDescription({ ...problem.description })
+      setEvaluationResult(() =>
+        problem.test_case.map(
+          testCase => ({
+            id: testCase.id,
+            veredict: null
+          })
+        )
+      )
+    }
+  }, [problem]);
+
+  const getVeredictIcon = (veredict) => {
+    if (veredict === "SOLVED") {
+      return <CheckIcon style={{ color: 'green' }} />
+    }
+    else if (veredict === "FAILED") {
+      return <CloseIcon style={{ color: 'red' }} />
+    }
+  }
+
   return (
     <Container>
-      <ProblemName>
-        <BackButton />
-        {`${problem.name}`}
-      </ProblemName>
-      <FlexContainer>
-        <ProblemContext>
-          <ButtonGroup>
-            <Tooltip title={"Frequently asked questions"}>
-              <div onClick={handleModalBehaviour}>FAQ</div>
-            </Tooltip>
-            <Tooltip title={"Ask the expert"}>
-              <div>
-                <ContactSupportIcon />
-              </div>
-            </Tooltip>
-          </ButtonGroup>
-          <h2>Problem description:</h2>
-          <ProblemDescription>
-            {problem.description}
-          </ProblemDescription>
-        </ProblemContext>
-        <CodeEditor>
-          <ButtonGroup>
-            <button onClick={() => handleSubmit()}>
-              Submit
-            </button>
-            <select value={selectedLanguage} onChange={handleLanguageSelection}>
-              {
-                Object.keys(languages).map(language => <option key={language} value={language}>{languages[language]}</option>)
-              }
-            </select>
-          </ButtonGroup>
-          <CodeMirror
-            value={comment}
-            height={"350px"}
-            extensions={[languageMirror]}
-            onChange={handleCodeChange}
-            theme={"dark"}
-            indentWithTab
-          />
-          <ResultsContainer>
-            {
-              testCases.map(element => <TestCase key={element.name} testCase={element} />)
-            }
-          </ResultsContainer>
-        </CodeEditor>
-      </FlexContainer>
-      <Modal
-        shouldShow={shouldShowModal}
-        setShouldShow={handleModalBehaviour}
-      >
-        <FAQ questions={questions}></FAQ>
-      </Modal>
+      {
+        problem.test_case ?
+          <>
+            <ProblemName>
+              <BackButton />
+              {`${problem.name}`}
+            </ProblemName>
+            <FlexContainer>
+              <ProblemContext>
+                <ButtonGroup>
+                  <Tooltip title={"Frequently asked questions"}>
+                    <InfoButton onClick={handleModalBehaviour}>FAQ</InfoButton>
+                  </Tooltip>
+                  <Tooltip title={"Ask the expert"}>
+                    <InfoButton>
+                      <ContactSupportIcon />
+                    </InfoButton>
+                  </Tooltip>
+                </ButtonGroup>
+                <h2>Problem description:</h2>
+                <ProblemDescription>
+                  {description.description}
+                </ProblemDescription>
+                <h2>Sample input:</h2>
+                <ProblemDescription>
+                  {description.sample_input}
+                </ProblemDescription>
+                <h2>Sample output:</h2>
+                <ProblemDescription>
+                  {description.sample_output}
+                </ProblemDescription>
+              </ProblemContext>
+              <CodeEditor>
+                <ButtonGroup>
+                  <Veredict>Veredict:
+                    {
+                      isEvaluating ? <CircularProgress /> : getVeredictIcon(problemEvaluation)
+                    }</Veredict>
+                  <button onClick={() => handleSubmit()}>
+                    Submit
+                  </button>
+                  <select value={selectedLanguage} onChange={handleLanguageSelection}>
+                    {
+                      Object.keys(languages).map(language => <option key={language} value={language}>{languages[language]}</option>)
+                    }
+                  </select>
+                </ButtonGroup>
+                <CodeMirror
+                  value={comment}
+                  height={"350px"}
+                  extensions={[languageMirror]}
+                  onChange={handleCodeChange}
+                  theme={"dark"}
+                  indentWithTab
+                />
+                <ResultsContainer>
+                  {
+                    evaluationResult.map((element, index) =>
+                      <TestCaseContainer key={element.id}>
+                        Case {index + 1}
+                        {
+                          isEvaluating ? <CircularProgress /> : getVeredictIcon(element.veredict)
+                        }
+                      </TestCaseContainer>)
+                  }
+                </ResultsContainer>
+              </CodeEditor>
+            </FlexContainer>
+            <Modal
+              shouldShow={shouldShowModal}
+              setShouldShow={handleModalBehaviour}
+            >
+              <FAQ questions={questions}></FAQ>
+            </Modal>
+          </> : <Dialog title="Looks like this is still a work in progress, please come back when it's ready." />
+      }
     </Container>
   );
 };
 
-export default ProblemContainer;
+export const mapStateToProps = (state: State) => {
+  return ({
+    accessToken: state.site.accessToken
+  })
+}
+
+export default connect(mapStateToProps, null)(ProblemContainer);

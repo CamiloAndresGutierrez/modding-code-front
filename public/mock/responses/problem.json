@@ -7,8 +7,41 @@
   "visible": true,
   "name": "problem1",
   "minicourse_id": "cat-ebb324734f-1646442759-a52e057b-1646970021",
-  "description": "This is a description for the problem1",
-  "test_case": null,
+  "description": {
+    "description": "This is a description for the problem3",
+    "sample_input": "This is a sample input",
+    "sample_output": "This is a sample output"
+  },
+  "test_case": [
+    {
+      "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201-0_test",
+      "creation_date": 1647828082,
+      "updated_date": null,
+      "data_state": "ACTIVE",
+      "username": null,
+      "visible": false,
+      "input_name": "input_file_1",
+      "output_name": "input_file_2",
+      "input_id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201-0_input.txt",
+      "output_id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201-0_output.txt",
+      "input_data": null,
+      "output_data": null
+    },
+    {
+      "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201-1_test",
+      "creation_date": 1647828082,
+      "updated_date": null,
+      "data_state": "ACTIVE",
+      "username": null,
+      "visible": false,
+      "input_name": "input_file_1",
+      "output_name": "input_file_2",
+      "input_id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201-0_input1.txt",
+      "output_id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201-0_output1.txt",
+      "input_data": null,
+      "output_data": null
+    }
+  ],
   "difficulty": 4,
   "status": "CREATED"
 }

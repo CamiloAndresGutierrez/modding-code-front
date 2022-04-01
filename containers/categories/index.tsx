@@ -5,6 +5,7 @@ import Jumbotron from 'components/jumbotron';
 import { Container, CardsContainer, JumbotronSearch } from './categories.styled-components';
 import content from './categories.content';
 import { Category } from 'lib/types/categories';
+import Dialog from 'components/Dialog';
 
 type CategoriesComponentTypes = {
     categories: Category[]
@@ -31,22 +32,26 @@ const Categories = (props: CategoriesComponentTypes) => {
         <Container>
             <Jumbotron headline={headline} text={text}>
                 <JumbotronSearch >
-                    <div className={"search-bar"}>
-                        <div>
-                            <input onChange={handleInputChange} type={"text"} placeholder={`Search...`}></input>
-                        </div>
-                    </div>
+                    {categories.length ?
+                        <div className={"search-bar"}>
+                            <div>
+                                <input onChange={handleInputChange} type={"text"} placeholder={`Search...`}></input>
+                            </div>
+                        </div> : null
+                    }
                 </JumbotronSearch>
             </Jumbotron>
-            <CardsContainer>
-                {Array.isArray(filteredCategories) && filteredCategories.map((element, index) => (
-                    <CategoryCard
-                        key={index}
-                        category={element}
-                    />
-                ))}
-            </CardsContainer>
-        </Container>
+            {categories.length ?
+                <CardsContainer>
+                    {Array.isArray(filteredCategories) && filteredCategories.map((element, index) => (
+                        <CategoryCard
+                            key={index}
+                            category={element}
+                        />
+                    ))}
+                </CardsContainer>
+                : <Dialog title={"There are no categories available, please try again later. "} />}
+        </Container >
     )
 }
 

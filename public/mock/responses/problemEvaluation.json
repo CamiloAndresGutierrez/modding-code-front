@@ -1,0 +1,18 @@
+{
+    "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201-3c44951827-1648697168-1648697171",
+    "creation_date": 1648697171,
+    "data_state": "ACTIVE",
+    "username": "smelomedina05@gmail.com",
+    "problem_id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201",
+    "veredict": "FAILED",
+    "inputs_veredict": [
+        {
+            "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201-0_test",
+            "veredict": "SOLVED"
+        },
+        {
+            "id": "cat-ebb324734f-1646442759-a52e057b-1646970021-0ad1272375-1647817201-1_test",
+            "veredict": "FAILED"
+        }
+    ]
+}

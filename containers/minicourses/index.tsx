@@ -13,6 +13,7 @@ import { Minicourse as MinicourseType } from "lib/types/minicourse";
 
 import content from './minicourses.content';
 import { MinicoursesGrid, JumbotronSearch, Filters, FilterButton, Button, BackButtonContainer, FilterContainer } from "./minicourses.styled-components";
+import Dialog from "components/Dialog";
 
 type MinicourseContainerProps = {
     minicourses: MinicourseType[],
@@ -70,62 +71,69 @@ const MinicoursesContainer = ({ minicourses }: MinicourseContainerProps) => {
         <div>
             <Jumbotron headline={headline} text={text}>
                 <Filters>
-                    <FilterButton>
-                        <Button onClick={handleClick}>
-                            Filters
-                            <FilterListIcon />
-                        </Button>
-                    </FilterButton>
-                    <JumbotronSearch >
-                        <div className={"search-bar"}>
-                            <div>
-                                <input onChange={handleInputChange} type={"text"} placeholder={`Search...`}></input>
-                            </div>
-                        </div>
-                    </JumbotronSearch>
+                    {minicourses.length ?
+                        <>
+                            <FilterButton>
+                                <Button onClick={handleClick}>
+                                    Filters
+                                    <FilterListIcon />
+                                </Button>
+                            </FilterButton>
+                            <JumbotronSearch >
+                                <div className={"search-bar"}>
+                                    <div>
+                                        <input onChange={handleInputChange} type={"text"} placeholder={`Search...`}></input>
+                                    </div>
+                                </div>
+                            </JumbotronSearch>
+                        </> : null
+                    }
                 </Filters>
             </Jumbotron>
-            <BackButtonContainer >
-                <div>
-                    <BackButton />
-                </div>
-                <div>
-                    <ReloadButton />
-                </div>
-            </BackButtonContainer>
+            {minicourses.length ?
+                <>
+                    <BackButtonContainer >
+                        <div>
+                            <BackButton />
+                        </div>
+                        <div>
+                            <ReloadButton />
+                        </div>
+                    </BackButtonContainer>
 
-            <MinicoursesGrid >
-                {Array.isArray(filteredMinicourses) && filteredMinicourses.map(minicourse => (
-                    <div key={minicourse.id}>
-                        <Minicourse minicourse={minicourse} />
-                    </div>
-                ))}
-            </MinicoursesGrid>
+                    <MinicoursesGrid >
+                        {Array.isArray(filteredMinicourses) && filteredMinicourses.map(minicourse => (
+                            <div key={minicourse.id}>
+                                <Minicourse minicourse={minicourse} />
+                            </div>
+                        ))}
+                    </MinicoursesGrid>
 
-            <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-            >
-                <FilterContainer>
-                    <p>Filter by rating:</p>
-                    <Rating
-                        name="simple-controlled"
-                        value={rating}
-                        precision={0.5}
-                        onChange={(event, newValue) => {
-                            handleRatingChange(newValue);
+                    <Popover
+                        id={id}
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
                         }}
-                    />
-                    <Button onClick={handleRemoveFilter}>Remove filter</Button>
-
-                </FilterContainer>
-            </Popover>
+                    >
+                        <FilterContainer>
+                            <p>Filter by rating:</p>
+                            <Rating
+                                name="simple-controlled"
+                                value={rating}
+                                precision={0.5}
+                                onChange={(event, newValue) => {
+                                    handleRatingChange(newValue);
+                                }}
+                            />
+                            <Button onClick={handleRemoveFilter}>Remove filter</Button>
+                        </FilterContainer>
+                    </Popover>
+                </> : <Dialog title="Sorry, there are no minicourses available. Please come back later." />
+            }
 
         </div>
     )

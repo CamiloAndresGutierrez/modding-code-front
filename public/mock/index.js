@@ -30,6 +30,14 @@ const RESPONSES = [
   {
     path: '/minicourse',
     method: 'DELETE'
+  },
+  {
+    path: '/problem/evaluation',
+    method: 'POST'
+  },
+  {
+    path: '/problem/evaluation/get',
+    method: 'POST'
   }
 ];
 

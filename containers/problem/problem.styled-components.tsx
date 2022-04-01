@@ -94,23 +94,6 @@ export const ButtonGroup = styled.div`
     gap: 10px;
     margin-bottom: 20px;
 
-    > div {
-        background-color: ${colors.purple};
-        height: 50px;
-        width: 50px;
-        border-radius: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all ease-in-out 200ms;
-
-        &:hover{
-            transform: scale(1.125);
-        }
-    }
-
     > button {
         border: none;
         color: white;
@@ -139,8 +122,45 @@ export const TestCaseContainer = styled.div`
     border-radius: 5px;
     background-color: ${colors.lightBlack};
     flex-shrink: 0;
-    flex-grow: 1;
     padding: 0 10px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+
+    > span {
+        width: 20px !important;
+        height: 20px !important;
+    }
 `;
+
+export const InfoButton = styled.div`
+    background-color: ${colors.purple};
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all ease-in-out 200ms;
+
+    &:hover{
+        transform: scale(1.125);
+    }
+`
+
+export const Veredict = styled.div`
+    border: 1px ${colors.purple} solid;
+    color: white;
+    border-radius: 5px;
+    height: 40px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding: 10px;
+    justify-content: space-between;
+
+`
