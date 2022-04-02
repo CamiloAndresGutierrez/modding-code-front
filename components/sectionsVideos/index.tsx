@@ -108,7 +108,7 @@ const SectionsVideos = ({
 
   return (
     <Container >
-      {errorMessage ? errorMessage :
+      {
         filteredVideoSections.length > 0 ? (
           filteredVideoSections.map(section => (
             <Section key={section.sectionName}>

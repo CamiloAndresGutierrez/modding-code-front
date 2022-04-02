@@ -14,6 +14,8 @@ import problems from 'public/mock/responses/problems.json';
 import expertMinicourses from 'public/mock/responses/expertMinicourses.json';
 import updatedMinicourse1 from 'public/mock/responses/updatedMinicourse.json';
 import createMinicourse from 'public/mock/responses/createMinicourse.json';
+import evaluateProblem from 'public/mock/responses/problemEvaluation.json';
+import problemEvaluations from 'public/mock/responses/problemsEvaluations.json';
 
 const url = (path: string) => `${process.env.APIURL}${path}`;
 
@@ -43,6 +45,15 @@ const getResponseData = (parsedRequest) => {
     }
 }
 
+const getEvaluationData = (requestUrl: string) => {
+    switch (requestUrl) {
+        case url('/problem/evaluation'):
+            return evaluateProblem;
+        case url('/problem/evaluation/get'):
+            return problemEvaluations;
+    }
+}
+
 const updateData = (parsedRequest, requestUrl: string) => {
     switch (requestUrl) {
         case url('/minicourse'):
@@ -59,6 +70,11 @@ const responseData = (schema: any, request: Request, method: string) => {
         request.url === url("/video/get") ||
         request.url === url("/problem/get")) {
         responseData = getResponseData(parsedRequest);
+    }
+
+    if (request.url === url("/problem/evaluation") ||
+        request.url === url("/problem/evaluation/get")) {
+        responseData = getEvaluationData(request.url);
     }
 
     if (method === "PUT") {

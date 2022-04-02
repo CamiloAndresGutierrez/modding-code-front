@@ -25,6 +25,8 @@ import {
   SectionsContainer,
 } from './minicourse.styled-components';
 import { createSections } from 'lib/utils';
+import Dialog from 'components/Dialog';
+import { minicourseWithoutVideos } from 'lib/constants/errorMessages';
 
 const MinicourseContainer = (props) => {
   const [sections, setSections] = useState<ISections[]>([]);
@@ -66,48 +68,54 @@ const MinicourseContainer = (props) => {
     }
   }, [response]);
 
+  const fileteredSections = sections.filter(section => section.videos.length > 0);
+
   return (
     <Container>
-      <Header>
-        <LeftSide >
-          <Title>
-            {
-              sectionName && name && (
-                <div><span>{sectionName}</span>&nbsp;&bull;&nbsp;{name}</div>
-              )
-            }
-          </Title>
-          <Tooltip title={"Problems"}>
-            <ProblemsButton onClick={() => handleModalBehaviour()}>
-              <StyledQuizIcon />
-              <ButtonText>Problems</ButtonText>
-            </ProblemsButton>
-          </Tooltip>
-        </LeftSide>
-      </Header>
+      {fileteredSections.length > 0 ?
+        <>
+          <Header>
+            <LeftSide >
+              <Title>
+                {
+                  sectionName && name && (
+                    <div><span>{sectionName}</span>&nbsp;&bull;&nbsp;{name}</div>
+                  )
+                }
+              </Title>
+              <Tooltip title={"Problems"}>
+                <ProblemsButton onClick={() => handleModalBehaviour()}>
+                  <StyledQuizIcon />
+                  <ButtonText>Problems</ButtonText>
+                </ProblemsButton>
+              </Tooltip>
+            </LeftSide>
+          </Header>
 
-      <PlayerContainer>
-        {video && (
-          <VideoContainer>
-            <video ref={videoRef} controls>
-              <source src={video} type="video/mp4"></source>
-            </video>
-          </VideoContainer >
-        )}
-        {sections &&
-          <SectionsContainer>
-            <SectionsVideos
-              sections={sections}
-            />
-          </SectionsContainer>
-        }
-      </PlayerContainer>
-      <Modal
-        shouldShow={shouldShowModal}
-        setShouldShow={handleModalBehaviour}
-      >
-        <ProblemsList problems={problems} />
-      </Modal>
+          <PlayerContainer>
+            {video && (
+              <VideoContainer>
+                <video ref={videoRef} controls>
+                  <source src={video} type="video/mp4"></source>
+                </video>
+              </VideoContainer >
+            )}
+            {sections &&
+              <SectionsContainer>
+                <SectionsVideos
+                  sections={sections}
+                />
+              </SectionsContainer>
+            }
+          </PlayerContainer>
+          <Modal
+            shouldShow={shouldShowModal}
+            setShouldShow={handleModalBehaviour}
+          >
+            <ProblemsList problems={problems} />
+          </Modal>
+        </> : <Dialog title={minicourseWithoutVideos} />
+      }
     </Container>
   )
 };
