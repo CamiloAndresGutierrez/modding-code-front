@@ -91,6 +91,14 @@ const SingUpContainer = () => {
     return (
         <Container >
             <ImageContainer >
+                <img src='/images/background.png'></img>
+                <h1>Modding Code&trade;</h1>
+                <p>
+                    The platform where you can practice and study coding problems to nail that job interview!
+                    <br/>
+                    <br/>
+                    You can also help others by signing up as an expert and creating minicourses about the algorithms that you know the most!
+                </p>
             </ImageContainer>
             <FormContainer >
                 <StyledForm >

@@ -14,7 +14,7 @@ type NavbarProps = {
 }
 
 const Navbar = (props: NavbarProps) => {
-    const { loginWithRedirect, getAccessTokenSilently, logout, isAuthenticated } = useAuth0();
+    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
     const [links, setLinks] = useState([]);
     const { height, userType } = props;
 
