@@ -19,6 +19,7 @@ import { url } from 'lib/constants';
 import { Minicourse } from 'lib/types/minicourse';
 import { deleteFailed, failedFetchingMinicourses, genericError, updateFailed } from 'lib/constants/errorMessages';
 import { getParamsFromUrl, responseHasErrors } from 'lib/utils';
+import Dialog from 'components/Dialog';
 
 const MyMinicourses = ({ minicourses, categories, accessToken }) => {
   const { push } = useRouter();
@@ -160,12 +161,7 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
                 </ButtonGroup>
               </ExpertMinicourse>)}
           </ExpertMinicoursesContainer> :
-          <NoMinicoursesDialog>
-            <h3>
-              You have no minicourses yet.
-              Start by creating one.
-            </h3>
-          </NoMinicoursesDialog>
+          <Dialog title='You have no minicourses yet. Start by creating one.' />
       }
       <Modal
         shouldShow={shouldShowModal}

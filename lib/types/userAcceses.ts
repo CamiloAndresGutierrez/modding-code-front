@@ -13,4 +13,4 @@ export const expertAccesses = [
     "/minicourse-content/[minicourse]",
 ]
 
-export const expertFallback = "/my-minicourses/90";
+export const expertFallback = "/my-minicourses";

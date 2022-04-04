@@ -40,31 +40,31 @@ const Base = ({ pageTitle, children, backgroundColor, withNav = false, navHeight
     const title = pageTitle ? `Modding Code | ${pageTitle}` : `Modding Code`;
     const pageColor = !backgroundColor ? `white` : backgroundColor;
 
-    // const goToFallback = (accessType: string[], fallback: string) => {
-    //     const hasAccess = accessType.includes(pathname);
-    //     if (!hasAccess) {
-    //         push(fallback);
-    //     }
-    // }
+    const goToFallback = (accessType: string[], fallback: string) => {
+        const hasAccess = accessType.includes(pathname);
+        if (!hasAccess) {
+            push(fallback);
+        }
+    }
 
-    // const handlePages = () => {
-    //     if (!isLoading) {
-    //         if (isAuthenticated) {
-    //             if (userRole === USERS.STUDENT) {
-    //                 goToFallback(studentAccesses, studentFallback);
-    //             } else if (userRole === USERS.EXPERT) {
-    //                 goToFallback(expertAccesses, expertFallback);
-    //             }
-    //         }
-    //         else {
-    //             push("/signup");
-    //         }
-    //     }
-    // }
+    const handlePages = () => {
+        if (!isLoading) {
+            if (isAuthenticated) {
+                if (userRole === USERS.STUDENT) {
+                    goToFallback(studentAccesses, studentFallback);
+                } else if (userRole === USERS.EXPERT) {
+                    goToFallback(expertAccesses, expertFallback);
+                }
+            }
+            else {
+                push("/signup");
+            }
+        }
+    }
 
-    // useEffect(() => {
-    //     handlePages();
-    // }, [pathname, isAuthenticated, isLoading, userRole]);
+    useEffect(() => {
+        handlePages();
+    }, [pathname, isAuthenticated, isLoading, userRole]);
 
     return (
         <>

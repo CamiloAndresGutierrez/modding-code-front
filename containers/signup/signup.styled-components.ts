@@ -28,6 +28,29 @@ export const FormContainer = styled.div`
 export const ImageContainer = styled.div`
     position: relative;
     width: 50%;
+    > img {
+        width: 100%;
+        position: absolute;
+        bottom: -50px;
+        right: 0;
+    }
+    > h1 {
+        width: 100%;
+        position: absolute;
+        z-index: 10;
+        top: 10%;
+        padding: 50px;
+    }
+    > p {
+        width: 50%;
+        font-size: 20px;
+        position: absolute;
+        z-index: 10;
+        top: 10%;
+        margin-top: 50px;
+        padding: 50px;
+    }
+
     @media (${mediaQueries.tabletAndAbove}){
         height:calc(100% - 50px);
     }
@@ -36,6 +59,7 @@ export const ImageContainer = styled.div`
     }
     @media (${mediaQueries.tablet}) {
         width: 0%;
+        display: none;
     }
 `;
 
