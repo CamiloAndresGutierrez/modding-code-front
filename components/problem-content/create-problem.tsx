@@ -21,6 +21,7 @@ import { genericError, missingFields, problemCreateFailed, problemDescriptionFai
 import { videoCreationSuccess } from 'lib/constants/successMessages';
 import DescriptionModalComponent from './description-modal-component';
 import { responseHasErrors } from 'lib/utils';
+import { Tooltip } from '@mui/material';
 
 const CreateProblem = ({ currentMinicourse, accessToken, handleNewProblemCreated }) => {
   const [problemName, setProblemName] = useState("");
@@ -126,17 +127,18 @@ const CreateProblem = ({ currentMinicourse, accessToken, handleNewProblemCreated
   return (
     <Container>
       <input value={problemName} placeholder={"Name"} onChange={(e) => handleInputChange(e, "name")}></input>
-
-      <StyledRating
-        name="simple-controlled"
-        value={difficulty}
-        precision={0.5}
-        icon={<CircleIcon />}
-        emptyIcon={<CircleOutlinedIcon />}
-        onChange={(event, newValue) => {
-          handleDifficultyChange(newValue);
-        }}
-      />
+      <Tooltip title="Difficulty">
+        <StyledRating
+          name="simple-controlled"
+          value={difficulty}
+          precision={0.5}
+          icon={<CircleIcon />}
+          emptyIcon={<CircleOutlinedIcon />}
+          onChange={(event, newValue) => {
+            handleDifficultyChange(newValue);
+          }}
+        />
+      </Tooltip>
 
       <DetailsButtonGroup >
         <button className={"description"} onClick={() => handleModalBehaviour()}>Description</button>

@@ -26,6 +26,7 @@ import makeRequest from 'lib/client';
 import { url } from 'lib/constants';
 import { State } from 'lib/types/state';
 import { responseHasErrors } from 'lib/utils';
+import { Tooltip } from '@mui/material';
 
 const ProblemContent = ({ problem, accessToken }) => {
   const [shouldShowModal, setShouldShowModal] = useState(false);
@@ -155,16 +156,18 @@ const ProblemContent = ({ problem, accessToken }) => {
         <button onClick={() => handleModalBehaviour("testCases")}>Test cases</button>
       </DetailsButtonGroup>
 
-      <StyledRating
-        name="simple-controlled"
-        value={problemDifficulty}
-        precision={0.5}
-        icon={<CircleIcon />}
-        emptyIcon={<CircleOutlinedIcon />}
-        onChange={(event, newValue) => {
-          handleDifficultyChange(newValue);
-        }}
-      />
+      <Tooltip title="Difficulty">
+        <StyledRating
+          name="simple-controlled"
+          value={problemDifficulty}
+          precision={0.5}
+          icon={<CircleIcon />}
+          emptyIcon={<CircleOutlinedIcon />}
+          onChange={(event, newValue) => {
+            handleDifficultyChange(newValue);
+          }}
+        />
+      </Tooltip>
 
       <ButtonGroup>
         {hasChanged && <button onClick={handleUpdate}><StyledSaveIcon /></button>}
