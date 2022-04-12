@@ -6,6 +6,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 
 import { StyledRating, StyledTable, StyledTableHead, StyledTableRow, Styledtd, TableContainer } from "./problemsList.styled-components";
 import Dialog from "components/Dialog";
+import { Tooltip } from "@mui/material";
 
 const ProblemsList = ({ problems }) => {
     const { push } = useRouter();
@@ -35,14 +36,17 @@ const ProblemsList = ({ problems }) => {
                                     <StyledTableRow key={element.id} onClick={() => handleProblemSelection(element.id)}>
                                         <Styledtd>{element.name}</Styledtd>
                                         <Styledtd>
-                                            <StyledRating
-                                                name="read-only"
-                                                value={element.difficulty}
-                                                precision={0.5}
-                                                icon={<CircleIcon />}
-                                                emptyIcon={<CircleOutlinedIcon />}
-                                                readOnly
-                                            />
+                                            <Tooltip title="Difficulty">
+                                                <StyledRating
+                                                    name="read-only"
+                                                    value={element.difficulty}
+                                                    precision={0.5}
+                                                    icon={<CircleIcon />}
+                                                    emptyIcon={<CircleOutlinedIcon />}
+                                                    readOnly
+                                                />
+
+                                            </Tooltip>
                                         </Styledtd>
                                         <Styledtd>{element.veredict}</Styledtd>
                                     </StyledTableRow>) : null
