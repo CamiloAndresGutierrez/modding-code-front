@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import { Tooltip } from '@mui/material';
+import { ButtonGroup, Tooltip } from '@mui/material';
+import { Rating } from '@mui/material'
 
 import SectionsVideos from 'components/sectionsVideos';
 import Modal from 'components/modal';
@@ -23,10 +24,13 @@ import {
   ButtonText,
   PlayerContainer,
   SectionsContainer,
+  RateMinicourseButton,
+  RatingContainer,
 } from './minicourse.styled-components';
 import { createSections } from 'lib/utils';
 import Dialog from 'components/Dialog';
 import { minicourseWithoutVideos } from 'lib/constants/errorMessages';
+import Button from 'components/button';
 
 const MinicourseContainer = (props) => {
   const [sections, setSections] = useState<ISections[]>([]);
@@ -34,10 +38,13 @@ const MinicourseContainer = (props) => {
   const { video, name, sectionName } = props.currentVideo;
   const [shouldShowModal, setShouldShowModal] = useState(false);
   const [problems, setProblems] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+  const [rating, setRating] = useState(0);
   const { response } = useFetch(GET_PROBLEMS_BY_MINICOURSE(props.currentMinicourse.id));
 
-  const handleModalBehaviour = () => {
+  const handleModalBehaviour = (content = null) => {
     setShouldShowModal(!shouldShowModal);
+    if (content) setModalContent(content)
   };
 
   const videoRef = useRef<any>();
@@ -70,6 +77,10 @@ const MinicourseContainer = (props) => {
 
   const fileteredSections = sections.filter(section => section.videos.length > 0);
 
+  const handleRatingChange = (value) => {
+    setRating(value);
+  }
+
   return (
     <Container>
       {fileteredSections.length > 0 ?
@@ -83,12 +94,19 @@ const MinicourseContainer = (props) => {
                   )
                 }
               </Title>
-              <Tooltip title={"Problems"}>
-                <ProblemsButton onClick={() => handleModalBehaviour()}>
-                  <StyledQuizIcon />
-                  <ButtonText>Problems</ButtonText>
-                </ProblemsButton>
-              </Tooltip>
+              <ButtonGroup>
+                <Tooltip title={"Rate minicourse"}>
+                  <RateMinicourseButton onClick={() => handleModalBehaviour("rate")}>
+                    Rate
+                  </RateMinicourseButton>
+                </Tooltip>
+                <Tooltip title={"Problems"}>
+                  <ProblemsButton onClick={() => handleModalBehaviour("problems")}>
+                    <StyledQuizIcon />
+                    <ButtonText>Problems</ButtonText>
+                  </ProblemsButton>
+                </Tooltip>
+              </ButtonGroup>
             </LeftSide>
           </Header>
 
@@ -112,7 +130,23 @@ const MinicourseContainer = (props) => {
             shouldShow={shouldShowModal}
             setShouldShow={handleModalBehaviour}
           >
-            <ProblemsList problems={problems} />
+            {modalContent === "problems" ?
+              <ProblemsList problems={problems} /> :
+              <RatingContainer>
+                <img src={'/images/girl-studying.png'}></img>
+                <h2>How would you rate this minicourse?</h2>
+                <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  precision={0.5}
+                  size={'large'}
+                  onChange={(event, newValue) => {
+                    handleRatingChange(newValue);
+                  }}
+                />
+                <Button >Submit</Button>
+              </RatingContainer>
+            }
           </Modal>
         </> : <Dialog title={minicourseWithoutVideos} />
       }

@@ -94,6 +94,30 @@ export const ProblemsButton = styled.button`
     }
 `;
 
+export const RateMinicourseButton = styled.button`
+    display: flex;
+    cursor: pointer;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0 10px;
+    background-color: white;
+    border: 1px solid ${colors.darkBlue};
+    border-radius: 50px;
+    width: 150px;
+    height: 40px;
+    color: black;
+    transition: all ease-in-out 300ms;
+
+    @media (${mediaQueries.tablet}) {
+      width: 40px;
+      height: 40px;
+    }
+
+    &:hover {
+      box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.25);
+    }
+`;
+
 export const StyledQuizIcon = styled(QuizIcon)``;
 
 export const ButtonText = styled.div`
@@ -156,5 +180,17 @@ export const Tools = styled.div`
 
   &:hover {
     box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const RatingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+
+  img {
+    width: 80%;
   }
 `;
