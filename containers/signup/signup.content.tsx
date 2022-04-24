@@ -5,11 +5,6 @@ export const formFields = ({ ctaButton }) => ({
 
     fields: [
         {
-            field: "name",
-            type: "text",
-            placeHolder: "Name",
-        },
-        {
             field: "email",
             type: "email",
             placeHolder: "E-mail",

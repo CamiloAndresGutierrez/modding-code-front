@@ -1,14 +1,24 @@
 import { Method, RequestBodyType } from "lib/types";
 import { convertFileToBinaryString } from "lib/utils";
 
-const makeRequest = (url: string, requestBody: RequestBodyType, method: Method, jwtToken: string) => {
-    const request: RequestInit = {
-        'method': method,
-        'body': JSON.stringify(requestBody),
-        headers: {
+const makeRequest = (url: string, requestBody: RequestBodyType, method: Method, jwtToken?: string) => {
+    let requestHeaders = {};
+
+    if (jwtToken) {
+        requestHeaders = {
             'Content-Type': 'application/json',
             'Authorization': jwtToken,
         }
+    } else {
+        requestHeaders = {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const request: RequestInit = {
+        'method': method,
+        'body': JSON.stringify(requestBody),
+        headers: requestHeaders
     }
 
     return fetch(url, request)

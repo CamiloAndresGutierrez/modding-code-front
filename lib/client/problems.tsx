@@ -49,3 +49,19 @@ export const UPDATE_PROBLEM = (problemDetails: Problem): RequestOptions => ({
     ...problemDetails
   }
 })
+
+export const SEND_EXPERT_EMAIL = (userDetails): RequestOptions => ({
+  requestUrl: '/user/signup',
+  method: 'POST',
+  body: {
+      ...userDetails
+  }
+})
+
+export const SEND_STUDENT_EMAIL = (userDetails): RequestOptions => ({
+  requestUrl: '/user/signup',
+  method: 'POST',
+  body: {
+      ...userDetails
+  }
+})

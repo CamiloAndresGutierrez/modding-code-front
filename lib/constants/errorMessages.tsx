@@ -23,3 +23,6 @@ export const problemCreateFailed = 'Could not create the new problem right now, 
 export const problemDescriptionFailed = 'Could not add a description to the new problem, please try again later.';
 export const problemVisibilityFailed = 'Could not change the visibility for this problem, please try again later.';
 export const problemsList = 'Could not update the new problems list, please refresh the page.';
+
+//User
+export const registrationError = 'Could not register the user at this moment. Please, try again later.'

@@ -11,6 +11,8 @@ const url = (path: string) => {
             return `${process.env.VIDEO_REST_API}${path}`
         case "video":
             return `${process.env.PROBLEM_REST_API}${path}`
+        case "user":
+            return `${process.env.USER_REST_API}${path}`
     }
 };
 
