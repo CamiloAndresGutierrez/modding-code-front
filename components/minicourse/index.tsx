@@ -53,9 +53,10 @@ const Minicourse = (props) => {
                     </DescriptionContainer>
                 }
                 <Rating
-                    name="simple-controlled"
+                    name="read-only"
                     value={minicourse.rate}
                     precision={0.5}
+                    readOnly
                 />
                 <ArrowContainer onClick={() => handleTakeMinicourse(minicourse)}>
                     <RedirectTitle>

@@ -26,10 +26,12 @@ export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
                 setAccessToken(accessToken);
                 const decodedToken: IdToken = jwtDecode(accessToken);
                 setUserRole(decodedToken["http://localhost:3000/roles"][0]);
-                const shouldMakeRequest = requestUrl && method && body;
+                const shouldMakeRequest = !!requestUrl && !!method && !!body;
                 if (shouldMakeRequest) {
                     const serverResponse = await makeRequest(url(requestUrl), body, method, accessToken);
-                    if (responseHasErrors(serverResponse)) return;
+                    if (responseHasErrors(serverResponse)) {
+                        return
+                    };
                     setResponse(serverResponse);
                 };
                 setHasErrors(false);

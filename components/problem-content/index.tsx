@@ -21,7 +21,7 @@ import {
 } from './problem-content.styled-components';
 
 import { genericError, problemUpdateFailed, problemVisibilityFailed, videoFailedVisibilityChange2 } from 'lib/constants/errorMessages';
-import { CREATE_PROBLEM } from 'lib/client/problems';
+import { CREATE_PROBLEM, UPDATE_PROBLEM } from 'lib/client/problems';
 import makeRequest from 'lib/client';
 import { url } from 'lib/constants';
 import { State } from 'lib/types/state';
@@ -102,8 +102,8 @@ const ProblemContent = ({ problem, accessToken }) => {
     };
   };
 
-  const updateVideo = (params) => {
-    const { requestUrl, body, method } = CREATE_PROBLEM({
+  const updateProblem = (params) => {
+    const { requestUrl, body, method } = UPDATE_PROBLEM({
       id: problem.id,
       ...params
     });
@@ -120,13 +120,13 @@ const ProblemContent = ({ problem, accessToken }) => {
   }
 
   const handleVisibilityChange = async () => {
-    if (problem.test_case) {
+    if (!problem.test_case) {
       alert(videoFailedVisibilityChange2);
       return;
     }
 
     try {
-      const response = await updateVideo({
+      const response = await updateProblem({
         visible: !problem.visible
       });
       if (responseHasErrors(response, problemVisibilityFailed)) return;
@@ -137,7 +137,7 @@ const ProblemContent = ({ problem, accessToken }) => {
   };
 
   const handleUpdate = async () => {
-    const response = await updateVideo({
+    const response = await updateProblem({
       name: problemName,
       descripion: problemDescription,
       difficulty: problemDifficulty
