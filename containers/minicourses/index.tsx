@@ -17,9 +17,10 @@ import Dialog from "components/Dialog";
 
 type MinicourseContainerProps = {
     minicourses: MinicourseType[],
+    shouldRefetch?: () => any;
 }
 
-const MinicoursesContainer = ({ minicourses }: MinicourseContainerProps) => {
+const MinicoursesContainer = ({ minicourses, shouldRefetch }: MinicourseContainerProps) => {
     const [fetchedMinicourses, setFetchedMinicourses] = useState(minicourses);
     const [filteredMinicourses, setFilteredMinicourses] = useState(minicourses);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -97,7 +98,7 @@ const MinicoursesContainer = ({ minicourses }: MinicourseContainerProps) => {
                             <BackButton />
                         </div>
                         <div>
-                            <ReloadButton />
+                            <ReloadButton callBack={shouldRefetch} />
                         </div>
                     </BackButtonContainer>
 
