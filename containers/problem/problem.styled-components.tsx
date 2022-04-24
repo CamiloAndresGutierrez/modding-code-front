@@ -163,4 +163,8 @@ export const Veredict = styled.div`
     padding: 10px;
     justify-content: space-between;
 
+    > span {
+        width: 20px !important;
+        height: 20px !important;
+    }
 `

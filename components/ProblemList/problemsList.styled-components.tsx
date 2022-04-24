@@ -16,7 +16,6 @@ export const StyledTable = styled.table`
     margin-top: 25px;
     margin-bottom: 25px;
     border-collapse: collapse;
-
 `;
 
 export const StyledTableHead = styled.thead`
@@ -26,14 +25,19 @@ export const StyledTableHead = styled.thead`
 
 export const Styledtd = styled.td`
     text-align: center;
+
+    .problem-name {
+        &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }   
+    };
 `;
 
 export const StyledTableRow = styled.tr`
     height: 50px;
-    cursor: pointer;
     border-bottom: 1px solid #dddddd;
     transition: all ease-in-out 300ms;
-
 
     &:hover {
         background-color: ${colors.lighterBlue}
