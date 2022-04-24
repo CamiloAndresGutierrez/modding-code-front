@@ -17,7 +17,8 @@ const TestCasesModalComponent = ({
     handleUploadTestCases,
     inputRef,
     outputRef,
-    handleInputFile
+    handleInputFile,
+    problem
 }) => (
     <TestCasesContainer>
         <Header>
@@ -33,15 +34,15 @@ const TestCasesModalComponent = ({
                     </tr>
                 </StyledTableHead>
                 <tbody>
-                    {/* {
-                    problem.testCases.map(testCase => (
-                      <TableRow key={testCase}>
-                        <td>{testCase.input}</td>
-                        <td>{testCase.output}</td>
-                        <td><ButtonWithIcons><DeleteIcon /></ButtonWithIcons></td>
-                      </TableRow>
-                    ))
-                  } */}
+                    {
+                        problem.test_case.map(testCase => (
+                            <TableRow key={testCase.id}>
+                                <td>{testCase.input_name}</td>
+                                <td>{testCase.output_name}</td>
+                                <td><ButtonWithIcons><DeleteIcon /></ButtonWithIcons></td>
+                            </TableRow>
+                        ))
+                    }
                     {
                         newTestCase && (
                             <TableRow>
