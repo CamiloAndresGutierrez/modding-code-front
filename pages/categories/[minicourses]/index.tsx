@@ -7,6 +7,10 @@ import MinicoursesContainer from 'containers/minicourses';
 import { GET_RANDOMIZE_MINICOURSES } from 'lib/client/minicourses';
 
 import { useFetch } from 'utils/hooks/useFetch';
+import { responseHasErrors } from 'lib/utils';
+import { genericError } from 'lib/constants/errorMessages';
+import makeRequest from 'lib/client';
+import { url } from 'lib/constants';
 
 type Props = {
     categoryMinicourses: string
@@ -17,19 +21,37 @@ type Ctx = {
 };
 
 const CategoryMinicourses: NextPage<Props> = (props) => {
-    const { response } = useFetch(GET_RANDOMIZE_MINICOURSES(props.categoryMinicourses));
+    const { accessToken } = useFetch({});
     const [minicourses, setMinicourses] = useState([]);
-    useEffect(() => {
-        if (response) {
+    const [fetchMinicourses, setFetchMinicourses] = useState(false);
+
+    const getResponse = async () => {
+        const { requestUrl, method, body } = GET_RANDOMIZE_MINICOURSES(props.categoryMinicourses);
+        try {
+            const response = await makeRequest(url(requestUrl), body, method, accessToken);
+            if (responseHasErrors(response, genericError)) return [];
+
             const { minicourses } = response;
             setMinicourses(minicourses);
         }
-    }, [response]);
+        catch (e) {
+            alert(genericError);
+        }
+    };
+
+    useEffect(() => {
+        getResponse();
+    }, [fetchMinicourses]);
+
+    const shouldRefetch = () => {
+        setFetchMinicourses(!fetchMinicourses);
+    }
 
     return (
         <Base withNav>
             <MinicoursesContainer
                 minicourses={minicourses}
+                shouldRefetch={shouldRefetch}
             />
         </Base>
     );

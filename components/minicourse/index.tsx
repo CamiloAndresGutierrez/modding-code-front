@@ -16,6 +16,7 @@ import {
     ArrowContainer,
     RedirectTitle
 } from "./minicourse.styled-components";
+import { Rating } from "@mui/material";
 
 const Minicourse = (props) => {
     const { minicourse } = props;
@@ -51,6 +52,12 @@ const Minicourse = (props) => {
                         </Description>
                     </DescriptionContainer>
                 }
+                <Rating
+                    name="read-only"
+                    value={minicourse.rate}
+                    precision={0.5}
+                    readOnly
+                />
                 <ArrowContainer onClick={() => handleTakeMinicourse(minicourse)}>
                     <RedirectTitle>
                         Take minicourse

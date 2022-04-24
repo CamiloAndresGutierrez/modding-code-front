@@ -6,6 +6,10 @@ type RequestOptions = {
     body?: RequestBodyType
 }
 
+export const Actions = {
+    GET_EVALUATIONS_BY_USERNAME: 'get_evaluations_by_username'
+}
+
 export const EVALUATE_PROBLEM = (problemId: string, fileInput: string): RequestOptions => ({
     requestUrl: '/problem/evaluation',
     method: 'POST',
@@ -20,5 +24,16 @@ export const GET_PROBLEM_EVALUATION = (problemId: string): RequestOptions => ({
     method: 'POST',
     body: {
         "problem_id": problemId
+    }
+})
+
+export const GET_PROBLEMS_EVALUATIONS = (problemId): RequestOptions => ({
+    requestUrl: '/problem/evaluation/get',
+    method: 'POST',
+    body: {
+        action: Actions.GET_EVALUATIONS_BY_USERNAME,
+        params: {
+            problem_id: problemId
+        }
     }
 })

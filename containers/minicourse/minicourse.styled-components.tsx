@@ -12,6 +12,19 @@ export const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0 10px;
+
+  .breadcrumbs {
+    margin-top: 50px;
+    > a {
+      text-decoration: underline;
+      color: ${colors.darkerBlue};
+
+      &:visited {
+        color: purple;
+      }
+    }
+  }
+
 `;
 
 export const VideoContainer = styled.div`
@@ -115,6 +128,8 @@ export const RateMinicourseButton = styled.button`
 
     &:hover {
       box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.25);
+      background-color: ${colors.darkBlue};
+      color: white;
     }
 `;
 

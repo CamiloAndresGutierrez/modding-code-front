@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import { ButtonGroup, Tooltip } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import { Rating } from '@mui/material'
 
 import SectionsVideos from 'components/sectionsVideos';
@@ -31,6 +31,7 @@ import { createSections } from 'lib/utils';
 import Dialog from 'components/Dialog';
 import { minicourseWithoutVideos } from 'lib/constants/errorMessages';
 import Button from 'components/button';
+import { ButtonGroup } from 'components/edit-minicourse/edit-minicourse.styled-components';
 
 const MinicourseContainer = (props) => {
   const [sections, setSections] = useState<ISections[]>([]);
@@ -85,6 +86,20 @@ const MinicourseContainer = (props) => {
     <Container>
       {fileteredSections.length > 0 ?
         <>
+          <div className="breadcrumbs">
+            <a href='/categories'>
+              {'Categories'}
+            </a>
+              {' > '}
+            <a href={`/categories/${props.currentMinicourse.category_id}`}>
+              {'Minicourses'}
+            </a>
+              {' > '}
+            <a href={`/categories/${props.currentMinicourse.category_id}/${props.currentMinicourse.id}`}>
+              {props.currentMinicourse.name}
+            </a>
+          </div>
+
           <Header>
             <LeftSide >
               <Title>

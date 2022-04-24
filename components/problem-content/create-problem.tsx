@@ -14,7 +14,7 @@ import {
   DetailsButtonGroup,
   StyledSaveIcon
 } from './problem-content.styled-components';
-import { CREATE_PROBLEM } from 'lib/client/problems';
+import { CREATE_PROBLEM, UPDATE_PROBLEM } from 'lib/client/problems';
 import makeRequest from 'lib/client';
 import { url } from 'lib/constants';
 import { genericError, missingFields, problemCreateFailed, problemDescriptionFailed, videoUpdateFailed } from 'lib/constants/errorMessages';
@@ -76,8 +76,8 @@ const CreateProblem = ({ currentMinicourse, accessToken, handleNewProblemCreated
     setDifficulty(0);
   }
 
-  const updateVideo = (videoId: string) => {
-    const { requestUrl, body, method } = CREATE_PROBLEM({
+  const updateProblem = (videoId: string) => {
+    const { requestUrl, body, method } = UPDATE_PROBLEM({
       id: videoId,
       description: {
         description: description.description,
@@ -108,7 +108,7 @@ const CreateProblem = ({ currentMinicourse, accessToken, handleNewProblemCreated
         const response = await makeRequest(url(requestUrl), body, method, accessToken);
         if (responseHasErrors(response, problemCreateFailed)) return;
 
-        const update = await updateVideo(response.id);
+        const update = await updateProblem(response.id);
         if (responseHasErrors(update, problemDescriptionFailed)) return;
 
         alert(videoCreationSuccess);

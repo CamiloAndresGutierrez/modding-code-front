@@ -13,8 +13,7 @@ const makeRequest = (url: string, requestBody: RequestBodyType, method: Method, 
 
     return fetch(url, request)
         .then(res => res.json())
-        .then(data => data)
-        .catch(error => error);
+        .then(data => data);
 }
 
 export const makeFileUploadRequest = async (url: string, headers, file: File) => {
