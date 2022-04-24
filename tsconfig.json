@@ -23,7 +23,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "jest.config.js"
+    "jest.config.js",
+    "cypress/integration/problem-solving.spec.js"
   ],
   "exclude": [
     "node_modules"
