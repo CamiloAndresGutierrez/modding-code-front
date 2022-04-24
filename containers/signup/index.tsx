@@ -8,6 +8,11 @@ import {
     StyledForm
 } from './signup.styled-components';
 import { Form, UserSelection, ExpertBackground } from 'components/form';
+import { REGISTER_USER } from 'lib/client/user';
+import makeRequest from 'lib/client';
+import { url } from 'lib/constants';
+import { responseHasErrors } from 'lib/utils';
+import { registrationError } from 'lib/constants/errorMessages';
 
 const SingUpContainer = () => {
     const router = useRouter();
@@ -15,7 +20,6 @@ const SingUpContainer = () => {
     const [hasErrors, setHasErrors] = useState(true);
     const [formatIssues, setFormatIssues] = useState([]);
     const [userInfo, setUserInfo] = useState({
-        name: '',
         email: '',
         password: '',
     });
@@ -55,12 +59,22 @@ const SingUpContainer = () => {
 
     useEffect(() => {
         if (step === 4) {
-            const user = {
-                ...userInfo,
-                userType,
-                professionalBackground,
-            };
-            router.push('login');
+            // const user = {
+            //     ...userInfo,
+            //     userType,
+            //     professionalBackground,
+            // };
+
+            const { requestUrl, body, method } = REGISTER_USER(userInfo);
+            try {
+
+                const response = makeRequest(url(requestUrl), body, method);
+                if (responseHasErrors(response, registrationError)) return;
+                router.push('login');
+            }
+            catch (e) {
+                alert(registrationError);
+            }
         }
     }, [step]);
 
@@ -95,8 +109,8 @@ const SingUpContainer = () => {
                 <h1>Modding Code&trade;</h1>
                 <p>
                     The platform where you can practice and study coding problems to nail that job interview!
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     You can also help others by signing up as an expert and creating minicourses about the algorithms that you know the most!
                 </p>
             </ImageContainer>
