@@ -13,7 +13,7 @@ import makeRequest from 'lib/client';
 import { url } from 'lib/constants';
 
 type Props = {
-    categoryMinicourses: string
+    minicourses: string
 };
 
 type Ctx = {
@@ -26,7 +26,7 @@ const CategoryMinicourses: NextPage<Props> = (props) => {
     const [fetchMinicourses, setFetchMinicourses] = useState(false);
 
     const getResponse = async () => {
-        const { requestUrl, method, body } = GET_RANDOMIZE_MINICOURSES(props.categoryMinicourses);
+        const { requestUrl, method, body } = GET_RANDOMIZE_MINICOURSES(props.minicourses);
         try {
             const response = await makeRequest(url(requestUrl), body, method, accessToken);
             if (responseHasErrors(response, genericError)) return [];
@@ -40,8 +40,10 @@ const CategoryMinicourses: NextPage<Props> = (props) => {
     };
 
     useEffect(() => {
-        getResponse();
-    }, [fetchMinicourses]);
+        if (accessToken) {
+            getResponse();
+        }
+    }, [accessToken]);
 
     const shouldRefetch = () => {
         setFetchMinicourses(!fetchMinicourses);

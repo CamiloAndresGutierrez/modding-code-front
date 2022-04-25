@@ -7,7 +7,7 @@ const makeRequest = (url: string, requestBody: RequestBodyType, method: Method, 
     if (jwtToken) {
         requestHeaders = {
             'Content-Type': 'application/json',
-            'Authorization': jwtToken,
+            'Authorization': `Bearer ${jwtToken}`,
         }
     } else {
         requestHeaders = {

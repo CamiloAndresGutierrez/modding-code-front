@@ -1,5 +1,5 @@
-const STUDENT = 'student';
-const EXPERT = 'expert';
+const STUDENT = 'ModdingCodeProdStudent';
+const EXPERT = 'ModdingCodeProdExpert';
 
 const users = {
     EXPERT,

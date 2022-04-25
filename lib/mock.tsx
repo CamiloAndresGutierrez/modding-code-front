@@ -132,7 +132,7 @@ const runMockServer = () => {
                 })
 
                 this.passthrough();
-                this.passthrough("https://dev-38jrsauv.us.auth0.com/*");
+                this.passthrough(`${process.env.AUTH0_ISSUER_BASE_URL}/*`);
             }
         })
         return server;
