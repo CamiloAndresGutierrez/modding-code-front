@@ -198,6 +198,7 @@ const ProblemContent = ({ problem, accessToken }) => {
             inputRef={inputRef}
             outputRef={outputRef}
             handleInputFile={handleInputFile}
+            problem={problem}
           />
         )}
       </Modal>
