@@ -14,11 +14,7 @@ type CategoryCard = {
 
 const CategoryCard = (props: CategoryCard) => {
     const { category } = props;
-    const { asPath, push } = useRouter();
-
-    const handleOpenClick = () => {
-        push(`${asPath}/${category.id}`);
-    }
+    const { asPath } = useRouter();
 
     return (
         <Container>
@@ -26,11 +22,11 @@ const CategoryCard = (props: CategoryCard) => {
             <CardBody>
                 {category.description}
             </CardBody>
-            <CardButton
-                onClick={handleOpenClick}
-            >
-                Open
-            </CardButton>
+            <a href={`${asPath}/${category.id}`}>
+                <CardButton>
+                    Open
+                </CardButton>
+            </a>
         </Container>
     );
 };
