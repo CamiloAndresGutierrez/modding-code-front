@@ -8,9 +8,9 @@ const url = (path: string) => {
         case "minicourse":
             return `${process.env.MINICOURSE_REST_API}${path}`
         case "problem":
-            return `${process.env.VIDEO_REST_API}${path}`
-        case "video":
             return `${process.env.PROBLEM_REST_API}${path}`
+        case "video":
+            return `${process.env.VIDEO_REST_API}${path}`
         case "user":
             return `${process.env.USER_REST_API}${path}`
     }

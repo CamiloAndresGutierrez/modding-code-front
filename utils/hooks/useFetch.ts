@@ -22,10 +22,6 @@ export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
     const fetchData = async () => {
         if (isAuthenticated) {
             try {
-                const accessToken = await getAccessTokenSilently();
-                setAccessToken(accessToken);
-                const decodedToken: IdToken = jwtDecode(accessToken);
-                setUserRole(decodedToken["http://localhost:3000/roles"][0]);
                 const shouldMakeRequest = !!requestUrl && !!method && !!body;
                 if (shouldMakeRequest) {
                     const serverResponse = await makeRequest(url(requestUrl), body, method, accessToken);
@@ -42,9 +38,21 @@ export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
         }
     }
 
+    const setValues = async () => {
+        const accessToken = await getAccessTokenSilently();
+        setAccessToken(accessToken);
+        const decodedToken: IdToken = jwtDecode(accessToken);
+        setUserRole(decodedToken["http://localhost:3000/roles"][0]);
+    }
+
     useEffect(() => {
-        fetchData();
-    }, [isAuthenticated]);
+        if (isAuthenticated) {
+            setValues();
+        }
+        if (accessToken) {
+            fetchData();
+        }
+    }, [isAuthenticated, accessToken]);
 
     return {
         isAuthenticated,

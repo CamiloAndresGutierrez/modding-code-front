@@ -56,9 +56,11 @@ const MinicourseContent: NextPage<Props> = ({ minicourse, setCurrentMinicourse, 
   };
 
   useEffect(() => {
-    setResponses();
+    if (accessToken) {
+      setResponses();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accessToken]);
 
   useEffect(() => {
     if (accessToken) setAccessToken(accessToken);
