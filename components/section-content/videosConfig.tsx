@@ -74,7 +74,7 @@ const VideosConfig = ({
     } else {
       updatedVideo = {
         ...video,
-        id: video.id,
+        id: videoId || video.id,
         name: videoName,
         section: selectedSection
       }
@@ -115,8 +115,8 @@ const VideosConfig = ({
         const response = await createNewVideoRequest();
         if (responseHasErrors(response, videoCreationFailed)) return;
         const thumbnailURL = response.upload_url;
-        // const params = getParamsFromUrl(thumbnailURL);
-        // await makeFileUploadRequest(thumbnailURL, params, videoFile);
+        const params = getParamsFromUrl(thumbnailURL);
+        await makeFileUploadRequest(thumbnailURL, params, videoFile);
 
         const newVideoSection = allSections.find(section =>
           section.sectionSlug === selectedSection);

@@ -35,7 +35,7 @@ const TestCasesModalComponent = ({
                 </StyledTableHead>
                 <tbody>
                     {
-                        problem.test_case.map(testCase => (
+                        (problem.test_case || []).map(testCase => (
                             <TableRow key={testCase.id}>
                                 <td>{testCase.input_name}</td>
                                 <td>{testCase.output_name}</td>

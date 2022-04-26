@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ProblemsCreation from 'components/problems-creation';
 import VideosCreation from 'components/videos-creation';
 import { ButtonGroup, Container } from './minicourse-content.styled-components';
-import { createSections } from 'lib/utils';
+import { createSectionsExperts } from 'lib/utils';
 import { Minicourse } from 'lib/types/minicourse';
 import { State } from 'lib/types/state';
 import { connect } from 'react-redux';
@@ -18,7 +18,7 @@ const MinicourseContentContainer = ({ currentMinicourse, sections, problems }) =
 
   useEffect(() => {
     if (sections) {
-      const sorted = createSections(sections);
+      const sorted = createSectionsExperts(sections);
       setSortedSections(sorted);
     }
   }, [sections]);

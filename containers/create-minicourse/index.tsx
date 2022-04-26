@@ -33,8 +33,8 @@ const CreateMinicourseContainer = ({ categories }) => {
       if (responseHasErrors(response, minicourseCreationFailed)) return;
       const thumbnailURL = response.thumb_upload_url;
       const params = getParamsFromUrl(thumbnailURL);
-      // await makeFileUploadRequest(thumbnailURL, params, details.thumbnail);
-      
+      await makeFileUploadRequest(thumbnailURL, params, details.thumbnail);
+
       push(`minicourse-content/${response.id}`);
     }
     catch {

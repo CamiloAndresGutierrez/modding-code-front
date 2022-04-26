@@ -46,7 +46,7 @@ export const CREATE_VIDEO = (newVideoInfo: Video): RequestOptions => ({
 
 export const DELETE_VIDEO = (videoId: string): RequestOptions => ({
   requestUrl: '/video',
-  method: 'POST',
+  method: 'DELETE',
   body: {
     id: videoId
   }

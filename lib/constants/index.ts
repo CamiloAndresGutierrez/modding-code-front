@@ -18,8 +18,10 @@ const url = (path: string) => {
 
 const videoSections = [
     { slug: "CONTEXT", name: "Context" },
-    { slug: "CODE", name: "Code" },
-    { slug: "CODE_EXPLANATION", name: "Code explanation" }
+    { slug: "PREPARATION", name: "Preparation" },
+    { slug: "CONTENT", name: "Content" },
+    { slug: "EXAMPLES", name: "Examples" },
+    { slug: "FINISHING_UP", name: "Finishing Up" }
 ];
 
 export {

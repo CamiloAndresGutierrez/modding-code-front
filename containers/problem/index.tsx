@@ -116,7 +116,7 @@ const ProblemContainer = ({ problem, accessToken }: ProblemContainerProps) => {
     if (!isObjectEmpty(problem)) {
       setDescription({ ...problem.description })
       setEvaluationResult(() =>
-        problem.test_case.map(
+        (problem.test_case || []).map(
           testCase => ({
             id: testCase.id,
             veredict: null
