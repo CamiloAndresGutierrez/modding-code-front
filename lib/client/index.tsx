@@ -1,9 +1,7 @@
 import { Method, RequestBodyType } from "lib/types";
-import { convertFileToBinaryString } from "lib/utils";
 
 const makeRequest = (url: string, requestBody: RequestBodyType, method: Method, jwtToken?: string) => {
     let requestHeaders = {};
-
     if (jwtToken) {
         requestHeaders = {
             'Content-Type': 'application/json',
@@ -27,11 +25,12 @@ const makeRequest = (url: string, requestBody: RequestBodyType, method: Method, 
 }
 
 export const makeFileUploadRequest = async (url: string, headers, file: File) => {
-    const binaryString = await convertFileToBinaryString(file);
     const request: RequestInit = {
         'method': "PUT",
-        'body': binaryString,
-        headers
+        'body': file,
+        headers: {
+            "Content-Type": "binary/octet-stream"
+        }
     }
 
     return fetch(url, request)

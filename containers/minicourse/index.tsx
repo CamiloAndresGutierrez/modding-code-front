@@ -90,11 +90,11 @@ const MinicourseContainer = (props) => {
             <a href='/categories'>
               {'Categories'}
             </a>
-              {' > '}
+            {' > '}
             <a href={`/categories/${props.currentMinicourse.category_id}`}>
               {'Minicourses'}
             </a>
-              {' > '}
+            {' > '}
             <a href={`/categories/${props.currentMinicourse.category_id}/${props.currentMinicourse.id}`}>
               {props.currentMinicourse.name}
             </a>

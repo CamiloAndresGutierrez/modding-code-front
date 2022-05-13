@@ -18,15 +18,6 @@ export const getParamsFromUrl = (url) => {
     return paramsObj
 };
 
-export const convertFileToBinaryString = (file: File): Promise<ArrayBuffer | string> => {
-    return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsBinaryString(file);
-        fileReader.onload = () => resolve(fileReader.result);
-        fileReader.onerror = error => reject(error);
-    });
-};
-
 export const createSections = (minicourseVideos) => {
     return videoSections.map(videoSection => ({
         sectionName: videoSection.name,
