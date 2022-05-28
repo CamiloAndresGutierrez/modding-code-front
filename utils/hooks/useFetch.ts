@@ -9,10 +9,11 @@ import { responseHasErrors } from "lib/utils";
 type useFetchType = {
     requestUrl?: string,
     method?: Method,
-    body?: RequestBodyType
+    body?: RequestBodyType,
+    shouldDoFetch?: boolean
 }
 
-export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
+export const useFetch = ({ requestUrl, method, body, shouldDoFetch }: useFetchType) => {
     const [userRole, setUserRole] = useState<string>("");
     const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
     const [response, setResponse] = useState(null);
@@ -24,6 +25,7 @@ export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
             try {
                 const shouldMakeRequest = !!requestUrl && !!method && !!body;
                 if (shouldMakeRequest) {
+                    console.log("MAKING REQUEST", requestUrl)
                     const serverResponse = await makeRequest(url(requestUrl), body, method, accessToken);
                     if (responseHasErrors(serverResponse)) {
                         return
@@ -49,7 +51,7 @@ export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
         if (isAuthenticated) {
             setValues();
         }
-        if (accessToken) {
+        if (accessToken && (typeof shouldDoFetch === "undefined" || shouldDoFetch)) {
             fetchData();
         }
     }, [isAuthenticated, accessToken]);
@@ -60,6 +62,7 @@ export const useFetch = ({ requestUrl, method, body }: useFetchType) => {
         isLoading,
         response,
         accessToken,
-        hasErrors
+        hasErrors,
+        fetchData,
     }
 }

@@ -38,6 +38,7 @@ import { EVALUATE_PROBLEM } from "lib/client/evaluation";
 import { url } from "lib/constants";
 import { isObjectEmpty, responseHasErrors } from "lib/utils";
 import { genericError } from "lib/constants/errorMessages";
+import { useFetch } from "utils/hooks/useFetch";
 
 const questions = [
   {
@@ -48,10 +49,10 @@ const questions = [
 
 type ProblemContainerProps = {
   problem: Problem;
-  accessToken?: string
 }
 
-const ProblemContainer = ({ problem, accessToken }: ProblemContainerProps) => {
+const ProblemContainer = ({ problem }: ProblemContainerProps) => {
+  const { accessToken } = useFetch({});
   const commentTemplate = "Write your code here, keep in mind to handle the data input...";
   const languages = supportedLanguages();
   const [selectedLanguage, setSelectedLanguage] = useState("");

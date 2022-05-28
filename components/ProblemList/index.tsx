@@ -46,8 +46,10 @@ const ProblemsList = ({ problems }) => {
     }
 
     useEffect(() => {
-        filteredProblemsWithEvaluation();
-    }, []);
+        if (accessToken) {
+            filteredProblemsWithEvaluation();
+        }
+    }, [accessToken]);
 
     return (
         <TableContainer>

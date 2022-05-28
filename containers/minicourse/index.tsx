@@ -41,7 +41,10 @@ const MinicourseContainer = (props) => {
   const [problems, setProblems] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [rating, setRating] = useState(0);
-  const { response } = useFetch(GET_PROBLEMS_BY_MINICOURSE(props.currentMinicourse.id));
+  const { response, fetchData } = useFetch({
+    ...GET_PROBLEMS_BY_MINICOURSE(props.currentMinicourse.id),
+    shouldDoFetch: false
+  });
 
   const handleModalBehaviour = (content = null) => {
     setShouldShowModal(!shouldShowModal);
@@ -68,6 +71,12 @@ const MinicourseContainer = (props) => {
       setSections(createSections(minicourseVideos));
     }
   }, [minicourseVideos]);
+
+  useEffect(() => {
+    if (props.currentMinicourse.id && !response) {
+      fetchData()
+    }
+  }, [props]);
 
   useEffect(() => {
     if (response) {
