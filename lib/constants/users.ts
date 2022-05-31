@@ -6,4 +6,6 @@ const users = {
     STUDENT
 }
 
+export const nameToUser = new Map([[STUDENT, "STUDENT"], [EXPERT, "EXPERT"]]);
+
 export default users;

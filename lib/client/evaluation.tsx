@@ -10,12 +10,13 @@ export const Actions = {
     GET_EVALUATIONS_BY_USERNAME: 'get_evaluations_by_username'
 }
 
-export const EVALUATE_PROBLEM = (problemId: string, fileInput: string): RequestOptions => ({
+export const EVALUATE_PROBLEM = (problemId: string, fileInput: string, fileType: string): RequestOptions => ({
     requestUrl: '/problem/evaluation',
     method: 'POST',
     body: {
         "problem_id": problemId,
-        "file_input": fileInput
+        "file_input": fileInput,
+        "file_type": fileType
     }
 })
 

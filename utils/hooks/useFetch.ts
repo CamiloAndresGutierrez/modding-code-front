@@ -25,12 +25,13 @@ export const useFetch = ({ requestUrl, method, body, shouldDoFetch }: useFetchTy
             try {
                 const shouldMakeRequest = !!requestUrl && !!method && !!body;
                 if (shouldMakeRequest) {
-                    console.log("MAKING REQUEST", requestUrl)
                     const serverResponse = await makeRequest(url(requestUrl), body, method, accessToken);
                     if (responseHasErrors(serverResponse)) {
                         return
-                    };
-                    setResponse(serverResponse);
+                    } else {
+                        setResponse(serverResponse);
+                        return serverResponse;
+                    }
                 };
                 setHasErrors(false);
             }

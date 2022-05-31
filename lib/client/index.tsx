@@ -24,7 +24,7 @@ const makeRequest = (url: string, requestBody: RequestBodyType, method: Method, 
         .then(data => data);
 }
 
-export const makeFileUploadRequest = async (url: string, headers, file: File) => {
+export const makeFileUploadRequest = async (url: string, headers: any, file: File) => {
     const request: RequestInit = {
         'method': "PUT",
         'body': file,

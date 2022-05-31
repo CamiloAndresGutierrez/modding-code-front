@@ -97,7 +97,7 @@ const ProblemContainer = ({ problem }: ProblemContainerProps) => {
   const handleSubmit = async () => {
     try {
       setIsEvaluating(true);
-      const { requestUrl, body, method } = EVALUATE_PROBLEM(problem.id, code);
+      const { requestUrl, body, method } = EVALUATE_PROBLEM(problem.id, code, selectedLanguage);
       const response: Evaluation = await makeRequest(url(requestUrl), body, method, accessToken);
       if (responseHasErrors(response, genericError)) return;
       const { veredict, inputs_veredict } = response;
@@ -181,7 +181,10 @@ const ProblemContainer = ({ problem }: ProblemContainerProps) => {
                   </button>
                   <select value={selectedLanguage} onChange={handleLanguageSelection}>
                     {
-                      Object.keys(languages).map(language => <option key={language} value={language}>{languages[language]}</option>)
+                      Object.keys(languages).map(language => {
+                        let languageVals = languages[language];
+                        return <option key={languageVals.value} value={languageVals.value}>{languageVals.label}</option>;
+                      })
                     }
                   </select>
                 </ButtonGroup>

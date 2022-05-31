@@ -23,7 +23,7 @@ import {
 
 import { genericError, problemUpdateFailed, problemVisibilityFailed, videoFailedVisibilityChange2 } from 'lib/constants/errorMessages';
 import { CREATE_PROBLEM, UPDATE_PROBLEM } from 'lib/client/problems';
-import makeRequest from 'lib/client';
+import makeRequest, { makeFileUploadRequest } from 'lib/client';
 import { UPLOAD_PROBLEM_TESTCASE } from 'lib/client/problems';
 import { url } from 'lib/constants';
 import { State } from 'lib/types/state';
@@ -122,20 +122,11 @@ const ProblemContent = ({ problem, accessToken }) => {
   };
 
   const handleUploadTestCases = () => {
-    const uploadJob = () => {
-      setTimeout(() => {
-        if (!uploadTestCases.response && !uploadTestCases.isLoading) {
-          uploadTestCases.fetchData();
-          console.log("Started loading");
-        } else if (uploadTestCases.response) {
-          console.log(uploadTestCases.response);
-          console.log("Loaded!")
-        } else {
-          uploadJob();
-        }
-      }, 500);
-    };
-    uploadJob();
+    uploadTestCases.fetchData().then(response => {
+      const { input_url, output_url } = response;
+      makeFileUploadRequest(input_url, null, testCases.inputFile);
+      makeFileUploadRequest(output_url, null, testCases.outputFile);
+    })
   }
 
   const handleVisibilityChange = async () => {

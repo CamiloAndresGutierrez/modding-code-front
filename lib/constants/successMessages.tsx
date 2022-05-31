@@ -1,4 +1,4 @@
-export const deletedVideoSuccess = "The video was deleted successfuly.";
+export const deletedVideoSuccess = "The resource was deleted successfuly.";
 export const changedVisibility = "Visibility has been changed successfully.";
-export const videoUpdateSuccess = "Video has been updated successfully.";
-export const videoCreationSuccess = "Video has been created successfully.";
+export const videoUpdateSuccess = "Resource has been updated successfully.";
+export const videoCreationSuccess = "Resource has been created successfully.";
