@@ -41,9 +41,17 @@ import { genericError } from "lib/constants/errorMessages";
 
 const questions = [
   {
-    detail: 'This is question1',
-    answer: 'This is the answer to question 1'
-  }
+    detail: 'How do I submit my answer?',
+    answer: 'Click on the submit button to send your solution and get a veredict.'
+  },
+  {
+    detail: 'How do I handle data input?',
+    answer: 'Use the native data input of your preferred programming language.'
+  },
+  {
+    detail: 'Can I send more than one solution?',
+    answer: 'Yes, you can send as many solutions to the problem as you want :)'
+  },
 ];
 
 type ProblemContainerProps = {
@@ -149,11 +157,6 @@ const ProblemContainer = ({ problem, accessToken }: ProblemContainerProps) => {
                 <ButtonGroup>
                   <Tooltip title={"Frequently asked questions"}>
                     <InfoButton onClick={handleModalBehaviour}>FAQ</InfoButton>
-                  </Tooltip>
-                  <Tooltip title={"Ask the expert"}>
-                    <InfoButton>
-                      <ContactSupportIcon />
-                    </InfoButton>
                   </Tooltip>
                 </ButtonGroup>
                 <h2>Problem description:</h2>

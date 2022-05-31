@@ -118,6 +118,20 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
       "80%, 1)"
   }
 
+  const [minicoursesColors, setMinicoursesColors] = useState([]);
+
+  useEffect(() => {
+    if (Array.isArray(allMinicourses)) {
+      const colors = allMinicourses.map(() => (
+        [
+          getNewRandomColor(),
+          getNewRandomColor()
+        ]
+      ));
+      setMinicoursesColors(colors);
+    }
+  }, [allMinicourses.length])
+
   const handleClickMinicourse = (minicourseId: string) => {
     push(`/minicourse-content/${minicourseId}`)
   }
@@ -133,13 +147,13 @@ const MyMinicourses = ({ minicourses, categories, accessToken }) => {
         </ButtonContainer>
       </Jumbotron>
       {
-        Array.isArray(allMinicourses) && allMinicourses.length ?
+        Array.isArray(allMinicourses) && allMinicourses.length && minicoursesColors.length ?
           <ExpertMinicoursesContainer>
-            {allMinicourses.map(minicourse =>
+            {allMinicourses.map((minicourse, idx) =>
               <ExpertMinicourse
                 key={minicourse.id}
-                randomColorOne={() => getNewRandomColor()}
-                randomColorTwo={() => getNewRandomColor()}
+                randomColorOne={() => minicoursesColors[idx][0]}
+                randomColorTwo={() => minicoursesColors[idx][1]}
               >
                 <MinicourseName
                   onClick={() => handleClickMinicourse(minicourse.id)}

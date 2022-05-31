@@ -15,7 +15,7 @@ export const videoCreationFailed = 'Could not create the video, please try again
 export const videoDeleteFailed = 'Could not delete the video, please try again later.';
 export const videoUpdateFailed = 'Could not update the video, please try again later.';
 export const videoFailedVisibilityChange = 'Could not change the visibility of the video, please try again later.';
-export const videoFailedVisibilityChange2 = 'You need to add test cases to this minicourse in order to make it visible.';
+export const videoFailedVisibilityChange2 = 'You need to add test cases to this problem in order to make it visible.';
 
 // Problem
 export const problemUpdateFailed = 'Could not update the problem right now, please try again.';
