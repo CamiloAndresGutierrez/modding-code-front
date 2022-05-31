@@ -32,6 +32,7 @@ import Dialog from 'components/Dialog';
 import { minicourseWithoutVideos } from 'lib/constants/errorMessages';
 import Button from 'components/button';
 import { ButtonGroup } from 'components/edit-minicourse/edit-minicourse.styled-components';
+import { USERS } from 'lib/constants';
 
 const MinicourseContainer = (props) => {
   const [sections, setSections] = useState<ISections[]>([]);
@@ -41,7 +42,7 @@ const MinicourseContainer = (props) => {
   const [problems, setProblems] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [rating, setRating] = useState(0);
-  const { response } = useFetch(GET_PROBLEMS_BY_MINICOURSE(props.currentMinicourse.id));
+  const { response, userRole } = useFetch(GET_PROBLEMS_BY_MINICOURSE(props.currentMinicourse.id));
 
   const handleModalBehaviour = (content = null) => {
     setShouldShowModal(!shouldShowModal);
@@ -86,19 +87,22 @@ const MinicourseContainer = (props) => {
     <Container>
       {fileteredSections.length > 0 ?
         <>
-          <div className="breadcrumbs">
-            <a href='/categories'>
-              {'Categories'}
-            </a>
-              {' > '}
-            <a href={`/categories/${props.currentMinicourse.category_id}`}>
-              {'Minicourses'}
-            </a>
-              {' > '}
-            <a href={`/categories/${props.currentMinicourse.category_id}/${props.currentMinicourse.id}`}>
-              {props.currentMinicourse.name}
-            </a>
-          </div>
+          {
+            userRole === USERS.EXPERT ? null :
+              <div className="breadcrumbs">
+                <a href='/categories'>
+                  {'Categories'}
+                </a>
+                {' > '}
+                <a href={`/categories/${props.currentMinicourse.category_id}`}>
+                  {'Minicourses'}
+                </a>
+                {' > '}
+                <a href={`/categories/${props.currentMinicourse.category_id}/${props.currentMinicourse.id}`}>
+                  {props.currentMinicourse.name}
+                </a>
+              </div>
+          }
 
           <Header>
             <LeftSide >
@@ -110,11 +114,14 @@ const MinicourseContainer = (props) => {
                 }
               </Title>
               <ButtonGroup>
-                <Tooltip title={"Rate minicourse"}>
-                  <RateMinicourseButton onClick={() => handleModalBehaviour("rate")}>
-                    Rate
-                  </RateMinicourseButton>
-                </Tooltip>
+                {
+                  userRole === USERS.EXPERT ? null :
+                    <Tooltip title={"Rate minicourse"}>
+                      <RateMinicourseButton onClick={() => handleModalBehaviour("rate")}>
+                        Rate
+                      </RateMinicourseButton>
+                    </Tooltip>
+                }
                 <Tooltip title={"Problems"}>
                   <ProblemsButton onClick={() => handleModalBehaviour("problems")}>
                     <StyledQuizIcon />

@@ -11,6 +11,7 @@ export const expertAccesses = [
     "/my-minicourses/[expert]",
     "/create-minicourse",
     "/minicourse-content/[minicourse]",
+    "/categories/[minicourses]/[minicourse]",
 ]
 
 export const expertFallback = "/my-minicourses";
