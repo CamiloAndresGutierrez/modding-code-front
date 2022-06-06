@@ -251,7 +251,7 @@ const ProblemContainer = ({ problem }: ProblemContainerProps) => {
                   <textarea
                     name=""
                     id=""
-                    rows="12"
+                    rows={12}
                     value={messageToExpertContent}
                     onChange={(event) => setMessageToExpertContent(event.target.value)}
                   ></textarea>
