@@ -11,7 +11,8 @@ export type Minicourse = {
     name?: string,
     ext?: string,
     rate?: number,
-    thumb_upload_url?: string
+    thumb_upload_url?: string,
+    description?: string
 };
 
 export type InitialStateType = {

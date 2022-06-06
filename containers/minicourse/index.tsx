@@ -12,6 +12,7 @@ import { ISections } from 'lib/types/videos';
 import { GET_PROBLEMS_BY_MINICOURSE } from 'lib/client/problems';
 
 import { useFetch } from 'utils/hooks/useFetch';
+import { genericError } from 'lib/constants/errorMessages';
 
 import {
   Container,
@@ -32,8 +33,12 @@ import Dialog from 'components/Dialog';
 import { minicourseWithoutVideos } from 'lib/constants/errorMessages';
 import Button from 'components/button';
 import { ButtonGroup } from 'components/edit-minicourse/edit-minicourse.styled-components';
+import { UPDATE_MINICOURSE } from 'lib/client/minicourses';
+import makeRequest from 'lib/client';
+import { url } from 'lib/constants';
 
 const MinicourseContainer = (props) => {
+  const { accessToken } = useFetch({});
   const [sections, setSections] = useState<ISections[]>([]);
   const { minicourseVideos } = props;
   const { video, name, sectionName } = props.currentVideo;
@@ -91,6 +96,19 @@ const MinicourseContainer = (props) => {
     setRating(value);
   }
 
+  const submitRatingChange = async () => {
+    const { requestUrl, body, method } = UPDATE_MINICOURSE({
+      id: props.currentMinicourse.id,
+      rate: rating
+    });
+    try {
+      const response = await makeRequest(url(requestUrl), body, method, accessToken);
+      setShouldShowModal(false);
+    } catch (e) {
+      alert(genericError);
+    };
+  }
+
   return (
     <Container>
       {fileteredSections.length > 0 ?
@@ -137,7 +155,7 @@ const MinicourseContainer = (props) => {
           <PlayerContainer>
             {video && (
               <VideoContainer>
-                <video ref={videoRef} controls>
+                <video ref={videoRef} controls height={500}>
                   <source src={video} type="video/mp4"></source>
                 </video>
               </VideoContainer >
@@ -168,7 +186,7 @@ const MinicourseContainer = (props) => {
                     handleRatingChange(newValue);
                   }}
                 />
-                <Button >Submit</Button>
+                <Button onClick={submitRatingChange}>Submit</Button>
               </RatingContainer>
             }
           </Modal>

@@ -7,7 +7,7 @@ import { python } from '@codemirror/lang-python';
 import { cpp } from '@codemirror/lang-cpp';
 
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
-import { CircularProgress, Tooltip } from "@mui/material";
+import { Button, CircularProgress, Tooltip } from "@mui/material";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -22,7 +22,8 @@ import {
   ButtonGroup,
   TestCaseContainer,
   InfoButton,
-  Veredict
+  Veredict,
+  QuesitonBox
 } from './problem.styled-components';
 import supportedLanguages from './supportedLanguages';
 
@@ -34,7 +35,7 @@ import Dialog from "components/Dialog";
 import { Evaluation, Problem } from "lib/types/problems";
 import { State } from "lib/types/state";
 import makeRequest from "lib/client";
-import { EVALUATE_PROBLEM } from "lib/client/evaluation";
+import { EVALUATE_PROBLEM, SEND_MESSAGE_TO_EXPERT } from "lib/client/evaluation";
 import { url } from "lib/constants";
 import { isObjectEmpty, responseHasErrors } from "lib/utils";
 import { genericError } from "lib/constants/errorMessages";
@@ -63,11 +64,15 @@ const ProblemContainer = ({ problem }: ProblemContainerProps) => {
   const [comment, setComment] = useState(`// ${commentTemplate}`);
   const [code, setCode] = useState("");
   const [shouldShowModal, setShouldShowModal] = useState(false);
+  const [shouldShowModalQuestion, setShouldShowModalQuestion] = useState(false);
   const [description, setDescription] = useState({
     description: "",
     sample_input: "",
     sample_output: ""
   })
+  const [messageToExpertTitle, setMessageToExpertTitle] = useState("");
+  const [messageToExpertContent, setMessageToExpertContent] = useState("");
+  const [disableSendMessage, setDisableSendMessage] = useState(false);
 
   const handleLanguageSelection = (event) => {
     const language = event.target.value;
@@ -136,6 +141,23 @@ const ProblemContainer = ({ problem }: ProblemContainerProps) => {
     }
   }
 
+  const sendQuestion = async () => {
+    const fullMessage = `<p><strong>${messageToExpertTitle}</strong></p><p>${messageToExpertContent}</p>`;
+    const { requestUrl, body, method } = SEND_MESSAGE_TO_EXPERT(problem.username, fullMessage);
+    setDisableSendMessage(true);
+    try {
+      const response: Evaluation = await makeRequest(url(requestUrl), body, method, accessToken);
+      if (responseHasErrors(response, genericError)) return;
+      setShouldShowModalQuestion(false);
+      setMessageToExpertContent("");
+      setMessageToExpertTitle("");
+      setDisableSendMessage(false);
+      alert("Message sent!");
+    } catch {
+      alert(genericError);
+    }
+  }
+
   return (
     <Container>
       {
@@ -152,7 +174,7 @@ const ProblemContainer = ({ problem }: ProblemContainerProps) => {
                     <InfoButton onClick={handleModalBehaviour}>FAQ</InfoButton>
                   </Tooltip>
                   <Tooltip title={"Ask the expert"}>
-                    <InfoButton>
+                    <InfoButton onClick={() => setShouldShowModalQuestion(true)}>
                       <ContactSupportIcon />
                     </InfoButton>
                   </Tooltip>
@@ -214,6 +236,28 @@ const ProblemContainer = ({ problem }: ProblemContainerProps) => {
               setShouldShow={handleModalBehaviour}
             >
               <FAQ questions={questions}></FAQ>
+            </Modal>
+            <Modal
+              shouldShow={shouldShowModalQuestion}
+              setShouldShow={() => setShouldShowModalQuestion(!shouldShowModalQuestion)}
+            >
+              <QuesitonBox>
+                <div>
+                  <p>Question title</p>
+                  <input type="text" value={messageToExpertTitle} onChange={(event) => setMessageToExpertTitle(event.target.value)} />
+                </div>
+                <div>
+                  <p>Content:</p>
+                  <textarea
+                    name=""
+                    id=""
+                    rows="12"
+                    value={messageToExpertContent}
+                    onChange={(event) => setMessageToExpertContent(event.target.value)}
+                  ></textarea>
+                </div>
+                <button onClick={sendQuestion} disabled={disableSendMessage}>Submit Question</button>
+              </QuesitonBox>
             </Modal>
           </> : <Dialog title="Looks like this is still a work in progress, please come back when it's ready." />
       }

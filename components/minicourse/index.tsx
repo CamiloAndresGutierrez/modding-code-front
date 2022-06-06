@@ -47,17 +47,21 @@ const Minicourse = (props) => {
                 {showDescription &&
                     <DescriptionContainer>
                         <Description onClick={handleClick}>
-                            {/* {minicourse.description} */}
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero magnam facilis a ipsam doloremque modi, accusantium porro quas, iste doloribus libero consectetur? Cumque voluptatum nemo, veniam minima incidunt earum recusandae.
+                            {minicourse.description ?? "No description"}
                         </Description>
                     </DescriptionContainer>
                 }
-                <Rating
-                    name="read-only"
-                    value={minicourse.rate}
-                    precision={0.5}
-                    readOnly
-                />
+                {
+                    minicourse.rate ? (
+                        <Rating
+                            name="read-only"
+                            value={minicourse.rate ?? 0}
+                            precision={0.5}
+                            readOnly
+                        />
+                    ) : null
+                }
+
                 <ArrowContainer onClick={() => handleTakeMinicourse(minicourse)}>
                     <RedirectTitle>
                         Take minicourse

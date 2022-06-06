@@ -38,3 +38,13 @@ export const GET_PROBLEMS_EVALUATIONS = (problemId): RequestOptions => ({
         }
     }
 })
+
+
+export const SEND_MESSAGE_TO_EXPERT = (expert_email: string, message: string): RequestOptions => ({
+    requestUrl: '/problem/send-message/expert',
+    method: 'POST',
+    body: {
+        expert_email,
+        message
+    }
+})

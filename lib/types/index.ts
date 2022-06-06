@@ -38,4 +38,6 @@ export type RequestBodyType = {
     input_name?: string,
     output_name?: string,
     file_type?: string,
+    expert_email?: string,
+    message?: string,
 }
