@@ -40,16 +40,23 @@ const Minicourse = (props) => {
                 <h3>
                     {minicourse.name}
                 </h3>
-                <BlueLink onClick={handleClick}>
-                    {showDescription ? 'Hide' : 'Show'} details
-                    {showDescription ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                </BlueLink>
-                {showDescription &&
-                    <DescriptionContainer>
-                        <Description onClick={handleClick}>
-                            {minicourse.description ?? "No description"}
-                        </Description>
-                    </DescriptionContainer>
+                {
+                    minicourse.description?.length > 0 ?
+                        (
+                            <>
+                                <BlueLink onClick={handleClick}>
+                                    {showDescription ? 'Hide' : 'Show'} details
+                                    {showDescription ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                                </BlueLink>
+                                {showDescription &&
+                                    <DescriptionContainer>
+                                        <Description onClick={handleClick}>
+                                            {minicourse.description ?? "No description"}
+                                        </Description>
+                                    </DescriptionContainer>
+                                }
+                            </>
+                        ) : null
                 }
                 {
                     minicourse.rate ? (
