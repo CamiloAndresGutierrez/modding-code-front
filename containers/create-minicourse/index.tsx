@@ -18,10 +18,11 @@ const CreateMinicourseContainer = ({ categories }) => {
   const { accessToken } = useFetch({});
   const { push, back } = useRouter();
 
-  const createMinicourseRequest = async ({ name, category }) => {
+  const createMinicourseRequest = async ({ name, category, description }) => {
     const { requestUrl, body, method } = CREATE_MINICOURSE({
       "name": name,
-      "category_id": category
+      "category_id": category,
+      "description": description
     });
 
     return makeRequest(url(requestUrl), body, method, accessToken);

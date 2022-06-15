@@ -54,7 +54,7 @@ export const SEND_EXPERT_EMAIL = (userDetails): RequestOptions => ({
   requestUrl: '/user/signup',
   method: 'POST',
   body: {
-      ...userDetails
+    ...userDetails
   }
 })
 
@@ -62,6 +62,16 @@ export const SEND_STUDENT_EMAIL = (userDetails): RequestOptions => ({
   requestUrl: '/user/signup',
   method: 'POST',
   body: {
-      ...userDetails
+    ...userDetails
+  }
+})
+
+export const UPLOAD_PROBLEM_TESTCASE = (problemId: string, inName: string, outName: string): RequestOptions => ({
+  requestUrl: '/problem/testcase',
+  method: 'POST',
+  body: {
+    id: problemId,
+    input_name: inName,
+    output_name: outName
   }
 })

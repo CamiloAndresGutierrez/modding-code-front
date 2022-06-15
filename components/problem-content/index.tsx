@@ -7,6 +7,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import CircleIcon from '@mui/icons-material/Circle';
 
+import { useFetch } from 'utils/hooks/useFetch';
 import Modal from 'components/modal';
 import { StyledRating } from 'components/ProblemList/problemsList.styled-components';
 
@@ -22,7 +23,8 @@ import {
 
 import { genericError, problemUpdateFailed, problemVisibilityFailed, videoFailedVisibilityChange2 } from 'lib/constants/errorMessages';
 import { CREATE_PROBLEM, UPDATE_PROBLEM } from 'lib/client/problems';
-import makeRequest from 'lib/client';
+import makeRequest, { makeFileUploadRequest } from 'lib/client';
+import { UPLOAD_PROBLEM_TESTCASE } from 'lib/client/problems';
 import { url } from 'lib/constants';
 import { State } from 'lib/types/state';
 import { responseHasErrors } from 'lib/utils';
@@ -35,11 +37,15 @@ const ProblemContent = ({ problem, accessToken }) => {
   const [problemName, setProblemName] = useState(problem.name);
   const [problemDescription, setProblemDescription] = useState(problem.description);
   const [problemDifficulty, setProblemDifficulty] = useState(problem.difficulty);
-  const [testCases, setTestCases] = useState({
+  const [testCases, setTestCases] = useState<{ inputFile: File, outputFile: File }>({
     inputFile: null,
     outputFile: null
   });
   const [hasChanged, setHasChanged] = useState(false);
+  const uploadTestCases = useFetch({
+    ...UPLOAD_PROBLEM_TESTCASE(problem.id || "", testCases.inputFile?.name || "", testCases.outputFile?.name || ""),
+    shouldDoFetch: false
+  });
 
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLInputElement>(null);
@@ -116,7 +122,11 @@ const ProblemContent = ({ problem, accessToken }) => {
   };
 
   const handleUploadTestCases = () => {
-    console.log(testCases);
+    uploadTestCases.fetchData().then(response => {
+      const { input_url, output_url } = response;
+      makeFileUploadRequest(input_url, null, testCases.inputFile);
+      makeFileUploadRequest(output_url, null, testCases.outputFile);
+    })
   }
 
   const handleVisibilityChange = async () => {

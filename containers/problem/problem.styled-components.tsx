@@ -151,6 +151,69 @@ export const InfoButton = styled.div`
     }
 `
 
+export const QuesitonBox = styled.div`
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: bold;
+    row-gap: 20px;
+    width: 80%;
+
+    & p {
+        color: black;
+        margin-bottom: 10px;
+    }
+
+    & div {
+        width: 90%;
+        padding-top: 20px;
+    }
+
+    & input {
+        width: 100%;
+        height: 30px;
+        border-radius: 10px;
+        border: none;
+        background-color: lightcyan;
+        outline: none;
+        padding: 15px;
+    }
+
+    & textarea {
+        width: 100%;
+        resize: none;
+        border-radius: 10px;
+        border: none;
+        background-color: lightcyan;
+        outline: none;
+        padding: 15px;
+    }
+
+    & button {
+        width: 90%;
+        background-color: ${colors.purple};
+        color: white;
+        height: 50px;
+        border: none;
+        border-radius: 10px;
+        transition: all ease-in-out 200ms;
+
+        &:hover{
+            transform: scale(1.125);
+        }
+
+        &:active {
+            background-color: ${colors.lightBlack};
+        }
+    }
+`
+
 export const Veredict = styled.div`
     border: 1px ${colors.purple} solid;
     color: white;

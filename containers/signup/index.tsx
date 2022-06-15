@@ -13,6 +13,7 @@ import makeRequest from 'lib/client';
 import { url } from 'lib/constants';
 import { responseHasErrors } from 'lib/utils';
 import { registrationError } from 'lib/constants/errorMessages';
+import { nameToUser } from 'lib/constants/users';
 
 const SingUpContainer = () => {
     const router = useRouter();
@@ -59,13 +60,7 @@ const SingUpContainer = () => {
 
     useEffect(() => {
         if (step === 4) {
-            // const user = {
-            //     ...userInfo,
-            //     userType,
-            //     professionalBackground,
-            // };
-
-            const { requestUrl, body, method } = REGISTER_USER(userInfo);
+            const { requestUrl, body, method } = REGISTER_USER({ ...userInfo, role: nameToUser.get(userType) });
             try {
 
                 const response = makeRequest(url(requestUrl), body, method);

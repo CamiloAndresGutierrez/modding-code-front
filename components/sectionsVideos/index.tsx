@@ -35,7 +35,7 @@ const SectionsVideos = ({
   setCurrentVideo,
   setVideosUrls
 }: Props & IMapStateToProps & IMapDispatchToProps) => {
-  const videoInfo = useFetch({});
+  const { accessToken } = useFetch({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [filteredVideoSections, setFilteredVideoSections] = useState([]);
 
@@ -45,7 +45,7 @@ const SectionsVideos = ({
     if (fileteredSections.length > 0) {
       try {
         const { requestUrl, body, method } = GET_VIDEO_URL_BY_ID(fileteredSections[0].videos[0].id, true)
-        const serverResponse: VideoType = await makeRequest(url(requestUrl), body, method, videoInfo.accessToken);
+        const serverResponse: VideoType = await makeRequest(url(requestUrl), body, method, accessToken);
         if (responseHasErrors(serverResponse, genericError)) return;
 
         setCurrentVideo({
@@ -69,10 +69,10 @@ const SectionsVideos = ({
   }
 
   useEffect(() => {
-    if (sections.length > 0) {
+    if (sections.length > 0 && accessToken) {
       getInitialVideo();
     }
-  }, [sections]);
+  }, [accessToken]);
 
   const handleClick = async (section: string, video) => {
     const foundVideo = videosUrls.find(element => element.id === video.id);
@@ -86,7 +86,7 @@ const SectionsVideos = ({
     else {
       try {
         const { requestUrl, body, method } = GET_VIDEO_URL_BY_ID(video.id, true);
-        const serverResponse: VideoType = await makeRequest(url(requestUrl), body, method, videoInfo.accessToken);
+        const serverResponse: VideoType = await makeRequest(url(requestUrl), body, method, accessToken);
         if (responseHasErrors(serverResponse, genericError)) return;
 
         setCurrentVideo({
